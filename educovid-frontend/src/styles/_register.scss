@@ -1,3 +1,6 @@
+
+@import "passwordstrength";
+
 .register-container {
     @include flexCenter(column);
     width: 100vw;
@@ -15,6 +18,23 @@
             width: 90%;
         }
 
+    }
+
+    .nord-button {
+        background-color: $blue;
+        border-color: $white500;
+    }
+
+    .nord-button:hover {
+        background-color: $greyblue !important;
+        color: white;
+        border-color: $white500 !important;
+    }
+    .nord-button:active,
+    .nord-button:focus {
+        background-color: $greyblue !important;
+        color: white;
+        border-color: $white500 !important;
     }
 
 }

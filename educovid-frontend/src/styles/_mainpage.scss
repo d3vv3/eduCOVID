@@ -1,0 +1,7 @@
+.main-page-container {
+    @include flexCenter(column);
+
+    h1 {
+        font-weight: bold;
+    }
+}
