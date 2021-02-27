@@ -12,17 +12,19 @@
 ### Bootstrap
 
 Bootstrap is installed in the project, so do not install it any other way.  
-Please do not try to use bootstrap other way that the referred in the documentation.  
+Please do not try to use bootstrap other way that the referred in the
+documentation.  
 
 You may access the documentation [here](https://react-bootstrap.github.io/components/).
 
 ## Git
 
-1. Never develop changes in master. Do `git checkout -b branchname` to create
-a new branch. `-b` is what creates a new branch, so without it will change to
-an existing branch if it exists. If you forgot to do this before development,
-don't worry and do it once you notice it. Your changes will be in the new
-branch.
+1. Never develop changes in master. Do `git checkout -b layer/branchname` to
+create a new branch. `-b` is what creates a new branch, so without it will
+change to an existing branch if it exists. If you forgot to do this before
+development, don't worry and do it once you notice it. Your changes will be in the new
+branch. `layer` should take values as `release`, `feature`, `tests`,
+`documentation`, and so on.
 2. Use `git add .` to add the files to the tracking system. You can specify
 individual files instead by doing, for example `git add filename.txt
 otherfile.js` and so. `git status` is a good command to check what you have
@@ -38,5 +40,7 @@ asking your teams to review your changes so `master` can pull the changes you
 made in your branch.
 
 If you have any questions or think you messed up, ask for help.
+
+You can also refer to the documentation of GitFlow [here](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow).
 
 Happy development!
