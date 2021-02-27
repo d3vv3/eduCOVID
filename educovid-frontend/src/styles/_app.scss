@@ -1,6 +1,6 @@
 // Used by App.js
 
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 .App {
   margin: 0;
@@ -8,7 +8,7 @@
   min-width: 100vw;
   color: $foreground;
   overflow-y: hidden;
-  font-family: Montserrat;
+  font-family: 'Montserrat', sans-serif;
 
   background-color: $background;
 }

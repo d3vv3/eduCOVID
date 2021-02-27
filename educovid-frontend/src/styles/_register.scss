@@ -13,7 +13,7 @@
     .register-center-form {
         width: 500px;
 
-        // This is for phone sized
+        // This is for phone sized displays
         @media only screen and (max-width: 520px) {
             width: 90%;
         }

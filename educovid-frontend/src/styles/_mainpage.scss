@@ -2,7 +2,7 @@
     @include flexCenter(column);
     margin: 0 auto;
     margin-top: 48px;
-    width: 400px;
+    width: 40vw;
 
     h1 {
         font-weight: bold;
@@ -10,12 +10,12 @@
     }
 
     .centered-div {
-        //@include flexCenter(column);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        flex-wrap: nowrap;
+        @include flexCenter(column);
+
+        // This is for phone sized
+        @media only screen and (max-width: 750px) {
+            width: 70vw;
+        }
     }
 
     .logo {
@@ -43,6 +43,9 @@
     .buttons-container {
         @include flexCenter(row);
         @include nordButton();
+
+        margin-top: 24px;
+        margin-bottom: 24px;
     }
 
 }
