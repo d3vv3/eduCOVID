@@ -11,3 +11,23 @@
   flex-direction: $direction;
   flex-wrap: nowrap;
 }
+
+@mixin nordButton() {
+    .nord-button {
+        background-color: $blue;
+        border-color: $white500;
+        margin: 4px;
+    }
+
+    .nord-button:hover {
+        background-color: $greyblue !important;
+        color: white;
+        border-color: $white500 !important;
+    }
+    .nord-button:active,
+    .nord-button:focus {
+        background-color: $greyblue !important;
+        color: white;
+        border-color: $white500 !important;
+    }
+}

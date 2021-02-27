@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { withRouter } from 'react-router-dom';
 
-// Style
-import "../styles/style.scss";
-
 // Bootstrap imports
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
