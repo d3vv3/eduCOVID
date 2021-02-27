@@ -1,5 +1,11 @@
 // Import everything here so there is no multiple files to import
 
+// Import to be used through the entire scss files such
+// as variables and functions
 @import "./variables";
 @import "./functions";
 @import "./app";
+
+// Imports where we might use the above
+@import "./register";
+@import "./mainpage";

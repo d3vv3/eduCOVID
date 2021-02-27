@@ -5,7 +5,7 @@ import "../styles/style.scss";
 
 function Register() {
   return (
-    <div className="register">
+    <div className="register-container">
         Register page
     </div>
   );

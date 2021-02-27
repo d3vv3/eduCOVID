@@ -1,13 +1,14 @@
-// Background gradient
-$backGradientTo: white;
-$backGradientFrom: #66a8ff;
-$fallbackLinearFrom: #d6e6ff;
-$fallbackLinearTo: #dbd6ff;
 
-// Text gradient 1
-$backColor1: #667eea;
-$backColor2: #774aa3;
-
-// Text gradient 2
-$backColor3: #8af7fe;
-$backColor4: #66a8ff;
+// Color palette
+$background: #282a36;   // Background color
+$currentLine: #44475a;	// Current line color
+$selection: #44475a;	// Selection color
+$foreground: #f8f8f2;	// Foreground color
+$comment: #6272a4;	    // Comment color
+$cyan: #8be9fd;	        // Cyan color
+$green: #50fa7b;	    // Green color
+$orange: #ffb86c;	    // Orange color
+$pink: #ff79c6;         // Pink color
+$purple: #bd93f9;	    // Purple color
+$red: #ff5555;	        // Red color
+$yellow: #f1fa8c;	    // Yellow color

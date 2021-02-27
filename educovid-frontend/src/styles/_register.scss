@@ -1,0 +1,4 @@
+.register-container {
+    @include flexCenter(column);
+    width: 100vw;
+}
