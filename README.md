@@ -12,7 +12,7 @@
 ### Bootstrap
 
 Bootstrap is installed in the project, so do not install it any other way.  
-Please do not try to use react other way that the refered in the documentation.  
+Please do not try to use bootstrap other way that the referred in the documentation.  
 
 You may access the documentation [here](https://react-bootstrap.github.io/components/).
 
