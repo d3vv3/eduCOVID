@@ -1,14 +1,39 @@
+// Color palette by nordtheme.com
 
-// Color palette
-$background: #282a36;   // Background color
-$currentLine: #44475a;	// Current line color
-$selection: #44475a;	// Selection color
-$foreground: #f8f8f2;	// Foreground color
-$comment: #6272a4;	    // Comment color
-$cyan: #8be9fd;	        // Cyan color
-$green: #50fa7b;	    // Green color
-$orange: #ffb86c;	    // Orange color
-$pink: #ff79c6;         // Pink color
-$purple: #bd93f9;	    // Purple color
-$red: #ff5555;	        // Red color
-$yellow: #f1fa8c;	    // Yellow color
+// Polar night
+$dark900: #2E3440;
+$dark700: #3B4252;
+$dark500: #434C5E;
+$dark400: #4C566A;
+
+
+// Snow storm
+$white900: #D8DEE9;
+$white700: #E5E9F0;
+$white500: #ECEFF4;
+
+
+// Frost
+$mint: #8FBCBB;
+$cyan: #88C0D0;
+$greyblue: #81A1C1;
+$blue: #5E81AC;
+
+// Aurora
+$green: #A3BE8C;	    // Green color
+$orange: #D08770;	    // Orange color
+$purple: #B48EAD;	    // Purple color
+$red: #BF616A;	        // Red color
+$yellow: #EBCB8B;	    // Yellow color
+
+
+// ASSIGNATION
+
+$background: $dark900;   // Background color
+$foreground: $white500;	// Foreground color
+
+$comment: $white900;	    // Comment color
+
+$alert: $red;
+$success: $green;
+$warning: $yellow;
