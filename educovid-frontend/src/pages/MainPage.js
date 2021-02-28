@@ -35,7 +35,7 @@ function MainPage() {
                 <Form action="/">
                     <Button
                         type="submit" variant="primary" className="nord-button">
-                        Comprueba tu estado
+                        Accede
                     </Button>
                 </Form>
             </div>
