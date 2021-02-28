@@ -14,20 +14,20 @@
 
 @mixin nordButton() {
     .nord-button {
-        background-color: $blue;
+        background-color: $mintShade700; // $blue;
         border-color: $white500;
         margin: 4px;
     }
 
     .nord-button:hover {
-        background-color: $greyblue !important;
-        color: white;
+        background-color: $clearMint !important;
+        color: $dark900;
         border-color: $white500 !important;
     }
     .nord-button:active,
     .nord-button:focus {
-        background-color: $greyblue !important;
-        color: white;
+        background-color: $clearMint !important;
+        color: $dark900;
         border-color: $white500 !important;
     }
 }
