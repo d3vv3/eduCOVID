@@ -6,7 +6,6 @@
 Styling is needed to provide our project a consistent look through every page\
 and component.
 
-## Tree if needed
 
 ## How has it been solved
 
@@ -32,9 +31,11 @@ created a few variables in order to make consistent the app's look.
 Because of the structure and order inside `scr/styles/styles.scss`, functions and
 variables are reachable from every other style sheet.
 
+
 ## Disclaimers
 
 None.
+
 
 ## References
 
