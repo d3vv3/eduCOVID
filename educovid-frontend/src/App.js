@@ -10,6 +10,11 @@ function App() {
 
   return (
     <div className="App">
+
+        {
+            // Render routes, which will render based on the given path or url
+        }
+
         <Routes />
     </div>
   );

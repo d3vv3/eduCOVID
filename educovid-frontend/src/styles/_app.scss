@@ -1,14 +1,24 @@
 // Used by App.js
 
+// Imported Montserrat font from Google Fonts with different sizes
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap');
 
 .App {
+
+  // Adapt fully to the body html container tag
   margin: 0;
   min-height: 100vh;
   min-width: 100vw;
+
+  // Text color to $foreground
   color: $foreground;
+
+  // Do not show the vertical scroll bar
   overflow-y: hidden;
+
+  // Make sure to use the Montserrat font with no serif in the app
   font-family: 'Montserrat', sans-serif;
 
+  // Make the background according to our palette.
   background-color: $background;
 }

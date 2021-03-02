@@ -18,15 +18,19 @@ const createPasswordLabel = (result) => {
   }
 };
 
+// Component to provide password strength visual feedback to the user
 const PasswordStrength = ({
   password = "",
 }) => {
   const [strength, setStrength] = useState(null);
 
   useEffect(() => {
+
+    // Recalculate and update the password strength on password change
     setStrength(zxcvbn(password));
   }, [password]);
 
+  // Create the password color progress-bar feedback component
   return (
     <div className={`password-strength-indicator`}>
       {password && strength && (

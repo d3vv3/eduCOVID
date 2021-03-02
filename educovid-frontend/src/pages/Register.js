@@ -32,31 +32,40 @@ function Register({ history }) {
         let msgs = {};
 
         const validateCenterName = () => {
+            // Validate center name field by string length
             msgs.centerName = "The center name must be at least 4 caracters"
             errs.centerName = centerName.length < 4
+            // TODO: Check if the center name already exists in the service
         }
+
         const validateID = () => {
+            // Validate responsable ID via regex
             let idNumberRegex = /^[0-9]{8,8}[A-Za-z]$/
             msgs.idNumber = "El DNI o pasaporte no es válido"
             errs.idNumber = !idNumberRegex.test(idNumber)
             // TODO: Check with backend if DNI or passport already in center
         }
+
         const validatePassword = () => {
+            // This validation is provided by an open source tool here
+            // https://github.com/dropbox/zxcvbn
             msgs.password = "La contraseña es demasiado débil"
             errs.password = zxcvbn(password).score < 2
         }
 
+        // Run the validations
         validateCenterName();
         validateID();
         validatePassword();
 
+        // Set states only once instead of once per validation
         setErrors(errs);
         setFeedbacks(msgs);
-        // console.log("ID valid", idNumberRegex.test(idNumber))
 
     }
 
     const handleSubmit = (event) => {
+        // Handle submit and prevent the form from submiting to validate
         event.preventDefault();
         validateForm();
         if (Object.values(errors).some(item => item === true)) {
@@ -67,6 +76,7 @@ function Register({ history }) {
     };
 
     const updateFormState = (event) => {
+        // On change, set the states with the updates
         const { name, value } = event.target;
         switch (name) {
           case "centerName":
@@ -180,4 +190,6 @@ function Register({ history }) {
   );
 }
 
+// We need to wrap the exported component with withRouter to provide the history
+// and be able to call it within the component
 export default withRouter(Register);
