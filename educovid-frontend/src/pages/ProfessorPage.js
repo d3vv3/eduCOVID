@@ -12,9 +12,9 @@ function ProfessorPage({ history, match }){
   const [professorId, setProfessorId] = useState(match.params.professorId);
   const [professorName, setProfessorName] = useState("");
   const [professorState, setProfessorState] = useState("");
-  const [professorGroups, setProfessorGroups] = useState({});
+  const [professorGroups, setProfessorGroups] = useState([]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setProfessorName(professor[professorId].name); //BBDD
     setProfessorState(professor[professorId].state); //BBDD
     setProfessorGroups(professor[professorId].groups); //BBDD
@@ -34,10 +34,10 @@ function ProfessorPage({ history, match }){
         <Accordion>
         {professorGroups?.map((group, index) =>
           <Card>
-            <Accordion.Toggle as={Card.Header} eventKey={index}>
-              Click me!
+            <Accordion.Toggle as={Card.Header} eventKey={index+1}>
+              {group.name}
             </Accordion.Toggle>
-            <Accordion.Collapse eventKey={index}>
+            <Accordion.Collapse eventKey={index+1}>
               <Card.Body>Hello! I'm the body</Card.Body>
             </Accordion.Collapse>
           </Card>
