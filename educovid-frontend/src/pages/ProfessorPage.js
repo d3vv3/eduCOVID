@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom'; // No sé si es necesario
 
 // Bootstrap imports
@@ -9,7 +9,7 @@ import { professor } from '../tests/prueba';
 
 function ProfessorPage({ history, match }){
 
-  const [professorId, setProfessorId] = useState(match.params.professorId);
+  const [professorId] = useState(match.params.professorId);
   const [professorName, setProfessorName] = useState("");
   const [professorState, setProfessorState] = useState("");
   const [professorGroups, setProfessorGroups] = useState([]);
@@ -36,12 +36,12 @@ function ProfessorPage({ history, match }){
         <Accordion>
 
         {professorGroups?.map((group, index) =>
-          <Card>
-            <Accordion.Toggle as={Card.Header} eventKey={index+1}>
-              {group.name}
+          <Card key={index}>
+            <Accordion.Toggle className={group.state === "Confinado" ? "card-header-bad" : "card-header-good"} as={Card.Header} eventKey={index+1}>
+              {group.name} - {group.state}
             </Accordion.Toggle>
-            <Accordion.Collapse eventKey={index+1}>
-              <Card.Body>Hello! I'm the body</Card.Body>
+            <Accordion.Collapse className={group.state === "Confinado" ? "card-body-bad" : "card-body-good"} eventKey={index+1}>
+              <Card.Body>{group.students.map((student, index) => <p key={index}>{student}</p>)}</Card.Body>
             </Accordion.Collapse>
           </Card>
         )}

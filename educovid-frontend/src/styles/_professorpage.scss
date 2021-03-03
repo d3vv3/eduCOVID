@@ -28,6 +28,28 @@
   }
 
   .bad {
-      color: $alert;
+      color: $warning;
+  }
+
+  .card-header-good {
+      background-color: $success;
+      font-weight: bold;
+      text-align: center;
+  }
+
+  .card-header-bad {
+      background-color: $warning;
+      font-weight: bold;
+      text-align: center;
+  }
+
+  .card-body-good {
+      background-color: $softsuccess;
+      text-align: center;
+  }
+
+  .card-body-bad {
+      background-color: $softwarning;
+      text-align: center;
   }
 }

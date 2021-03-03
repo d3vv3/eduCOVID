@@ -5,11 +5,17 @@ export const professor = [
     groups: [
       {
         name: "Grupo 1",
-        state: "Confinado"
+        state: "Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       },
       {
         name: "Grupo 2",
-        state: "No Confinado"
+        state: "No Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       }
     ]
   },
@@ -19,19 +25,31 @@ export const professor = [
     groups: [
       {
         name: "Grupo 1",
-        state: "Confinado"
+        state: "Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       },
       {
         name: "Grupo 3",
-        state: "No Confinado"
+        state: "No Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       },
       {
         name: "Grupo 4",
-        state: "No Confinado"
+        state: "No Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       },
       {
         name: "Grupo 5",
-        state: "Confinado"
+        state: "Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       }
     ]
   },
@@ -41,19 +59,31 @@ export const professor = [
     groups: [
       {
         name: "Grupo 2",
-        state: "No Confinado"
+        state: "No Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       },
       {
         name: "Grupo 3",
-        state: "No Confinado"
+        state: "No Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       },
       {
         name: "Grupo 4",
-        state: "No Confinado"
+        state: "No Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       },
       {
         name: "Grupo 5",
-        state: "Confinado"
+        state: "Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       },
     ]
   },
@@ -63,11 +93,17 @@ export const professor = [
     groups: [
       {
         name: "Grupo 1",
-        state: "Confinado"
+        state: "Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       },
       {
         name: "Grupo 2",
-        state: "No Confinado"
+        state: "No Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       }
     ]
   },
@@ -77,11 +113,17 @@ export const professor = [
     groups: [
       {
         name: "Grupo 1",
-        state: "Confinado"
+        state: "Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       },
       {
         name: "Grupo 2",
-        state: "No Confinado"
+        state: "No Confinado",
+        students: [
+          "1","2","3","4","5","6"
+        ]
       }
     ]
   }
