@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'; // No sé si es necesario
 // Bootstrap imports
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
 import { professor } from '../tests/prueba';
 
@@ -13,6 +14,8 @@ function ProfessorPage({ history, match }){
   const [professorName, setProfessorName] = useState("");
   const [professorState, setProfessorState] = useState("");
   const [professorGroups, setProfessorGroups] = useState([]);
+
+  const [visibility, setVisibility] = useState(false);
 
   useEffect(() => {
     setProfessorName(professor[professorId].name); //BBDD
@@ -33,8 +36,12 @@ function ProfessorPage({ history, match }){
             {professorState === "Confinado" ? "Debe impartir clase de manera online" : "Debe impartir clase de manera presencial"}
         </p>
 
-        <Accordion>
+        <Button onClick={() => (setVisibility(!visibility))} className="nord-button" variant="primary" type="submit">
+            {visibility ? "Ocultar estado de mis grupos" : "Mostrar estado de mis grupos"}
+        </Button>
 
+        {visibility ?
+        <Accordion className="accordion">
         {professorGroups?.map((group, index) =>
           <Card key={index}>
             <Accordion.Toggle className={group.state === "Confinado" ? "card-header-bad" : "card-header-good"} as={Card.Header} eventKey={index+1}>
@@ -45,7 +52,7 @@ function ProfessorPage({ history, match }){
             </Accordion.Collapse>
           </Card>
         )}
-        </Accordion>
+        </Accordion> : null}
 
       </div>
 

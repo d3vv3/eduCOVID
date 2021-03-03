@@ -47,3 +47,29 @@
         border-color: $white500 !important;
     }
 }
+
+@mixin testButton() {
+    // Mixin to customize buttons with our theme palette
+
+    // Change the color and margin
+    .test-button {
+        background-color: $mintShade700;
+        border-color: $white500;
+        margin: 8px;
+    }
+
+    // When cursor hovering the button, change color
+    .test-button:hover {
+        background-color: $clearMint !important;
+        color: $dark900;
+        border-color: $white500 !important;
+    }
+
+    // When clicked and while clicking, change color
+    .test-button:active,
+    .test-button:focus {
+        background-color: $clearMint !important;
+        color: $dark900;
+        border-color: $white500 !important;
+    }
+}
