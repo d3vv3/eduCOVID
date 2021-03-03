@@ -17,7 +17,9 @@ function Routes(props) {
     <BrowserRouter>
         <Switch>
 
+            {
             // Create a route for every page with a given path
+            }
             <Route exact path="/register">
                 <Register history={history}/>
             </Route>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { withRouter } from 'react-router-dom'; // No sé si es necesario
 
 // Bootstrap imports
@@ -12,26 +12,27 @@ function ProfessorPage({ history, match }){
   const [professorId, setProfessorId] = useState(match.params.professorId);
   const [professorName, setProfessorName] = useState("");
   const [professorState, setProfessorState] = useState("");
-  const [professorGroups, setProfessorGroups] = useState({});
+  const [professorGroups, setProfessorGroups] = useState([]);
 
   useLayoutEffect(() => {
     setProfessorName(professor[professorId].name); //BBDD
     setProfessorState(professor[professorId].state); //BBDD
     setProfessorGroups(professor[professorId].groups); //BBDD
-  }, { professorId });
+}, [professorId]);
 
   return (
     <div className="professor-page-container">
 
       <div className="centered-div">
         <h1>{professorName}</h1>
-        <h2 style={professorState == "Confinado" ? {color: 'red'} : {color: 'green'}}>{professorState}</h2>
+        <h2 style={professorState === "Confinado" ? {color: 'red'} : {color: 'green'}}>{professorState}</h2>
 
         <p className="description">
-            {professorState == "Confinado" ? "Debe impartir clase de manera online" : "Debe impartir clase de manera presencial"}
+            {professorState === "Confinado" ? "Debe impartir clase de manera online" : "Debe impartir clase de manera presencial"}
         </p>
 
         <Accordion>
+
         {professorGroups?.map((group, index) =>
           <Card>
             <Accordion.Toggle as={Card.Header} eventKey={index}>
