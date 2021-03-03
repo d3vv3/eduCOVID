@@ -62,13 +62,17 @@ function Register({ history }) {
         setErrors(errs);
         setFeedbacks(msgs);
 
+        // Return true if there were no errors
+        return !Object.values(errs).some(item => item === true)
+
     }
 
     const handleSubmit = (event) => {
         // Handle submit and prevent the form from submiting to validate
         event.preventDefault();
-        validateForm();
-        if (Object.values(errors).some(item => item === true)) {
+        let valid = validateForm();
+        if (Object.keys(errors).length > 0
+            && valid) {
             history.push("/");
             return true;
         }
