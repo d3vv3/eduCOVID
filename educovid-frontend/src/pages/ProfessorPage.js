@@ -25,7 +25,9 @@ function ProfessorPage({ history, match }){
 
       <div className="centered-div">
         <h1>{professorName}</h1>
-        <h2 style={professorState === "Confinado" ? {color: 'red'} : {color: 'green'}}>{professorState}</h2>
+        <h2 className={professorState === "Confinado" ? "bad" : "good"}>
+            {professorState}
+        </h2>
 
         <p className="description">
             {professorState === "Confinado" ? "Debe impartir clase de manera online" : "Debe impartir clase de manera presencial"}
