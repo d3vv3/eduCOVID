@@ -1,0 +1,12 @@
+<Accordion>
+{professorGroups.map((group, index) =>
+  <Card>
+    <Accordion.Toggle as={Card.Header} eventKey={index}>
+      Click me!
+    </Accordion.Toggle>
+    <Accordion.Collapse eventKey={index}>
+      <Card.Body>Hello! I'm the body</Card.Body>
+    </Accordion.Collapse>
+  </Card>
+)}
+</Accordion>

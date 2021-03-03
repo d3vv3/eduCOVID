@@ -1,0 +1,25 @@
+.professor-page-container{
+  @include flexCenter(column);
+  margin: 0 auto;
+  margin-top: 48px;
+  width: 100vw;
+
+  h1 {
+      font-weight: bold;
+      text-align: center;
+  }
+
+  .centered-div {
+      @include flexCenter(column);
+
+      // This is for phone sized
+      @media only screen and (max-width: 750px) {
+          width: 70vw;
+      }
+  }
+
+  .description {
+      text-align: center;
+      font-weight: normal;
+  }
+}
