@@ -18,9 +18,7 @@ const createPasswordLabel = (result) => {
   }
 };
 
-const PasswordStrength = ({
-  password = "",
-}) => {
+const PasswordStrength = ({ password = "" }) => {
   const [strength, setStrength] = useState(null);
 
   useEffect(() => {

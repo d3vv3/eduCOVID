@@ -3,8 +3,9 @@ import React from "react";
 // Bootstrap imports
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { LinkContainer } from "react-router-bootstrap";
 
-function MainPage() {
+function MainPage(props) {
   return (
     <div className="main-page-container">
 
@@ -26,18 +27,18 @@ function MainPage() {
             </p>
 
             <div className="buttons-container">
-                <Form action="/register">
+                {!props.loggedIn ? <LinkContainer to='/register'>
                     <Button
                         type="submit" variant="primary" className="nord-button">
                         Registra tu centro
                     </Button>
-                </Form>
-                <Form action="/">
+                </LinkContainer> : null}
+                {!props.loggedIn ? <LinkContainer to='/login'>
                     <Button
                         type="submit" variant="primary" className="nord-button">
                         Accede
                     </Button>
-                </Form>
+                </LinkContainer> : null}
             </div>
         </div>
     </div>
