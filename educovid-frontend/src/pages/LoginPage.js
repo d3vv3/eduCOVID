@@ -4,8 +4,8 @@ import { withRouter } from "react-router-dom";
 // Bootstrap imports
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-
-// Logic
+import ListGroup from "react-bootstrap/ListGroup";
+import { LinkContainer } from "react-router-bootstrap";
 
 // Constants
 import { mockUserData } from "../constants/mockUserData";
@@ -13,6 +13,7 @@ import { mockUserData } from "../constants/mockUserData";
 function LoginPage(props) {
   const { onLogIn } = props;
 
+  const [suggestions, setSuggestions] = useState([]);
   const [usernameField, setUsernameField] = useState("");
   const [passwordField, setPasswordField] = useState("");
   const [roleField, setRoleField] = useState("Alumno");
@@ -32,6 +33,23 @@ function LoginPage(props) {
         break;
       case "roleField":
         setRoleField(value);
+        break;
+      case "centerField":
+        // TODO
+        let suggestions = mockUserData
+          .map((user) => user.center)
+          .filter((center) =>
+            center.toLowerCase().startsWith(value.toLowerCase())
+          );
+        if (suggestions.length > 0) {
+          if (suggestions.length === 1 && value.length >= centerField.length) {
+            setSuggestions([]);
+            setCenterField(suggestions[0]);
+          } else {
+            setSuggestions(suggestions);
+            setCenterField(value);
+          }
+        }
       default:
         break;
     }
@@ -44,7 +62,25 @@ function LoginPage(props) {
     // Mock up for the moment
     setErrors({ username: "", password: "Usuario o contraseña inválidos." });
     mockUserData.forEach((user, index) => {
-      if (user.username === usernameField && user.password === passwordField) {
+      let username = "";
+      switch (roleField.toLowerCase()) {
+        case "alumno":
+          username = "mat_" + usernameField;
+          break;
+        case "profesor":
+          username = "dni_" + usernameField;
+          break;
+        case "responsable de covid":
+          username = "res_" + usernameField;
+          break;
+        default:
+          break;
+      }
+      if (
+        user.username === username &&
+        user.password === passwordField &&
+        user.center.trim().toLowerCase() === centerField.trim().toLowerCase()
+      ) {
         onLogIn(user);
         setErrors({});
       }
@@ -87,9 +123,13 @@ function LoginPage(props) {
               value={centerField}
               isInvalid={!!errors.center}
             />
-            <Form.Control.Feedback type="invalid">
-              {errors.username}
-            </Form.Control.Feedback>
+            <ListGroup>
+              {centerField.length > 0
+                ? suggestions.map((center) => (
+                    <ListGroup.Item variant="light">{center}</ListGroup.Item>
+                  ))
+                : null}
+            </ListGroup>
           </Form.Group>
 
           <Form.Group controlId="formUsername">
@@ -125,17 +165,23 @@ function LoginPage(props) {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Button
-            className="nord-button"
-            variant="primary"
-            onClick={handleSubmit}
-          >
-            Enviar
-          </Button>
+          <div className="buttons-container">
+            <Button
+              className="nord-button"
+              variant="primary"
+              onClick={handleSubmit}
+            >
+              Enviar
+            </Button>
+
+            <LinkContainer to="/">
+              <Button className="nord-button" variant="secondary">
+                Go Back
+              </Button>
+            </LinkContainer>
+          </div>
         </Form>
       </div>
-
-      <div className="register-form-admin"></div>
     </div>
   );
 }
