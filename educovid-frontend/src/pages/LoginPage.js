@@ -8,7 +8,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { LinkContainer } from "react-router-bootstrap";
 
 // Constants
-import { mockUserData } from "../constants/mockUserData";
+import { professor } from "../tests/prueba";
 
 function LoginPage(props) {
   const { onLogIn } = props;
@@ -35,9 +35,9 @@ function LoginPage(props) {
         setRoleField(value);
         break;
       case "centerField":
-        // TODO
-        let suggestions = mockUserData
-          .map((user) => user.center)
+        let centers = professor.map((user) => user.center);
+        let suggestions = centers
+          .filter((center, index) => centers.indexOf(center) === index) // Remove duplicates
           .filter((center) =>
             center.toLowerCase().startsWith(value.toLowerCase())
           );
@@ -50,6 +50,7 @@ function LoginPage(props) {
             setCenterField(value);
           }
         }
+        break;
       default:
         break;
     }
@@ -61,30 +62,29 @@ function LoginPage(props) {
 
     // Mock up for the moment
     setErrors({ username: "", password: "Usuario o contraseña inválidos." });
-    mockUserData.forEach((user, index) => {
-      let username = "";
-      switch (roleField.toLowerCase()) {
-        case "alumno":
-          username = "mat_" + usernameField;
-          break;
-        case "profesor":
-          username = "dni_" + usernameField;
-          break;
-        case "responsable de covid":
-          username = "res_" + usernameField;
-          break;
-        default:
-          break;
-      }
-      if (
-        user.username === username &&
-        user.password === passwordField &&
-        user.center.trim().toLowerCase() === centerField.trim().toLowerCase()
-      ) {
-        onLogIn(user);
-        setErrors({});
-      }
-    });
+    switch (roleField.toLowerCase()) {
+      case "alumno":
+        // TODO
+        break;
+      case "profesor":
+        professor.forEach((user, index) => {
+          if (
+            user.dni === usernameField &&
+            user.password === passwordField &&
+            user.center.trim().toLowerCase() ===
+              centerField.trim().toLowerCase()
+          ) {
+            onLogIn({ ...user, role: "profesor" });
+            setErrors({});
+          }
+        });
+        break;
+      case "responsable de covid":
+        // TODO
+        break;
+      default:
+        break;
+    }
 
     // Clean fields
     setPasswordField("");
