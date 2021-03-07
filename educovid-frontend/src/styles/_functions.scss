@@ -1,31 +1,73 @@
 @mixin imageCenter() {
+  // Mixin to center an image inside its parent
   display: block;
   margin-left: auto;
   margin-right: auto;
 }
 
 @mixin flexCenter($direction) {
+  // Mixin to center something inside its parent and provide a flex direction
   display: flex;
+
+  // Make the items evenly spaced without reaching the borders
   justify-content: space-around;
+
+  // Center items inside the container in the given direction
   align-items: center;
+
+  // Follow the direction provided (row or column)
   flex-direction: $direction;
+
+  // Do not wrap extra items in another column or row
   flex-wrap: nowrap;
 }
 
 @mixin nordButton() {
+    // Mixin to customize buttons with our theme palette
+
+    // Change the color and margin
     .nord-button {
-        background-color: $mintShade700; // $blue;
+        background-color: $mintShade700;
         border-color: $white500;
         margin: 8px;
     }
 
+    // When cursor hovering the button, change color
     .nord-button:hover {
         background-color: $clearMint !important;
         color: $dark900;
         border-color: $white500 !important;
     }
+
+    // When clicked and while clicking, change color
     .nord-button:active,
     .nord-button:focus {
+        background-color: $clearMint !important;
+        color: $dark900;
+        border-color: $white500 !important;
+    }
+}
+
+@mixin testButton() {
+    // Mixin to customize buttons with our theme palette
+
+    // Change the color and margin
+    .test-button {
+        background-color: $mintShade700;
+        border-color: $white500;
+        margin: 8px;
+    }
+
+    // When cursor hovering the button, change color
+    .test-button:hover {
+        background-color: $clearMint !important;
+        color: $dark900;
+        border-color: $white500 !important;
+    }
+
+    // When clicked and while clicking, change color
+    .test-button:active,
+    .test-button:focus {
         background-color: $clearMint !important;
         color: $dark900;
         border-color: $white500 !important;
