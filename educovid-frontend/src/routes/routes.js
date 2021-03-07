@@ -15,6 +15,7 @@ import {
 // Local imports
 import Register from "../pages/Register";
 import MainPage from "../pages/MainPage";
+import StudentPage from "../pages/StudentPage";
 import ProfessorPage from "../pages/ProfessorPage";
 import LoginPage from "../pages/LoginPage";
 
@@ -41,6 +42,9 @@ function Routes(props) {
             }}
           />
         </Route>
+        <Route path="/student/:studentId">
+              <StudentPage history={history}/>
+            </Route>
         <Route path="/professor/:professorId">
           <ProfessorPage history={history} />
         </Route>
@@ -49,7 +53,7 @@ function Routes(props) {
           <MainPage />
         </Route>
       </Switch>
-    </BrowserRouter>
+  </BrowserRouter>
   );
 }
 
