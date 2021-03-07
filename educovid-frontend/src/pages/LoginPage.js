@@ -166,6 +166,11 @@ function LoginPage(props) {
           </Form.Group>
 
           <div className="buttons-container">
+            <LinkContainer to="/">
+              <Button className="nord-button" variant="primary">
+                Go Back
+              </Button>
+            </LinkContainer>
             <Button
               className="nord-button"
               variant="primary"
@@ -173,12 +178,6 @@ function LoginPage(props) {
             >
               Enviar
             </Button>
-
-            <LinkContainer to="/">
-              <Button className="nord-button" variant="secondary">
-                Go Back
-              </Button>
-            </LinkContainer>
           </div>
         </Form>
       </div>
