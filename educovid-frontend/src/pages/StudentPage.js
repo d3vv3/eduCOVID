@@ -30,8 +30,12 @@ function StudentPage({ history, match }){
             {studentState}
         </h2>
 
+        <Card className={studentGroup.state === ("Confinado" || "Online") ? "card-header-bad" : "card-header-good"} as={Card.Header}>
+          {studentGroup.name} - {studentGroup.state}
+        </Card>
+
         <p className="description">
-            {studentState === "Confinado" ? "Debe recibir clase de manera online" : "Debe recibir clase de manera presencial"}
+            {(studentGroup?.state === "Confinado" || studentGroup?.state === "Online" || studentState === "Confinado") ? "Debe recibir clase de manera online" : "Debe recibir clase de manera presencial"}
         </p>
 
       </div>

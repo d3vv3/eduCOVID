@@ -2,26 +2,46 @@ export const student = [
     {
         name: "Sergio Almendro Cerdá",
         state: "No Confinado",
-        group: "Grupo 1"
+        group: 
+            {
+                name: "Grupo 1",
+                state: "Presencial"
+            }
     },
     {
         name: "Javier Rodriguez Gallardo",
         state: "Confinado",
-        group: "Grupo 1"
+        group: 
+            {
+                name: "Grupo 1",
+                state: "Presencial"
+            }
     },
     {
         name: "Jaime Conde Segovia",
         state: "Confinado",
-        group: "Grupo 2"
+        group: 
+            {
+                name: "Grupo 2",
+                state: "Online"
+            }
     },
     {
         name: "Javier Abejaro Capilla",
         state: "Confinado",
-        group: "Grupo 2"
+        group: 
+            {
+                name: "Grupo 1",
+                state: "Presencial"
+            }
     },
     {
         name: "Álvaro Martín Cortinas",
         state: "No confinado",
-        group: "Grupo 3"
+        group: 
+        {
+            name: "Grupo 3",
+            state: "Online"
+        }
     }   
 ]
