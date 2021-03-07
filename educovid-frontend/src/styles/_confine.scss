@@ -1,0 +1,74 @@
+.confine-container {
+    height: 100vh;
+    @include flexCenter(row);
+
+    flex-wrap: nowrap;
+
+    // This is for phone sized displays
+    @media only screen and (max-width: 520px) {
+        @include flexCenter(column);
+        flex-wrap: nowrap;
+    }
+
+    .left-menu {
+        width: 100%;
+        height: 100%;
+        background-color: $white900;
+        color: $dark900;
+        flex: 3;
+        @include flexCenter(column);
+
+        // This is for phone sized displays
+        @media only screen and (max-width: 520px) {
+            @include flexCenter(column);
+            flex-wrap: nowrap;
+            overflow-y: scroll;
+    }
+    }
+
+    .selector {
+        width: 100%;
+        @include flexCenter(column);
+        flex: 1;
+        margin-left: 8px;
+        margin-right: 8px;
+
+        Form {
+            padding: 10px;
+            padding-bottom: 0px;
+            width: 100%;
+        }
+    }
+
+    .list-container {
+        overflow-y: scroll;
+        flex: 24;
+    }
+
+    .right-options {
+        flex: 7;
+    }
+
+    .person-card {
+        @include flexCenter(column);
+        // height: 40px;
+        margin: 8px;
+        border-radius: 20px;
+        background-color: $white500;
+
+        h5 {
+            // padding: 10px;
+            text-align: center;
+            margin: 8px;
+        }
+    }
+
+    .green {
+        background-color: $success;
+    }
+
+    .red {
+        background-color: $alert;
+    }
+
+}

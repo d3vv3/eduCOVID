@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
 // Local imports
 import Register from "../pages/Register";
 import MainPage from "../pages/MainPage";
+import Confine from "../pages/Confine";
 
 function Routes(props) {
 
@@ -19,6 +20,10 @@ function Routes(props) {
             // Create a route for every page with a given path
             <Route exact path="/register">
                 <Register history={history}/>
+            </Route>
+
+            <Route exact path="/confine">
+                <Confine />
             </Route>
 
             <Route path="/">
