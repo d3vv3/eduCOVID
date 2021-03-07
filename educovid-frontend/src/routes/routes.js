@@ -44,9 +44,8 @@ function Routes(props) {
         <Route path="/professor/:professorId">
           <ProfessorPage history={history} />
         </Route>
-
         <Route path="/">
-          <MainPage />
+          <MainPage loggedIn={loggedIn} />
         </Route>
       </Switch>
     </BrowserRouter>
