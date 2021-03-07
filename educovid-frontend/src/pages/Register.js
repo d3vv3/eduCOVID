@@ -180,7 +180,7 @@ function Register({ history }) {
                 />
             </Form.Group>
 
-            <Button className="nord-button" variant="primary" type="submit">
+            <Button className="nord-button" variant="primary">
                 Enviar
             </Button>
         </Form>

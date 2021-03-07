@@ -18,10 +18,7 @@ const createPasswordLabel = (result) => {
   }
 };
 
-// Component to provide password strength visual feedback to the user
-const PasswordStrength = ({
-  password = "",
-}) => {
+const PasswordStrength = ({ password = "" }) => {
   const [strength, setStrength] = useState(null);
 
   useEffect(() => {
