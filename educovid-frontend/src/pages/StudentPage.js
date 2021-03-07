@@ -6,7 +6,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
-import { student } from '../tests/prueba';
+import { student } from '../tests/pruebaStudent';
 
 function StudentPage({ history, match }){
 
