@@ -18,8 +18,14 @@
             width: 90%;
         }
 
-    }
+        .buttons-container {
+            @include flexCenter(row);
+            @include nordButton();
 
-    @include nordButton();
+            .nord-button {
+                width: 50%;
+            }
+        }
+    }
 
 }
