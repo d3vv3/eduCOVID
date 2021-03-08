@@ -53,8 +53,6 @@ function Confine({ history }) {
             <div
               person={person}
               onClick={e => {
-                console.log(person);
-                //este some falla en el caso que te paso por el video de whatsapp
                 if (!selected.some(e => e.name === person.name)) {
                   setSelected(selected.concat([person]));
                 }
@@ -75,7 +73,6 @@ function Confine({ history }) {
           <div
             person={person}
             onClick={e => {
-              console.log(index);
               if (selected.some(e => e.name === person.name)) {
                 var filtered = selected.filter(function(value, index, arr) {
                   return value.name !== person.name;
@@ -103,7 +100,6 @@ function Confine({ history }) {
                 let x = selected;
                 let confined = x.forEach(e => (e.state = "Confinado"));
                 setSelected([]);
-                console.log(selected);
               } else {
                 alert("Seleccione las personas a confinar");
               }

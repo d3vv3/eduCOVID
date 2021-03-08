@@ -73,8 +73,13 @@
     }
 
     .buttons-container {
+        flex: 2;
         @include flexCenter(column);
         @include nordButton();
+
+        .nord-button {
+            width: 90%;
+        }
     }
 
 }
