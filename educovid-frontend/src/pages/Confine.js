@@ -6,6 +6,7 @@ import { professor, students, bubbleGroups } from "../tests/prueba";
 
 // Bootstrap imports
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 function Confine({ history }) {
   const [data, setData] = useState({
@@ -28,7 +29,7 @@ function Confine({ history }) {
             <Form.Group controlId="group">
               <Form.Control
                 as="select"
-                defaultValue="Grupos burbuja"
+                defaultValue="bubbleGroups"
                 onChange={e => {
                   setSelectedType(e.target.value);
                   setSelected([]);
@@ -75,9 +76,9 @@ function Confine({ history }) {
             person={person}
             onClick={e => {
               console.log(index);
-
               if (selected.some(e => e.name === person.name)) {
-                setSelected(selected.splice(index, 1));
+                let x = selected.slice(index, 1);
+                setSelected(x);
               }
             }}
             className={
@@ -90,18 +91,40 @@ function Confine({ history }) {
           </div>
         ))}
       </div>
-      <div
-        onClick={e => {
-          if (selected != null) {
-            setSelected(selected.forEach(e => (e.state = "Confinado")));
-            console.log(selected);
-          } else {
-            alert("Seleccione las personas a confinar");
-          }
-        }}
-        className="confine-button"
-      >
-        <h5>Confinar</h5>
+      <div className="buttons-container">
+        <Form>
+          <Button
+            variant="primary"
+            className="nord-button"
+            onClick={e => {
+              if (selected != null) {
+                let x = selected;
+                let confined = x.forEach(e => (e.state = "Confinado"));
+                setSelected([]);
+                console.log(selected);
+              } else {
+                alert("Seleccione las personas a confinar");
+              }
+            }}
+          >
+            Confinar
+          </Button>
+          <Button
+            variant="primary"
+            className="nord-button"
+            onClick={e => {
+              if (selected != null) {
+                let x = selected;
+                let confined = x.forEach(e => (e.state = "No confinado"));
+                setSelected([]);
+              } else {
+                alert("Seleccione las personas a confinar");
+              }
+            }}
+          >
+            Desconfinar
+          </Button>
+        </Form>
       </div>
     </div>
   );
