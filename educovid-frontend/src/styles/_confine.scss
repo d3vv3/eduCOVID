@@ -41,6 +41,7 @@
     }
 
     .list-container {
+        width: 100%;
         overflow-y: scroll;
         flex: 24;
     }
@@ -81,7 +82,7 @@
         margin: 8px;
         border-radius: 20px;
         background-color: $mintShade400;
-        
+
 
         h5 {
             // padding: 10px;
