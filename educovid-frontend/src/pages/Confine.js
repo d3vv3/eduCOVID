@@ -51,6 +51,7 @@ function Confine({ history }) {
         <div className="list-container">
           {(data[selectedType] || []).map((person, index) => (
             <div
+              key={index}
               person={person}
               onClick={e => {
                 if (!selected.some(e => e.name === person.name)) {
@@ -71,6 +72,7 @@ function Confine({ history }) {
       <div className="right-options">
         {(selected || []).map((person, index) => (
           <div
+            key={index}
             person={person}
             onClick={e => {
               if (selected.some(e => e.name === person.name)) {
