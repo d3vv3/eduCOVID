@@ -67,8 +67,27 @@
         background-color: $success;
     }
 
+/*     .selected {
+        background-color: white;
+    } */
+
     .red {
         background-color: $alert;
+    }
+
+    .confine-button {
+        @include flexCenter(column);
+        // height: 40px;
+        margin: 8px;
+        border-radius: 20px;
+        background-color: $mintShade400;
+        
+
+        h5 {
+            // padding: 10px;
+            text-align: center;
+            margin: 8px;
+        }
     }
 
 }
