@@ -25,9 +25,9 @@ function Routes(props) {
   const history = useHistory();
 
   const routesMapper = {
-    "alumno": "student",
-    "profesor": "professor",
-    "responsable": "" // TODO: Dont know the route yet
+    alumno: "student",
+    profesor: "professor",
+    responsable: "", // TODO: Dont know the route yet
   };
 
   return (
@@ -40,7 +40,9 @@ function Routes(props) {
           <Register history={history} />
         </Route>
         <Route exact path="/login">
-          {loggedIn ? <Redirect to={`/${routesMapper[userData.role]}/${userData.id}`} /> : null}
+          {loggedIn ? (
+            <Redirect to={`/${routesMapper[userData.role]}/${userData.id}`} />
+          ) : null}
           <LoginPage
             onLogIn={(userData) => {
               props.dispatch(logIn(userData));

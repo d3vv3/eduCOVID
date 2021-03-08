@@ -9,6 +9,7 @@ import { LinkContainer } from "react-router-bootstrap";
 
 // Constants
 import { professor } from "../tests/prueba";
+import { student } from "../tests/pruebaStudent";
 
 function LoginPage(props) {
   const { onLogIn } = props;
@@ -33,9 +34,25 @@ function LoginPage(props) {
         break;
       case "roleField":
         setRoleField(value);
+        setSuggestions([]);
+        setCenterField("");
         break;
       case "centerField":
-        let centers = professor.map((user) => user.center);
+        let centers = [];
+        switch (roleField.toLowerCase()) {
+          case "alumno":
+            centers = professor.map((user) => user.center);
+            break;
+          case "profesor":
+            centers = student.map((user) => user.center);
+            break;
+          case "responsable de covid":
+            // TODO
+            break;
+          default:
+            break;
+        }
+
         let suggestions = centers
           .filter((center, index) => centers.indexOf(center) === index) // Remove duplicates
           .filter((center) =>
@@ -64,7 +81,17 @@ function LoginPage(props) {
     setErrors({ username: "", password: "Usuario o contraseña inválidos." });
     switch (roleField.toLowerCase()) {
       case "alumno":
-        // TODO
+        student.forEach((user, index) => {
+          if (
+            user.mat === usernameField &&
+            user.password === passwordField &&
+            user.center.trim().toLowerCase() ===
+              centerField.trim().toLowerCase()
+          ) {
+            onLogIn({ ...user, role: "alumno" });
+            setErrors({});
+          }
+        });
         break;
       case "profesor":
         professor.forEach((user, index) => {
