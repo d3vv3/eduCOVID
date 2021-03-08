@@ -77,8 +77,10 @@ function Confine({ history }) {
             onClick={e => {
               console.log(index);
               if (selected.some(e => e.name === person.name)) {
-                let x = selected.slice(index, 1);
-                setSelected(x);
+                var filtered = selected.filter(function(value, index, arr) {
+                  return value.name !== person.name;
+                });
+                setSelected(filtered);
               }
             }}
             className={
