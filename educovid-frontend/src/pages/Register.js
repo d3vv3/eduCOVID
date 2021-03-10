@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 
 // Bootstrap imports
@@ -8,6 +8,7 @@ import { LinkContainer } from "react-router-bootstrap";
 
 // Local imports
 import PasswordStrength from "../components/PasswordStrength";
+import DropZone from "../components/DropZone";
 
 // External library imports
 import zxcvbn from "zxcvbn";
@@ -18,13 +19,43 @@ function Register({ history }) {
   const [password, setPassword] = useState("");
   const [gdprAcceptance, setGdprAcceptance] = useState(false);
   const [errors, setErrors] = useState({});
+  const [registerStep, setRegisterStep] = useState(1);
+  const [files, setFiles] = useState([]);
   const [feedbacks, setFeedbacks] = useState({
     centerName: "",
     idNumber: "",
     password: "",
-    gdprAcceptance:
-      "Debe aceptar la Ley General de Protección de Datos Europea para usar nuestros servicios"
+    gdprAcceptance: "Debe aceptar los términos y condiciones de uso"
   });
+
+  function download(filename, text) {
+    var element = document.createElement("a");
+    element.setAttribute(
+      "href",
+      "data:text/csv;charset=utf-8," + encodeURIComponent(text)
+    );
+    element.setAttribute("download", filename);
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
+
+  const onDrop = useCallback(acceptedFiles => {
+    acceptedFiles.forEach(file => {
+      // console.log(files);
+      setFiles(files.concat([file.name]));
+      const reader = new FileReader();
+      reader.onabort = () => console.log("File reading was aborted");
+      reader.onerror = () => console.log("File reading has failed");
+      reader.onload = () => {
+        const binaryStr = reader.result;
+        // TODO: Process file contents
+        console.log(binaryStr);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  }, []);
 
   const validateForm = () => {
     let errs = {};
@@ -32,7 +63,7 @@ function Register({ history }) {
 
     const validateCenterName = () => {
       // Validate center name field by string length
-      msgs.centerName = "The center name must be at least 4 caracters";
+      msgs.centerName = "El nombre del centro debe tener al menos 4 caracteres";
       errs.centerName = centerName.length < 4;
       // TODO: Check if the center name already exists in the service
     };
@@ -69,7 +100,12 @@ function Register({ history }) {
     // Handle submit and prevent the form from submiting to validate
     event.preventDefault();
     let valid = validateForm();
-    if (Object.keys(errors).length > 0 && valid) {
+    if (valid && registerStep === 1) {
+      //history.push("/");
+      setRegisterStep(2);
+      return true;
+    } else if (valid && registerStep === 2) {
+      // TODO: Should validate files!
       history.push("/");
       return true;
     }
@@ -99,92 +135,156 @@ function Register({ history }) {
   return (
     <div className="register-container">
       <h1>Registra tu Centro</h1>
-
-      <div className="register-center-form">
-        <Form onSubmit={handleSubmit.bind(this)}>
-          <Form.Group controlId="formCenterName">
-            <Form.Label>Nombre del centro</Form.Label>
-            <Form.Control
-              required
-              autoFocus
-              type="text"
-              placeholder="Introduzca el nombre del centro"
-              name="centerName"
-              onChange={updateFormState}
-              value={centerName}
-              isInvalid={!!errors.centerName}
-            />
-            <Form.Text className="text-muted">
-              No debe existir en nuestra plataforma
-            </Form.Text>
-            <Form.Control.Feedback type="invalid">
-              {feedbacks.centerName}
-            </Form.Control.Feedback>
-            <Form.Control.Feedback type="valid">Perfecto</Form.Control.Feedback>
-          </Form.Group>
-
-          <Form.Group controlId="formAdminID">
-            <Form.Label>ID del Responsable COVID</Form.Label>
-            <Form.Control
-              required
-              type="text"
-              name="idNumber"
-              placeholder="Introduzca un DNI o pasaporte"
-              onChange={updateFormState}
-              value={idNumber}
-              isInvalid={!!errors.idNumber}
-            />
-            <Form.Text className="text-muted">
-              Debe ser único para el centro
-            </Form.Text>
-            <Form.Control.Feedback type="invalid">
-              {feedbacks.idNumber}
-            </Form.Control.Feedback>
-          </Form.Group>
-
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Contraseña</Form.Label>
-            <Form.Control
-              required
-              type="password"
-              name="password"
-              placeholder="Introduzca una contraseña"
-              onChange={updateFormState}
-              value={password}
-              isInvalid={!!errors.password}
-            />
-            <PasswordStrength password={password} />
-            <Form.Control.Feedback type="invalid">
-              {feedbacks.password}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="formGDPRCheckbox">
-            <div className="terms">
-              <Form.Check
+      {registerStep === 1 ? (
+        <div className="register-center-form">
+          <Form onSubmit={handleSubmit.bind(this)}>
+            <Form.Group controlId="formCenterName">
+              <Form.Label>Nombre del centro</Form.Label>
+              <Form.Control
                 required
-                type="checkbox"
-                feedback={feedbacks.gdprAcceptance}
-                isInvalid={!!errors.gdprAcceptance}
+                autoFocus
+                type="text"
+                placeholder="Introduzca el nombre del centro"
+                name="centerName"
+                onChange={updateFormState}
+                value={centerName}
+                isInvalid={!!errors.centerName}
               />
-              <span>
-                Acepto los <a href="/terms">términos y condiciones</a> de uso.
-              </span>
-            </div>
-          </Form.Group>
-          <div className="buttons-container">
-            <LinkContainer to="/">
-              <Button className="nord-button" variant="primary">
-                Atrás
+              <Form.Text className="text-muted">
+                No debe existir en nuestra plataforma
+              </Form.Text>
+              <Form.Control.Feedback type="invalid">
+                {feedbacks.centerName}
+              </Form.Control.Feedback>
+              <Form.Control.Feedback type="valid">
+                Perfecto
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group controlId="formAdminID">
+              <Form.Label>ID del Responsable COVID</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                name="idNumber"
+                placeholder="Introduzca un DNI o pasaporte"
+                onChange={updateFormState}
+                value={idNumber}
+                isInvalid={!!errors.idNumber}
+              />
+              <Form.Text className="text-muted">
+                Debe ser único para el centro
+              </Form.Text>
+              <Form.Control.Feedback type="invalid">
+                {feedbacks.idNumber}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control
+                required
+                type="password"
+                name="password"
+                placeholder="Introduzca una contraseña"
+                onChange={updateFormState}
+                value={password}
+                isInvalid={!!errors.password}
+              />
+              <PasswordStrength password={password} />
+              <Form.Control.Feedback type="invalid">
+                {feedbacks.password}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="formGDPRCheckbox">
+              <div className="terms">
+                <Form.Check
+                  required
+                  type="checkbox"
+                  feedback={feedbacks.gdprAcceptance}
+                  isInvalid={!!errors.gdprAcceptance}
+                />
+                <span>
+                  Acepto los <a href="/terms">términos y condiciones</a> de uso.
+                </span>
+              </div>
+            </Form.Group>
+            <div className="buttons-container">
+              <LinkContainer to="/">
+                <Button className="nord-button" variant="primary">
+                  Atrás
+                </Button>
+              </LinkContainer>
+              <Button className="nord-button" variant="primary" type="submit">
+                Continuar
               </Button>
-            </LinkContainer>
-            <Button className="nord-button" variant="primary">
-              Enviar
+            </div>
+          </Form>
+        </div>
+      ) : (
+        <div className="csv-upload">
+          <div className="templates">
+            <div className="item">
+              <img src="/csv_icon.png" alt="CSV document icon" />
+              <div className="buttons-container">
+                <Button
+                  className="nord-button"
+                  variant="primary"
+                  onClick={() => {
+                    download(
+                      "plantilla_alumnos.csv",
+                      "nombre y apellidos,numero de matricula,clase"
+                    );
+                  }}
+                >
+                  Descargar plantilla CSV alumnos
+                </Button>
+              </div>
+            </div>
+            <div className="item">
+              <img src="/csv_icon.png" alt="CSV document icon" />
+              <div className="buttons-container">
+                <Button
+                  className="nord-button"
+                  variant="primary"
+                  onClick={() => {
+                    download(
+                      "plantilla_profesores.csv",
+                      "nombre y apellidos,id,clases"
+                    );
+                  }}
+                >
+                  Descargar plantilla CSV profesores
+                </Button>
+              </div>
+            </div>
+          </div>
+          <DropZone onDrop={onDrop} />
+          <div className="selected-files">
+            {files?.map((value, index) => (
+              <div className="filename" key={index}>
+                {value}
+              </div>
+            ))}
+          </div>
+          <div className="buttons-container">
+            <Button
+              className="nord-button"
+              variant="primary"
+              onClick={() => setRegisterStep(1)}
+            >
+              Atrás
+            </Button>
+            <Button
+              className="nord-button"
+              variant="primary"
+              onClick={handleSubmit}
+            >
+              Finalizar
             </Button>
           </div>
-        </Form>
-      </div>
-
-      <div className="register-form-admin"></div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,25 @@
+.dropzone-container {
+    img {
+        margin-top: 10px;
+        height: 100px;
+        width: 100px;
+        margin-bottom: 20px;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    input {
+        @include flexCenter(column);
+        margin: 0;
+        width: 60vw;
+        height: 20vh;
+        border: 4px dashed $commonMint;
+
+        // This is for phone sized displays
+        @media only screen and (max-width: 520px) {
+            width: 90vw;
+        }
+    }
+}
