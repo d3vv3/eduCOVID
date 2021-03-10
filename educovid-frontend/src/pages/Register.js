@@ -158,19 +158,18 @@ function Register({ history }) {
               {feedbacks.password}
             </Form.Control.Feedback>
           </Form.Group>
-
           <Form.Group controlId="formGDPRCheckbox">
-            <Form.Check
-              required
-              type="checkbox"
-              label={
-                "Acepto el tratamiento de los datos del centro así como \
-                  sus alumnos y personas adscritas conforme con el Reglamento \
-                  General de Protección de Datos Europeo."
-              }
-              feedback={feedbacks.gdprAcceptance}
-              isInvalid={!!errors.gdprAcceptance}
-            />
+            <div className="terms">
+              <Form.Check
+                required
+                type="checkbox"
+                feedback={feedbacks.gdprAcceptance}
+                isInvalid={!!errors.gdprAcceptance}
+              />
+              <span>
+                Acepto los <a href="/terms">términos y condiciones</a> de uso.
+              </span>
+            </div>
           </Form.Group>
           <div className="buttons-container">
             <LinkContainer to="/">

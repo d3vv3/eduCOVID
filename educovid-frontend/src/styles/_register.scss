@@ -18,6 +18,15 @@
             width: 90%;
         }
 
+        a {
+            color: $commonMint;
+        }
+
+        .terms {
+            @include flexCenter(row);
+            justify-content: flex-start;
+        }
+
         .buttons-container {
             @include flexCenter(row);
             @include nordButton();

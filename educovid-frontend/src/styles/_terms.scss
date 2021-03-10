@@ -1,0 +1,19 @@
+
+.terms-page-container {
+
+    @include flexCenter(column);
+
+    .terms {
+        margin-top: 5%;
+        width: 90%;
+    }
+
+    .buttons-container {
+        @include flexCenter(row);
+        @include nordButton();
+
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
+
+}
