@@ -100,16 +100,16 @@ function Confine({ history }) {
             onClick={e => {
               if (selected != null) {
                 let x = selected;
-                let confined = x.forEach(e => (e.state = "Confinado"));
+                let confined = x.forEach(e => (e.state === "Confinado" ? e.state = "No Confinado" : e.state = "Confinado"));
                 setSelected([]);
               } else {
                 alert("Seleccione las personas a confinar");
               }
             }}
           >
-            Confinar
+            Cambiar estados
           </Button>
-          <Button
+          {/* <Button
             variant="primary"
             className="nord-button"
             onClick={e => {
@@ -123,7 +123,7 @@ function Confine({ history }) {
             }}
           >
             Desconfinar
-          </Button>
+          </Button> */}
         </Form>
       </div>
     </div>
