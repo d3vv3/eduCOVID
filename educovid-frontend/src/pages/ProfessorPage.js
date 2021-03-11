@@ -15,8 +15,6 @@ function ProfessorPage({ history, match }){
   const [professorState, setProfessorState] = useState("");
   const [professorGroups, setProfessorGroups] = useState([]);
 
-  const [visibility, setVisibility] = useState(false);
-
   useEffect(() => {
     setProfessorName(professor[professorId].name); //BBDD
     setProfessorState(professor[professorId].state); //BBDD
@@ -27,6 +25,7 @@ function ProfessorPage({ history, match }){
     <div className="professor-page-container">
 
       <div className="centered-div">
+        <h4>Profesor</h4>
         <h1>{professorName}</h1>
         <h2 className={professorState === "Confinado" ? "bad" : "good"}>
             {professorState}
@@ -36,11 +35,6 @@ function ProfessorPage({ history, match }){
             {professorState === "Confinado" ? "Debe impartir clase de manera online" : "Debe impartir clase de manera presencial"}
         </p>
 
-        <Button onClick={() => (setVisibility(!visibility))} className="nord-button" variant="primary" type="submit">
-            {visibility ? "Ocultar estado de mis grupos" : "Mostrar estado de mis grupos"}
-        </Button>
-
-        {visibility ?
         <Accordion className="accordion">
         {professorGroups?.map((group, index) =>
           <Card key={index}>
@@ -52,7 +46,7 @@ function ProfessorPage({ history, match }){
             </Accordion.Collapse>
           </Card>
         )}
-        </Accordion> : null}
+        </Accordion>
 
       </div>
 
