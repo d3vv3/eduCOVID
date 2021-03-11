@@ -9,7 +9,7 @@ import {
   Redirect,
   Route,
   Switch,
-  useHistory,
+  useHistory
 } from "react-router-dom";
 
 // Local imports
@@ -18,6 +18,7 @@ import MainPage from "../pages/MainPage";
 import StudentPage from "../pages/StudentPage";
 import ProfessorPage from "../pages/ProfessorPage";
 import LoginPage from "../pages/LoginPage";
+import Terms from "../pages/Terms";
 
 function Routes(props) {
   // Create the history of the user (to go back and forth from the browser or
@@ -40,12 +41,15 @@ function Routes(props) {
         <Route exact path="/register">
           <Register history={history} />
         </Route>
+        <Route exact path="/terms">
+          <Terms history={history} />
+        </Route>
         <Route exact path="/login">
           {loggedIn ? (
             <Redirect to={`/${routesMapper[userData.role]}/${userData.id}`} />
           ) : null}
           <LoginPage
-            onLogIn={(userData) => {
+            onLogIn={userData => {
               props.dispatch(logIn(userData));
             }}
           />
