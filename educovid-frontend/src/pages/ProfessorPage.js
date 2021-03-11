@@ -25,6 +25,7 @@ function ProfessorPage({ history, match }){
     <div className="professor-page-container">
 
       <div className="centered-div">
+        <h4>Profesor</h4>
         <h1>{professorName}</h1>
         <h2 className={professorState === "Confinado" ? "bad" : "good"}>
             {professorState}
