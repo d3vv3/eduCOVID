@@ -65,6 +65,7 @@ function Confine({ history }) {
               }
             >
               <h5>{person.name}</h5>
+              <h8>{person.state}</h8>
             </div>
           ))}
         </div>
@@ -75,7 +76,7 @@ function Confine({ history }) {
             key={index}
             person={person}
             onClick={e => {
-              if (selected.some(e => e.name === person.name)) {
+              if (!selected.some(e => e.name === person.name)) {
                 var filtered = selected.filter(function(value, index, arr) {
                   return value.name !== person.name;
                 });
@@ -88,7 +89,11 @@ function Confine({ history }) {
               (data[selectedType].some(e => e === person) ? " selected" : "")
             }
           >
-            <h5>{person.name}</h5>
+            <div>
+              <h5>{person.name}</h5>
+              <h8>{person.state}</h8>
+            </div>
+            
           </div>
         ))}
       </div>
@@ -109,21 +114,6 @@ function Confine({ history }) {
           >
             Cambiar estados
           </Button>
-          {/* <Button
-            variant="primary"
-            className="nord-button"
-            onClick={e => {
-              if (selected != null) {
-                let x = selected;
-                let confined = x.forEach(e => (e.state = "No confinado"));
-                setSelected([]);
-              } else {
-                alert("Seleccione las personas a confinar");
-              }
-            }}
-          >
-            Desconfinar
-          </Button> */}
         </Form>
       </div>
     </div>

@@ -11,13 +11,13 @@
     }
 
     .left-menu {
+        @include flexCenter(column);
+        align-content: center;
         width: 100%;
         height: 100%;
         background-color: $white900;
         color: $dark900;
         flex: 3;
-        @include flexCenter(column);
-
         // This is for phone sized displays
         @media only screen and (max-width: 520px) {
             @include flexCenter(column);
@@ -41,29 +41,45 @@
     }
 
     .list-container {
+        @include flexCenter(column);
+        justify-content: start;
+        align-items: center;
+        //flex: 3;
         width: 100%;
         overflow-y: scroll;
         flex: 24;
+        //display: inline-block;
     }
 
     .right-options {
-        flex: 7;
+        flex: 5;
+        @include flexCenter(column);
+        
     }
 
     .person-card {
         @include flexCenter(column);
         // height: 40px;
+        //align-content: center;
         margin: 8px;
+        margin-left: 9px;
+        width: 90%;
         border-radius: 20px;
         background-color: $white500;
-
         h5 {
             // padding: 10px;
-            text-align: center;
+            //text-align: center;
             margin: 8px;
+            display: inline-block;
+        }
+        h8 {
+            //padding: 10px;
+            //display: inline-block;
+            //text-align: center;
+            margin-bottom: 8px;
         }
     }
-
+    
     .green {
         background-color: $success;
     }
@@ -71,7 +87,6 @@
     .red {
         background-color: $warning;
     }
-
     .buttons-container {
         flex: 2;
         @include flexCenter(column);
@@ -80,6 +95,7 @@
         .nord-button {
             width: 100%;
         }
-    }
+    
+}
 
 }
