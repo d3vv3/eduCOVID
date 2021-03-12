@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom'; // No sé si es necesario
 // Bootstrap imports
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
 
 import { professor } from '../tests/prueba';
 

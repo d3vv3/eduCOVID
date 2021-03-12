@@ -24,20 +24,20 @@ function LoginPage(props) {
   const updateInputField = (event) => {
     const { name, value } = event.target;
     switch (name) {
-      case "usernameField":
+      case "username":
         setUsernameField(value);
         setErrors({});
         break;
-      case "passwordField":
+      case "password":
         setPasswordField(value);
         setErrors({});
         break;
-      case "roleField":
+      case "role":
         setRoleField(value);
         setSuggestions([]);
         setCenterField("");
         break;
-      case "centerField":
+      case "center":
         let centers = [];
         switch (roleField.toLowerCase()) {
           case "alumno":
@@ -128,7 +128,7 @@ function LoginPage(props) {
             <Form.Label>Rol</Form.Label>
             <Form.Control
               as="select"
-              name="roleField"
+              name="role"
               value={roleField}
               onChange={updateInputField}
             >
@@ -145,7 +145,7 @@ function LoginPage(props) {
               autoFocus
               type="text"
               placeholder="Centro educativo"
-              name="centerField"
+              name="center"
               onChange={updateInputField}
               value={centerField}
               isInvalid={!!errors.center}
@@ -163,10 +163,9 @@ function LoginPage(props) {
             <Form.Label>Nombre de usuario</Form.Label>
             <Form.Control
               required
-              autoFocus
               type="text"
               placeholder="Usuario"
-              name="usernameField"
+              name="username"
               onChange={updateInputField}
               value={usernameField}
               isInvalid={!!errors.username}
@@ -181,7 +180,7 @@ function LoginPage(props) {
             <Form.Control
               required
               type="password"
-              name="passwordField"
+              name="password"
               placeholder="Contraseña"
               onChange={updateInputField}
               value={passwordField}
@@ -195,7 +194,7 @@ function LoginPage(props) {
           <div className="buttons-container">
             <LinkContainer to="/">
               <Button className="nord-button" variant="primary">
-                Go Back
+                Atrás
               </Button>
             </LinkContainer>
             <Button

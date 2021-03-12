@@ -2,7 +2,6 @@ import React from "react";
 
 // Bootstrap imports
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import { LinkContainer } from "react-router-bootstrap";
 
 function MainPage(props) {
