@@ -60,8 +60,7 @@ function Confine({ history }) {
               }}
               className={
                 "person-card" +
-                (person.state === "Confinado" ? " red" : " green") +
-                (data[selectedType].some(e => e === person) ? "" : "selected")
+                (person.state === "Confinado" ? " red" : " green") 
               }
             >
               <h5>{person.name}</h5>
@@ -85,18 +84,22 @@ function Confine({ history }) {
             }}
             className={
               "person-card" +
-              (person.state === "Confinado" ? " red" : " green") +
-              (data[selectedType].some(e => e === person) ? " selected" : "")
+              (person.state === "Confinado" ? " red" : " green") 
             }
           >
             <div>
-              <h5>{person.name}</h5>
+              {
+                person.name.includes("Grupo") ? <h5>{person.name} -1ºB</h5> : <h5>{person.name}</h5>
+              }
+              
               <h8>{person.state}</h8>
             </div>
             
           </div>
         ))}
       </div>
+
+
       <div className="buttons-container">
         <Form>
           <Button
