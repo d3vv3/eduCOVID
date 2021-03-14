@@ -13,8 +13,7 @@ export const askUserPermission = async () => {
 export const showLocalNotification = (title, body, swRegistration) => {
   const options = {
     body,
-    icon: "logo192.png",
-    dir: "ltl"
+    icon: "logo192.png"
     // here you can add more properties like icon, image, vibrate, etc.
   };
   swRegistration.showNotification(title, options);
