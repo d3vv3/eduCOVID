@@ -19,6 +19,7 @@ import StudentPage from "../pages/StudentPage";
 import ProfessorPage from "../pages/ProfessorPage";
 import LoginPage from "../pages/LoginPage";
 import Terms from "../pages/Terms";
+import Confine from "../pages/Confine";
 
 function Routes(props) {
   // Create the history of the user (to go back and forth from the browser or
@@ -29,7 +30,7 @@ function Routes(props) {
   const routesMapper = {
     alumno: "student",
     profesor: "professor",
-    responsable: "", // TODO: Dont know the route yet
+    responsable: "" // TODO: Dont know the route yet
   };
 
   return (
@@ -43,6 +44,9 @@ function Routes(props) {
         </Route>
         <Route exact path="/terms">
           <Terms history={history} />
+        </Route>
+        <Route exact path="/confine">
+          <Confine />
         </Route>
         <Route exact path="/login">
           {loggedIn ? (
