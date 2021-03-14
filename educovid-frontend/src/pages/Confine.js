@@ -71,28 +71,33 @@ function Confine({ history }) {
         </div>
       </div>
       <div className="right-options">
-        {(selected || []).map((person, index) => (
-          <div
-            key={index}
-            person={person}
-            onClick={e => {
-              if (selected.some(e => e.name === person.name)) {
-                var filtered = selected.filter(function(value, index, arr) {
-                  return value.name !== person.name;
-                });
-                setSelected(filtered);
+        <h2>
+          Seleccionados
+        </h2>
+        <div className="seleccionados">
+          {(selected || []).map((person, index) => (
+            <div
+              key={index}
+              onClick={e => {
+                if (selected.some(e => e.name === person.name)) {
+                  var filtered = selected.filter(function(value, index, arr) {
+                    return value.name !== person.name;
+                  });
+                  setSelected(filtered);
+                }
+              }}
+              className={
+                "person-card" +
+                (person.state === "Confinado" ? " red" : " green") +
+                (data[selectedType].some(e => e === person) ? " selected" : "")
               }
-            }}
-            className={
-              "person-card" +
-              (person.state === "Confinado" ? " red" : " green") +
-              (data[selectedType].some(e => e === person) ? " selected" : "")
-            }
-          >
+            >
               {person.name.includes("Grupo") ? <h5>{person.name} - 1ºB</h5> : <h5>{person.name}</h5>}
-              <h8>{person.state}</h8>
-          </div>
-        ))}
+                <h8>{person.state}</h8>
+              
+            </div>
+          ))}
+        </div>
       </div>
       <div className="buttons-container">
         <Form>

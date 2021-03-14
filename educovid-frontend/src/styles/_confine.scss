@@ -53,34 +53,44 @@
 
     .right-options {
         flex: 5;
+        height: 100%;
         @include flexCenter(column);
         
+        h2 {
+            flex: 1;
+            @include flexCenter(row);
+        }
+        .seleccionados {
+            flex: 14;
+            width: 100%;
+            overflow-y: scroll;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+            @include flexCenter(column);
+            justify-content: center;
+        }
+        .seleccionados::-webkit-scrollbar {
+            display: none;
+          }
     }
 
     .person-card {
         @include flexCenter(column);
         // height: 40px;
         //align-content: center;
-        border-color: $clearMint;
-        border-width: 1px;
-        border-style: solid;
         margin: 8px;
         margin-left: 9px;
         width: 90%;
         border-radius: 20px;
         background-color: $white500;
         h5 {
-            // padding: 10px;
-            //text-align: center;
             margin: 8px;
-            display: inline-block;
+            
         }
         h8 {
-            //padding: 10px;
-            //display: inline-block;
-            //text-align: center;
             margin-bottom: 8px;
         }
+        
     }
     
     .green {
@@ -94,7 +104,7 @@
         flex: 2;
         @include flexCenter(column);
         @include nordButton();
-
+        transform: translateY(35px);
         .nord-button {
             width: 100%;
         }
