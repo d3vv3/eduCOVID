@@ -1,31 +1,30 @@
 import React, { useEffect } from "react";
 
-function App() {
+// Local imports
+import {
+  isPushNotificationSupported,
+  showLocalNotification,
+  askUserPermission,
+  registerServiceWorker
+} from "../service-worker";
 
-  const isPushNotificationSupported = () => {
-    return "serviceWorker" in navigator && "PushManager" in window;
-  }
-
-  const registerServiceWorker = () => {
-    return navigator.serviceWorker.register("../serviceWorker.js");
-  }
-
-  const askUserPermission = async () => {
-    return await Notification.requestPermission();
-}
-
+function Notifications() {
   useEffect(async () => {
-      if (isPushNotificationSupported()) {
-          registerServiceWorker()
-          let response = await askUserPermission()
-          console.log("NOTIFICATIONS:", response)
+    if (isPushNotificationSupported()) {
+      let swRegistration = await registerServiceWorker();
+      let response = await askUserPermission(); // granted, default or denied
+      console.log("NOTIFICATIONS:", response);
+      if (response === "granted") {
+        showLocalNotification(
+          "eduCOVID",
+          "Has sido confinado. Entra en la aplicación para más detalles.",
+          swRegistration
+        );
       }
-  }, [])
+    }
+  }, []);
 
-  return (
-    <div className="notification">
-    </div>
-  );
+  return <div className="notification"></div>;
 }
 
-export default App;
+export default Notifications;
