@@ -61,6 +61,9 @@
         @include flexCenter(column);
         // height: 40px;
         //align-content: center;
+        border-color: $clearMint;
+        border-width: 1px;
+        border-style: solid;
         margin: 8px;
         margin-left: 9px;
         width: 90%;
