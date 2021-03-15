@@ -5,7 +5,7 @@ export const professor = [
     dni: "00000000Z",
     password: "00000000Z",
     center: "Universidad Politécnica de Madrid",
-    name: "Javier Rodríguez Gallardo",
+    name: "Miguel de Cervantes",
     state: "No Confinado",
     groups: [
       {
@@ -23,9 +23,9 @@ export const professor = [
   {
     id: 1,
     dni: "00000000A",
-    password: "alvaro21",
+    password: "federico21",
     center: "IES Gran Capitán",
-    name: "Álvaro Martín Cortinas",
+    name: "Federico García Lorca",
     state: "No Confinado",
     groups: [
       {
@@ -53,9 +53,9 @@ export const professor = [
   {
     id: 2,
     dni: "00000000B",
-    password: "jaime21",
+    password: "jorge21",
     center: "Universidad Politécnica de Madrid",
-    name: "Jaime Conde Segovia",
+    name: "Jorge Luis Borges",
     state: "No Confinado",
     groups: [
       {
@@ -83,9 +83,9 @@ export const professor = [
   {
     id: 3,
     dni: "00000000C",
-    password: "sergio21",
+    password: "julio21",
     center: "Universidad Carlos III",
-    name: "Sergio Almendro Cerdá",
+    name: "Julio Cortázar",
     state: "No Confinado",
     groups: [
       {
@@ -103,9 +103,9 @@ export const professor = [
   {
     id: 4,
     dni: "00000000D",
-    password: "abejaro21",
+    password: "isabel21",
     center: "Universidad Carlos III",
-    name: "Javier Abejaro Capilla",
+    name: "Isabel Allende",
     state: "Confinado",
     groups: [
       {
@@ -205,5 +205,29 @@ export const bubbleGroups = [
     name: "Grupo 4",
     state: "No Confinado",
     students: ["1", "2", "3", "4", "5", "6"]
+  }
+];
+
+export const responsables = [
+  {
+    id: 0,
+    dni: "00000000E",
+    password: "santiago21",
+    center: "Universidad Carlos III",
+    name: "Santiago Ramón y Cajal",
+  },
+  {
+    id: 1,
+    dni: "00000000F",
+    password: "severo21",
+    center: "Universidad Politécnica de Madrid",
+    name: "Severo Ochoa",
+  },
+  {
+    id: 2,
+    dni: "00000000G",
+    password: "elvira21",
+    center: "IES Gran Capitán",
+    name: "Elvira Dávila Ortiz",
   }
 ];

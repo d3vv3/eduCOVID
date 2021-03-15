@@ -7,9 +7,9 @@ import Card from 'react-bootstrap/Card';
 
 import { professor } from '../tests/prueba';
 
-function ProfessorPage({ history, match }){
+function ProfessorPage({ history, userId }){
 
-  const [professorId] = useState(match.params.professorId);
+  const [professorId] = useState(userId);
   const [professorName, setProfessorName] = useState("");
   const [professorState, setProfessorState] = useState("");
   const [professorGroups, setProfessorGroups] = useState([]);
