@@ -6,7 +6,18 @@ import { LinkContainer } from "react-router-bootstrap";
 
 // External imports
 import ReactMarkdown from "react-markdown";
-
+export const termsTable =`
+  |     |     |  
+  | --- | --- |
+  | Responsable | EDUCOVID S.L, provista de NIF: 00000000A |
+  | Finalidad | Facilitar, agilizar y cumplir los compromisos establecidos entre el Sitio Web y el Usuario o el mantenimiento de la relación que se establezca en los formularios que este último rellene o para atender una solicitud o consulta. |
+  | Legitimación | RGPD: 6.1. a) el interesado dio su consentimiento para el tratamiento de sus datos personales para uno o varios fines específicos. | 
+  | Destinatarios | EDUCOVID S.L y en caso de obligación legal |
+  | Derechos | Acceder, rectificar, y cancelar los datos, así como otros derechos, en los términos y con las limitaciones que se indican en la información adicional |
+  | Procedencia | El responsable de COVID del cenro educativo |
+  | Información Adicional | Puede consultar la información adicional y detallada sobre Protección de Datos en www.educovid.es/terms |
+`
+;
 const terms = `
 # POLÍTICA DE PRIVACIDAD DEL SITIO WEB
 
@@ -51,13 +62,17 @@ Principio de limitación del plazo de conservación: los datos personales solo s
 Principio de integridad y confidencialidad: los datos personales serán tratados de manera que se garantice su seguridad y confidencialidad.
 Principio de responsabilidad proactiva: el Responsable del tratamiento será responsable de asegurar que los principios anteriores se cumplen.
 
+### Procedencia de los datos
+
+Los datos tratados por eduCovid serán facilitados por los centros educativos que contraten el servicio. La persona encargada de facilitar los datos (en adelante "el responsable") deberá tener el consentimiento explícito de los padres, madres, tutores legales o de los propios alumnos -en caso de ser mayores de 14 años- antes de facilitar a eduCovid los datos de los alumnos del centro en cuestión.
+
 ### Categorías de datos personales
 
 Las categorías de datos que se tratan en eduCOVID son únicamente datos identificativos. En ningún caso, se tratan categorías especiales de datos personales en el sentido del artículo 9 del RGPD.
 
 ### Base legal para el tratamiento de los datos personales
 
-La base legal para el tratamiento de los datos personales es el consentimiento. eduCOVID se compromete a recabar el consentimiento expreso y verificable del Usuario para el tratamiento de sus datos personales para uno o varios fines específicos.
+La base legal para el tratamiento de los datos personales se basa en el artículo 6.1 a) "el interesado dio su consentimiento para el tratamiento de sus datos personales para uno o varios fines específicos". eduCOVID se compromete a recabar el consentimiento expreso y verificable del Usuario para el tratamiento de sus datos personales para uno o varios fines específicos.
 
 El Usuario tendrá derecho a retirar su consentimiento en cualquier momento. Será tan fácil retirar el consentimiento como darlo. Como regla general, la retirada del consentimiento no condicionará el uso del Sitio Web.
 
@@ -73,7 +88,7 @@ En el momento en que se obtengan los datos personales, se informará al Usuario 
 
 ### Períodos de retención de los datos personales
 
-Los datos personales solo serán retenidos durante el tiempo mínimo necesario para los fines de su tratamiento y, en todo caso, únicamente durante el siguiente plazo: 12 meses, o hasta que el Usuario solicite su supresión.
+Los datos personales solo serán retenidos durante el tiempo mínimo necesario para los fines de su tratamiento y, en todo caso, únicamente durante el siguiente plazo: 18 meses, o hasta que el Usuario solicite su supresión.
 
 En el momento en que se obtengan los datos personales, se informará al Usuario acerca del plazo durante el cual se conservarán los datos personales o, cuando eso no sea posible, los criterios utilizados para determinar este plazo.
 
@@ -85,9 +100,7 @@ EDUCOVID S.L con domicilio en Calle Fernando El Santo Nº25, Piso 4, Puerta Izqu
 
 En caso de que el Responsable del tratamiento tenga la intención de transferir datos personales a un tercer país u organización internacional, en el momento en que se obtengan los datos personales, se informará al Usuario acerca del tercer país u organización internacional al cual se tiene la intención de transferir los datos, así como de la existencia o ausencia de una decisión de adecuación de la Comisión.
 
-### Datos personales de menores de edad
-
-Respetando lo establecido en los artículos 8 del RGPD y 7 de la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales, solo los mayores de 14 años podrán otorgar su consentimiento para el tratamiento de sus datos personales de forma lícita por eduCOVID. Si se trata de un menor de 14 años, será necesario el consentimiento de los padres o tutores para el tratamiento, y este solo se considerará lícito en la medida en la que los mismos lo hayan autorizado.
+En caso de obligación legal, el responsable de los datos colaborará con la justicia compartiendo la información solicitada.
 
 ### Secreto y seguridad de los datos personales
 
@@ -138,6 +151,7 @@ Es necesario que el Usuario haya leído y esté conforme con las condiciones sob
 eduCOVID se reserva el derecho a modificar su Política de Privacidad, de acuerdo a su propio criterio, o motivado por un cambio legislativo, jurisprudencial o doctrinal de la Agencia Española de Protección de Datos. Los cambios o actualizaciones de esta Política de Privacidad no serán notificados de forma explícita al Usuario. Se recomienda al Usuario consultar esta página de forma periódica para estar al tanto de los últimos cambios o actualizaciones.
 
 Esta Política de Privacidad fue actualizada para adaptarse al Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016, relativo a la protección de las personas físicas en lo que respecta al tratamiento de datos personales y a la libre circulación de estos datos (RGPD) y a la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales.
+
 `;
 
 function Terms(props) {
@@ -153,6 +167,7 @@ function Terms(props) {
           </Button>
         </LinkContainer>
       </div>
+      
     </div>
   );
 }
