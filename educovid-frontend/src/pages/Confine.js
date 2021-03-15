@@ -37,6 +37,7 @@ function Confine({ history }) {
               >
                 <option key="1" value="bubbleGroups">
                   Grupos burbuja
+                  
                 </option>
                 <option key="2" value="students">
                   Alumnos
@@ -47,6 +48,35 @@ function Confine({ history }) {
               </Form.Control>
             </Form.Group>
           </Form>
+        </div>
+        <div className="selector">
+          {
+            selectedType==="bubbleGroups" ? 
+            <Form>
+              <Form.Group controlId="group">
+                <Form.Control
+                  as="select"
+                  defaultValue="bubbleGroups"
+                  onChange={e => {
+                    setSelectedType(e.target.value);
+                    setSelected([]);
+                  }}
+                >
+                  <option key="1" value="bubbleGroups">
+                    Grupos burbuja
+                    
+                  </option>
+                  <option key="2" value="students">
+                    Alumnos
+                  </option>
+                  <option key="3" value="professors">
+                    Profesores
+                  </option>
+                </Form.Control>
+              </Form.Group>
+            </Form>
+            : console.log("no funciona")
+          }
         </div>
         <div className="list-container">
           {(data[selectedType] || []).map((person, index) => (
