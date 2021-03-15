@@ -8,6 +8,7 @@ const baseStyle = {
   flexDirection: "column",
   flexWrap: "nowrap",
   width: "80vw",
+  maxWidth: "800px",
   padding: "20px",
   borderWidth: 4,
   // borderRadius: 8,

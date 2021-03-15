@@ -174,7 +174,7 @@ function Register({ history }) {
                 required
                 type="text"
                 name="idNumber"
-                placeholder="Introduzca un DNI o pasaporte"
+                placeholder="Introduzca un NIF o NIE"
                 onChange={updateFormState}
                 value={idNumber}
                 isInvalid={!!errors.idNumber}

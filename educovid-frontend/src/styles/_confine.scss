@@ -42,7 +42,7 @@
 
     .list-container {
         @include flexCenter(column);
-        justify-content: start;
+        justify-content: flex-start;
         align-items: center;
         //flex: 3;
         width: 100%;
@@ -54,7 +54,7 @@
     .right-options {
         flex: 5;
         @include flexCenter(column);
-        
+
     }
 
     .person-card {
@@ -79,7 +79,7 @@
             margin-bottom: 8px;
         }
     }
-    
+
     .green {
         background-color: $success;
     }
@@ -95,7 +95,7 @@
         .nord-button {
             width: 100%;
         }
-    
+
 }
 
 }
