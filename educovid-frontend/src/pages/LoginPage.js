@@ -152,8 +152,8 @@ function LoginPage(props) {
             />
             <ListGroup>
               {centerField.length > 0
-                ? suggestions.map((center) => (
-                    <ListGroup.Item variant="light">{center}</ListGroup.Item>
+                ? suggestions.map((center, index) => (
+                    <ListGroup.Item key={index} variant="light">{center}</ListGroup.Item>
                   ))
                 : null}
             </ListGroup>

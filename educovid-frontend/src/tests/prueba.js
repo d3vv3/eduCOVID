@@ -10,17 +10,13 @@ export const professor = [
     groups: [
       {
         name: "Grupo 1",
-        state: "Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "Confinado",
+        teachingState: "Online"
       },
       {
         name: "Grupo 2",
-        state: "No Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "No Confinado",
+        teachingState: "Presencial"
       }
     ]
   },
@@ -34,31 +30,23 @@ export const professor = [
     groups: [
       {
         name: "Grupo 1",
-        state: "Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "Confinado",
+        teachingState: "Online"
       },
       {
         name: "Grupo 3",
-        state: "No Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "No Confinado",
+        teachingState: "Presencial"
       },
       {
         name: "Grupo 4",
-        state: "No Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "No Confinado",
+        teachingState: "Presencial"
       },
       {
         name: "Grupo 5",
-        state: "Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "Confinado",
+        teachingState: "Online"
       }
     ]
   },
@@ -72,31 +60,23 @@ export const professor = [
     groups: [
       {
         name: "Grupo 2",
-        state: "No Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "No Confinado",
+        teachingState: "Presencial"
       },
       {
         name: "Grupo 3",
-        state: "No Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "No Confinado",
+        teachingState: "Presencial"
       },
       {
         name: "Grupo 4",
-        state: "No Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "No Confinado",
+        teachingState: "Presencial"
       },
       {
         name: "Grupo 5",
-        state: "Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "Confinado",
+        teachingState: "Online"
       },
     ]
   },
@@ -110,17 +90,13 @@ export const professor = [
     groups: [
       {
         name: "Grupo 1",
-        state: "Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "Confinado",
+        teachingState: "Online"
       },
       {
         name: "Grupo 2",
-        state: "No Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "No Confinado",
+        teachingState: "Presencial"
       }
     ]
   },
@@ -134,17 +110,13 @@ export const professor = [
     groups: [
       {
         name: "Grupo 1",
-        state: "Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "Confinado",
+        teachingState: "Online"
       },
       {
         name: "Grupo 2",
-        state: "No Confinado",
-        students: [
-          "1","2","3","4","5","6"
-        ]
+        healthState: "No Confinado",
+        teachingState: "Presencial"
       }
     ]
   }

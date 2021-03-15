@@ -7,6 +7,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
 import { professor } from '../tests/prueba';
+import { student as students } from '../tests/pruebaStudent';
 
 function ProfessorPage({ history, match }){
 
@@ -38,12 +39,20 @@ function ProfessorPage({ history, match }){
         <Accordion className="accordion">
         {professorGroups?.map((group, index) =>
           <Card key={index}>
-            <Accordion.Toggle className={group.state === "Confinado" ? "card-header-bad" : "card-header-good"} as={Card.Header} eventKey={index+1}>
-              {group.name} - {group.state}
+            <Accordion.Toggle key={index} className={group.teachingState === "Online" ? "card-header-bad" : "card-header-good"} as={Card.Header} eventKey={index+1}>
+              {group.name} - 1ºB - {group.teachingState}
             </Accordion.Toggle>
-            <Accordion.Collapse className={group.state === "Confinado" ? "card-body-bad" : "card-body-good"} eventKey={index+1}>
-              <Card.Body>{group.students.map((student, index) => <p key={index}>{student}</p>)}</Card.Body>
-            </Accordion.Collapse>
+            {group.teachingState === "Presencial" ?
+            <Accordion.Collapse className="card-body" key={index + professorGroups.length} eventKey={index+1}>
+              <Card.Body key={index}>{students.map((student, index) =>
+                <div key={index} className="accordion-item">
+                  <p className={student.state === "Confinado" ? "p-bad" : "p-good"} key={index}>{student.name}</p>
+                  <p className={student.state === "Confinado" ? "p-bad" : "p-good"} key={index + student.length}>{student.state}</p>
+                  {index === (students.length - 1) ? null : <hr/>}
+                </div>
+                )}
+              </Card.Body>
+            </Accordion.Collapse> : null}
           </Card>
         )}
         </Accordion>

@@ -9,6 +9,11 @@
       text-align: center;
   }
 
+  hr {
+      border-color: $clearMint;
+      width: 100%;
+  }
+
   .centered-div {
       @include flexCenter(column);
 
@@ -47,13 +52,23 @@
       text-align: center;
   }
 
-  .card-body-good {
-      background-color: $softsuccess;
+  .card-body {
+      background-color: $dark400;
       text-align: center;
   }
 
-  .card-body-bad {
-      background-color: $softwarning;
-      text-align: center;
+  .p-good {
+      color: $success;
+      margin: 0;
   }
+
+  .p-bad {
+      color: $warning;
+      margin: 0;
+  }
+
+  .accordion-item {
+      @include flexCenter(column);
+  }
+
 }
