@@ -94,13 +94,14 @@ function Confine({ history }) {
             >
               {person.name.includes("Grupo") ? <h5>{person.name} - 1ºB</h5> : <h5>{person.name}</h5>}
                 <h8>{person.state}</h8>
-              
+
             </div>
           ))}
         </div>
       </div>
       <div className="buttons-container">
         <Form>
+          {selected.length > 0 ?
           <Button
             variant="primary"
             className="nord-button"
@@ -114,8 +115,8 @@ function Confine({ history }) {
               }
             }}
           >
-            Cambiar estados
-          </Button>
+            {selected.every(e => e.state === "Confinado") ? "Desconfinar" : (selected.every(e => e.state === "No Confinado") ? "Confinar" : "Cambiar estados")}
+          </Button> : null}
           {/* <Button
             variant="primary"
             className="nord-button"
@@ -134,9 +135,8 @@ function Confine({ history }) {
         </Form>
       </div>
     </div>
+
   );
 }
 
 export default withRouter(Confine);
-
-
