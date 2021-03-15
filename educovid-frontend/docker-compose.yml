@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  educovid:
+    build: .
+    image: educovid:latest
+    restart: unless-stopped
+    ports:
+      - 5001:5000
