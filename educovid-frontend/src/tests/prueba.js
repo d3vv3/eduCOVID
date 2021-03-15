@@ -77,7 +77,7 @@ export const professor = [
         name: "Grupo 5",
         healthState: "Confinado",
         teachingState: "Online"
-      },
+      }
     ]
   },
   {
@@ -177,7 +177,7 @@ export const students = [
     password: "alvaro21",
     center: "IES Gran Capitán",
     name: "Álvaro Martín Cortinas",
-    state: "No confinado",
+    state: "No Confinado",
     group: {
       name: "Grupo 3",
       state: "Online"
@@ -214,20 +214,20 @@ export const responsables = [
     dni: "00000000E",
     password: "santiago21",
     center: "Universidad Carlos III",
-    name: "Santiago Ramón y Cajal",
+    name: "Santiago Ramón y Cajal"
   },
   {
     id: 1,
     dni: "00000000F",
     password: "severo21",
     center: "Universidad Politécnica de Madrid",
-    name: "Severo Ochoa",
+    name: "Severo Ochoa"
   },
   {
     id: 2,
     dni: "00000000G",
     password: "elvira21",
     center: "IES Gran Capitán",
-    name: "Elvira Dávila Ortiz",
+    name: "Elvira Dávila Ortiz"
   }
 ];
