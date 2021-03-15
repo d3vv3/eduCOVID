@@ -144,6 +144,21 @@ function Confine({ history }) {
               }
             }}
           >
+            {selected.every(e => e.state === "Confinado") ? "Desconfinar" : (selected.every(e => e.state === "No Confinado") ? "Confinar" : "Cambiar estados")}
+          </Button> : null}
+          {/* <Button
+            variant="primary"
+            className="nord-button"
+            onClick={e => {
+              if (selected != null) {
+                let x = selected;
+                let confined = x.forEach(e => (e.state = "No confinado"));
+                setSelected([]);
+              } else {
+                alert("Seleccione las personas a confinar");
+              }
+            }}
+          >
             Desconfinar
           </Button> */}
         </Form>

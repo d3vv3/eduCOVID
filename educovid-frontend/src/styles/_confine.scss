@@ -136,6 +136,7 @@
         flex: 2;
         @include flexCenter(column);
         @include nordButton();
+        transform: translateY(35px);
         .nord-button {
             width: 95%;
         }
