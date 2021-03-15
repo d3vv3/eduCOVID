@@ -41,21 +41,28 @@ function Register({ history }) {
     document.body.removeChild(element);
   }
 
-  const onDrop = useCallback(acceptedFiles => {
-    acceptedFiles.forEach(file => {
-      // console.log(files);
-      setFiles(files.concat([file.name]));
-      const reader = new FileReader();
-      reader.onabort = () => console.log("File reading was aborted");
-      reader.onerror = () => console.log("File reading has failed");
-      reader.onload = () => {
-        const binaryStr = reader.result;
-        // TODO: Process file contents
-        console.log(binaryStr);
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  }, []);
+  const onDrop = useCallback(
+    acceptedFiles => {
+      let x = files;
+      acceptedFiles.forEach(file => {
+        // console.log(files);
+        x = x.concat([file.name]);
+        const reader = new FileReader();
+        reader.onabort = () => console.log("File reading was aborted");
+        reader.onerror = () => console.log("File reading has failed");
+        reader.onload = () => {
+          const binaryStr = reader.result;
+          // TODO: Process file contents
+          console.log(binaryStr);
+        };
+
+        reader.readAsArrayBuffer(file);
+      });
+      console.log(x);
+      setFiles(x);
+    },
+    [files]
+  );
 
   const validateForm = () => {
     let errs = {};
@@ -233,7 +240,7 @@ function Register({ history }) {
                   onClick={() => {
                     download(
                       "plantilla_alumnos.csv",
-                      "nombre y apellidos,numero de matricula,clase"
+                      "Clase,Nombre,Apellidos,Numero de matricula"
                     );
                   }}
                 >
@@ -250,7 +257,8 @@ function Register({ history }) {
                   onClick={() => {
                     download(
                       "plantilla_profesores.csv",
-                      "nombre y apellidos,id,clases"
+                      "Clase,Nombre,Apellidos,NIF/NIE"
+                      // El centro se coge del estado
                     );
                   }}
                 >
@@ -262,7 +270,18 @@ function Register({ history }) {
           <DropZone onDrop={onDrop} />
           <div className="selected-files">
             {files?.map((value, index) => (
-              <div className="filename" key={index}>
+              <div
+                className="filename"
+                key={index}
+                onClick={() => {
+                  let x = files;
+                  x = x.filter((filename, index, arr) => {
+                    return filename !== value;
+                  });
+                  console.log(x);
+                  setFiles(x);
+                }}
+              >
                 {value}
               </div>
             ))}

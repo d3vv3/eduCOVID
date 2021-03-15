@@ -2,29 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 
 // Bootstrap imports
-import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
 
-import { student } from '../tests/pruebaStudent';
+import { students } from '../tests/prueba';
 
-function StudentPage({ history, match }){
+function StudentPage({ history, userId }){
 
-  const [studentId] = useState(match.params.studentId);
+  const [studentId] = useState(userId);
   const [studentName, setStudentName] = useState("");
   const [studentState, setStudentState] = useState("");
   const [studentGroup, setStudentGroup] = useState("");
 
   useEffect(() => {
-    setStudentName(student[studentId].name); //BBDD
-    setStudentState(student[studentId].state); //BBDD
-    setStudentGroup(student[studentId].group); //BBDD
+    setStudentName(students[studentId].name); //BBDD
+    setStudentState(students[studentId].state); //BBDD
+    setStudentGroup(students[studentId].group); //BBDD
 }, [studentId]);
 
   return (
     <div className="student-page-container">
 
       <div className="centered-div">
+        <h4>Alumno/a</h4>
         <h1>{studentName}</h1>
         <h2 className={studentState === "Confinado" ? "bad" : "good"}>
             {studentState}

@@ -9,7 +9,8 @@ import { LinkContainer } from "react-router-bootstrap";
 
 // Constants
 import { professor } from "../tests/prueba";
-import { student } from "../tests/pruebaStudent";
+import { students } from "../tests/prueba";
+import { responsables } from "../tests/prueba";
 
 function LoginPage(props) {
   const { onLogIn } = props;
@@ -24,30 +25,30 @@ function LoginPage(props) {
   const updateInputField = (event) => {
     const { name, value } = event.target;
     switch (name) {
-      case "usernameField":
+      case "username":
         setUsernameField(value);
         setErrors({});
         break;
-      case "passwordField":
+      case "password":
         setPasswordField(value);
         setErrors({});
         break;
-      case "roleField":
+      case "role":
         setRoleField(value);
         setSuggestions([]);
         setCenterField("");
         break;
-      case "centerField":
+      case "center":
         let centers = [];
         switch (roleField.toLowerCase()) {
           case "alumno":
             centers = professor.map((user) => user.center);
             break;
           case "profesor":
-            centers = student.map((user) => user.center);
+            centers = students.map((user) => user.center);
             break;
           case "responsable de covid":
-            // TODO
+            centers = responsables.map((user) => user.center);
             break;
           default:
             break;
@@ -81,7 +82,7 @@ function LoginPage(props) {
     setErrors({ username: "", password: "Usuario o contraseña inválidos." });
     switch (roleField.toLowerCase()) {
       case "alumno":
-        student.forEach((user, index) => {
+        students.forEach((user, index) => {
           if (
             user.mat === usernameField &&
             user.password === passwordField &&
@@ -107,7 +108,17 @@ function LoginPage(props) {
         });
         break;
       case "responsable de covid":
-        // TODO
+        responsables.forEach((user, index) => {
+          if (
+            user.dni === usernameField &&
+            user.password === passwordField &&
+            user.center.trim().toLowerCase() ===
+              centerField.trim().toLowerCase()
+          ) {
+            onLogIn({ ...user, role: "responsable" });
+            setErrors({});
+          }
+        });
         break;
       default:
         break;
@@ -116,6 +127,13 @@ function LoginPage(props) {
     // Clean fields
     setPasswordField("");
     setUsernameField("");
+  };
+
+  const handleKeypress = (e) => {
+    //it triggers by pressing the enter key
+    if (e.keyCode === 13) {
+      handleSubmit();
+    }
   };
 
   return (
@@ -128,7 +146,7 @@ function LoginPage(props) {
             <Form.Label>Rol</Form.Label>
             <Form.Control
               as="select"
-              name="roleField"
+              name="role"
               value={roleField}
               onChange={updateInputField}
             >
@@ -145,28 +163,27 @@ function LoginPage(props) {
               autoFocus
               type="text"
               placeholder="Centro educativo"
-              name="centerField"
+              name="center"
               onChange={updateInputField}
               value={centerField}
               isInvalid={!!errors.center}
             />
             <ListGroup>
               {centerField.length > 0
-                ? suggestions.map((center, index) => (
-                    <ListGroup.Item key={index} variant="light">{center}</ListGroup.Item>
+                ? suggestions.map((center) => (
+                    <ListGroup.Item variant="light" key={center}>{center}</ListGroup.Item>
                   ))
                 : null}
             </ListGroup>
           </Form.Group>
 
           <Form.Group controlId="formUsername">
-            <Form.Label>Nombre de usuario</Form.Label>
+            <Form.Label>Identificador de usuario</Form.Label>
             <Form.Control
               required
-              autoFocus
               type="text"
               placeholder="Usuario"
-              name="usernameField"
+              name="username"
               onChange={updateInputField}
               value={usernameField}
               isInvalid={!!errors.username}
@@ -181,7 +198,7 @@ function LoginPage(props) {
             <Form.Control
               required
               type="password"
-              name="passwordField"
+              name="password"
               placeholder="Contraseña"
               onChange={updateInputField}
               value={passwordField}
@@ -195,7 +212,7 @@ function LoginPage(props) {
           <div className="buttons-container">
             <LinkContainer to="/">
               <Button className="nord-button" variant="primary">
-                Go Back
+                Atrás
               </Button>
             </LinkContainer>
             <Button

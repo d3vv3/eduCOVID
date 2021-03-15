@@ -4,14 +4,12 @@ import { withRouter } from 'react-router-dom'; // No sé si es necesario
 // Bootstrap imports
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
 
-import { professor } from '../tests/prueba';
-import { student as students } from '../tests/pruebaStudent';
+import { professor, students } from '../tests/prueba';
 
-function ProfessorPage({ history, match }){
+function ProfessorPage({ history, userId }){
 
-  const [professorId] = useState(match.params.professorId);
+  const [professorId] = useState(userId);
   const [professorName, setProfessorName] = useState("");
   const [professorState, setProfessorState] = useState("");
   const [professorGroups, setProfessorGroups] = useState([]);
@@ -26,7 +24,7 @@ function ProfessorPage({ history, match }){
     <div className="professor-page-container">
 
       <div className="centered-div">
-        <h4>Profesor</h4>
+        <h4>Profesor/a</h4>
         <h1>{professorName}</h1>
         <h2 className={professorState === "Confinado" ? "bad" : "good"}>
             {professorState}

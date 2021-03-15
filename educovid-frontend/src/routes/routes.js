@@ -9,7 +9,7 @@ import {
   Redirect,
   Route,
   Switch,
-  useHistory
+  useHistory,
 } from "react-router-dom";
 
 // Local imports
@@ -19,6 +19,7 @@ import StudentPage from "../pages/StudentPage";
 import ProfessorPage from "../pages/ProfessorPage";
 import LoginPage from "../pages/LoginPage";
 import Terms from "../pages/Terms";
+import Confine from "../pages/Confine";
 
 function Routes(props) {
   // Create the history of the user (to go back and forth from the browser or
@@ -29,7 +30,7 @@ function Routes(props) {
   const routesMapper = {
     alumno: "student",
     profesor: "professor",
-    responsable: "", // TODO: Dont know the route yet
+    responsable: "confine",
   };
 
   return (
@@ -39,30 +40,40 @@ function Routes(props) {
           // Create a route for every page with a given path
         }
         <Route exact path="/register">
+          {loggedIn ? (
+            <Redirect to={`/${routesMapper[userData.role]}`} />
+          ) : null}
           <Register history={history} />
         </Route>
         <Route exact path="/terms">
           <Terms history={history} />
         </Route>
+        <Route exact path="/confine">
+          {!loggedIn ? <Redirect to={`/login`} /> : null}
+          <Confine />
+        </Route>
         <Route exact path="/login">
           {loggedIn ? (
-            <Redirect to={`/${routesMapper[userData.role]}/${userData.id}`} />
+            <Redirect to={`/${routesMapper[userData.role]}`} />
           ) : null}
           <LoginPage
-            onLogIn={userData => {
+            onLogIn={(userData) => {
               props.dispatch(logIn(userData));
             }}
           />
         </Route>
-        <Route path="/student/:studentId">
+        <Route path="/student">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <StudentPage history={history} />
+          <StudentPage history={history} userId={userData ? userData.id : null} />
         </Route>
-        <Route path="/professor/:professorId">
+        <Route path="/professor">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <ProfessorPage history={history} />
+          <ProfessorPage history={history} userId={userData ? userData.id : null} />
         </Route>
-        <Route path="/">
+        <Route path="/" exact>
+          {loggedIn ? (
+            <Redirect to={`/${routesMapper[userData.role]}`} />
+          ) : null}
           <MainPage loggedIn={loggedIn} />
         </Route>
       </Switch>
