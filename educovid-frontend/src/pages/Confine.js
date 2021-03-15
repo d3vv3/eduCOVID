@@ -64,16 +64,18 @@ function Confine({ history }) {
                 (data[selectedType].some(e => e === person) ? "" : "selected")
               }
             >
-              {person.name.includes("Grupo") ? <h5>{person.name} - 1ºB</h5> : <h5>{person.name}</h5>}
+              {person.name.includes("Grupo") ? (
+                <h5>{person.name} - 1ºB</h5>
+              ) : (
+                <h5>{person.name}</h5>
+              )}
               <h8>{person.state}</h8>
             </div>
           ))}
         </div>
       </div>
       <div className="right-options">
-        <h2>
-          Seleccionados
-        </h2>
+        <h2>Seleccionados</h2>
         <div className="seleccionados">
           {(selected || []).map((person, index) => (
             <div
@@ -92,31 +94,43 @@ function Confine({ history }) {
                 (data[selectedType].some(e => e === person) ? " selected" : "")
               }
             >
-              {person.name.includes("Grupo") ? <h5>{person.name} - 1ºB</h5> : <h5>{person.name}</h5>}
-                <h8>{person.state}</h8>
-
+              {person.name.includes("Grupo") ? (
+                <h5>{person.name} - 1ºB</h5>
+              ) : (
+                <h5>{person.name}</h5>
+              )}
+              <h8>{person.state}</h8>
             </div>
           ))}
         </div>
       </div>
       <div className="buttons-container">
         <Form>
-          {selected.length > 0 ?
-          <Button
-            variant="primary"
-            className="nord-button"
-            onClick={e => {
-              if (selected != null) {
-                let x = selected;
-                let confined = x.forEach(e => (e.state === "Confinado" ? e.state = "No Confinado" : e.state = "Confinado"));
-                setSelected([]);
-              } else {
-                alert("Seleccione las personas a confinar");
-              }
-            }}
-          >
-            {selected.every(e => e.state === "Confinado") ? "Desconfinar" : (selected.every(e => e.state === "No Confinado") ? "Confinar" : "Cambiar estados")}
-          </Button> : null}
+          {selected.length > 0 ? (
+            <Button
+              variant="primary"
+              className="nord-button"
+              onClick={e => {
+                if (selected != null) {
+                  let x = selected;
+                  let confined = x.forEach(e =>
+                    e.state === "Confinado"
+                      ? (e.state = "No Confinado")
+                      : (e.state = "Confinado")
+                  );
+                  setSelected([]);
+                } else {
+                  alert("Seleccione las personas a confinar");
+                }
+              }}
+            >
+              {selected.every(e => e.state === "Confinado")
+                ? "Desconfinar"
+                : selected.every(e => e.state === "No Confinado")
+                ? "Confinar"
+                : "Cambiar estados"}
+            </Button>
+          ) : null}
           {/* <Button
             variant="primary"
             className="nord-button"
@@ -135,7 +149,6 @@ function Confine({ history }) {
         </Form>
       </div>
     </div>
-
   );
 }
 
