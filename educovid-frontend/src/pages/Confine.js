@@ -16,6 +16,7 @@ function Confine({ history }) {
   });
   const [selectedType, setSelectedType] = useState("bubbleGroups");
   const [selected, setSelected] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState("*");
 
   useEffect(() => {
     // TODO: load list from API
@@ -32,12 +33,12 @@ function Confine({ history }) {
                 defaultValue="bubbleGroups"
                 onChange={e => {
                   setSelectedType(e.target.value);
+                  setSelectedFilter("*");
                   setSelected([]);
                 }}
               >
                 <option key="1" value="bubbleGroups">
                   Grupos burbuja
-                  
                 </option>
                 <option key="2" value="students">
                   Alumnos
@@ -48,60 +49,60 @@ function Confine({ history }) {
               </Form.Control>
             </Form.Group>
           </Form>
-        </div>
-        <div className="selector">
-          {
-            selectedType==="bubbleGroups" ? 
+          {selectedType === "students" ? (
             <Form>
               <Form.Group controlId="group">
                 <Form.Control
                   as="select"
                   defaultValue="bubbleGroups"
                   onChange={e => {
-                    setSelectedType(e.target.value);
-                    setSelected([]);
+                    setSelectedFilter(e.target.value);
                   }}
                 >
-                  <option key="1" value="bubbleGroups">
-                    Grupos burbuja
-                    
+                  <option key="0" value="*">
+                    Todos
                   </option>
-                  <option key="2" value="students">
-                    Alumnos
-                  </option>
-                  <option key="3" value="professors">
-                    Profesores
-                  </option>
+                  {(data["bubbleGroups"] || []).map((value, index) => (
+                    <option key={index} value={value.name}>
+                      {value.name}
+                    </option>
+                  ))}
                 </Form.Control>
               </Form.Group>
             </Form>
-            : console.log("no funciona")
-          }
+          ) : (
+            <div />
+          )}
         </div>
+
         <div className="list-container">
-          {(data[selectedType] || []).map((person, index) => (
-            <div
-              key={index}
-              person={person}
-              onClick={e => {
-                if (!selected.some(e => e.name === person.name)) {
-                  setSelected(selected.concat([person]));
+          {(data[selectedType] || []).map((person, index) =>
+            (person?.group?.name === selectedFilter) |
+            (selectedFilter === "*") ? (
+              <div
+                key={index}
+                onClick={e => {
+                  if (!selected.some(e => e.name === person.name)) {
+                    setSelected(selected.concat([person]));
+                  }
+                }}
+                className={
+                  "person-card" +
+                  (person.state === "Confinado" ? " red" : " green") +
+                  (data[selectedType].some(e => e === person) ? "" : "selected")
                 }
-              }}
-              className={
-                "person-card" +
-                (person.state === "Confinado" ? " red" : " green") +
-                (data[selectedType].some(e => e === person) ? "" : "selected")
-              }
-            >
-              {person.name.includes("Grupo") ? (
-                <h5>{person.name} - 1ºB</h5>
-              ) : (
-                <h5>{person.name}</h5>
-              )}
-              <h8>{person.state}</h8>
-            </div>
-          ))}
+              >
+                {person.name.includes("Grupo") ? (
+                  <h5>{person.name} - 1ºB</h5>
+                ) : (
+                  <h5>{person.name}</h5>
+                )}
+                <h8>{person.state}</h8>
+              </div>
+            ) : (
+              <div />
+            )
+          )}
         </div>
       </div>
       <div className="right-options">
@@ -154,9 +155,9 @@ function Confine({ history }) {
                 }
               }}
             >
-              {selected.every(e => e.state === "Confinado")
+              {selected.every(e => e.state.toLowerCase() === "confinado")
                 ? "Desconfinar"
-                : selected.every(e => e.state === "No Confinado")
+                : selected.every(e => e.state.toLowerCase() === "no confinado")
                 ? "Confinar"
                 : "Cambiar estados"}
             </Button>
