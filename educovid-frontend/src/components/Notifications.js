@@ -6,7 +6,7 @@ import {
   showLocalNotification,
   askUserPermission,
   registerServiceWorker
-} from "../service-worker";
+} from "../notificationsServiceWorker";
 
 function Notifications() {
   useEffect(async () => {
