@@ -7,7 +7,13 @@
     // This is for phone sized displays
     @media only screen and (max-width: 520px) {
         @include flexCenter(column);
-        flex-wrap: nowrap;
+        // flex-wrap: nowrap;
+        overflow: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+        .right-options::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     .left-menu {
@@ -20,10 +26,9 @@
         flex: 3;
         // This is for phone sized displays
         @media only screen and (max-width: 520px) {
-            @include flexCenter(column);
             flex-wrap: nowrap;
             overflow-y: scroll;
-    }
+        }
     }
 
     .selector {
@@ -42,23 +47,41 @@
 
     .list-container {
         @include flexCenter(column);
-        justify-content: start;
+        justify-content: flex-start;
         align-items: center;
         //flex: 3;
         width: 100%;
         overflow-y: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+        .list-container::-webkit-scrollbar {
+            display: none;
+        }
         flex: 24;
         //display: inline-block;
     }
 
     .right-options {
+        overflow-y: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+        .right-options::-webkit-scrollbar {
+            display: none;
+        }
         flex: 5;
         height: 100%;
         @include flexCenter(column);
-        
+
         h2 {
             flex: 1;
             @include flexCenter(row);
+
+            // This is for phone sized displays
+            @media only screen and (max-width: 520px) {
+                padding-top: 10px;
+                font-size: 2em;
+
+            }
         }
         .seleccionados {
             flex: 14;
@@ -67,7 +90,7 @@
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
             @include flexCenter(column);
-            justify-content: center;
+            justify-content: flex-start;
         }
         .seleccionados::-webkit-scrollbar {
             display: none;
@@ -76,23 +99,32 @@
 
     .person-card {
         @include flexCenter(column);
-        // height: 40px;
-        //align-content: center;
         margin: 8px;
         margin-left: 9px;
         width: 90%;
         border-radius: 20px;
         background-color: $white500;
+        text-align: center;
         h5 {
             margin: 8px;
-            
+            // This is for phone sized displays
+            @media only screen and (max-width: 520px) {
+                font-size: 1em;
+
+            }
+
         }
         h8 {
             margin-bottom: 8px;
+            // This is for phone sized displays
+            @media only screen and (max-width: 520px) {
+                font-size: 0.9em;
+
+            }
         }
-        
+
     }
-    
+
     .green {
         background-color: $success;
     }
@@ -106,10 +138,16 @@
         @include nordButton();
         transform: translateY(35px);
         .nord-button {
-            width: 100%;
-            min-width: 170px;
+            width: 95%;
         }
-    
+
+        // This is for phone sized displays
+        @media only screen and (max-width: 520px) {
+            flex: 1;
+            transform: translateY(0px);
+
+        }
+
 }
 
 }

@@ -1,5 +1,6 @@
 
 @import "passwordstrength";
+@import "dropzone";
 
 .register-container {
     @include flexCenter(column);
@@ -18,8 +19,71 @@
             width: 90%;
         }
 
+        a {
+            color: $commonMint;
+        }
+
+        .terms {
+            @include flexCenter(row);
+            justify-content: flex-start;
+        }
+
+        .buttons-container {
+            @include flexCenter(row);
+            @include nordButton();
+
+            .nord-button {
+                width: 50%;
+            }
+        }
     }
 
-    @include nordButton();
+    .csv-upload {
+        @include flexCenter(column);
+
+        input {
+            weight: 20px;
+            height: 20px;
+        }
+
+        .templates {
+            @include flexCenter(row);
+            .item {
+                @include flexCenter(column);
+                margin: 50px;
+            img {
+                height: 100px;
+                width: 100px;
+                margin-bottom: 20px;
+            }
+
+            .buttons-container {
+                margin-top: 20px;
+                @include flexCenter(row);
+                @include nordButton();
+
+
+                .nord-button {
+                    width: 90%;
+                }
+            }
+            }
+        }
+
+        .buttons-container {
+
+            margin-top: 48px;
+            @include flexCenter(row);
+            @include nordButton();
+
+            .nord-button {
+                width: 90%;
+            }
+        }
+
+        .selected-files {
+            padding-top: 20px;
+        }
+    }
 
 }

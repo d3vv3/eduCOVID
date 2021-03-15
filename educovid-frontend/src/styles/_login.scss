@@ -1,0 +1,29 @@
+.login-container {
+    @include flexCenter(column);
+    width: 100vw;
+
+    h1 {
+        margin: 48px;
+        font-weight: bold;
+    }
+
+    .login-center-form {
+        width: 500px;
+
+        // This is for phone sized displays
+        @media only screen and (max-width: 520px) {
+            width: 90%;
+        }
+
+    .buttons-container {
+        @include flexCenter(row);
+        @include nordButton();
+
+        .nord-button {
+            width: 50%;
+        }
+    }
+
+    }
+
+}
