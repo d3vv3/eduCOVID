@@ -3,7 +3,9 @@ export const isPushNotificationSupported = () => {
 };
 
 export const registerServiceWorker = async () => {
-  return await navigator.serviceWorker.register("../service-worker.js");
+  return await navigator.serviceWorker.register(
+    "../notificationsServiceWorker.js"
+  );
 };
 
 export const askUserPermission = async () => {
