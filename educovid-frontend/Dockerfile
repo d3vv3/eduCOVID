@@ -11,10 +11,11 @@ COPY . .
 
 # install app dependencies
 # RUN npm install yarn --global
-RUN npm install react-scripts -g
-RUN npm install serve -g --silent
-RUN npm install --silent
-RUN npm run-script build
+RUN yarn --version
+RUN yarn add react-scripts -g
+RUN yarn add serve -g
+RUN yarn install
+RUN yarn build
 
 # start
 CMD ["npx", "serve",  "-s", "build"]
