@@ -6,22 +6,11 @@ import { LinkContainer } from "react-router-bootstrap";
 
 // External imports
 import ReactMarkdown from "react-markdown";
-export const termsTable =`
-  |     |     |  
-  | --- | --- |
-  | Responsable | EDUCOVID S.L, provista de NIF: 00000000A |
-  | Finalidad | Facilitar, agilizar y cumplir los compromisos establecidos entre el Sitio Web y el Usuario o el mantenimiento de la relación que se establezca en los formularios que este último rellene o para atender una solicitud o consulta. |
-  | Legitimación | RGPD: 6.1. a) el interesado dio su consentimiento para el tratamiento de sus datos personales para uno o varios fines específicos. | 
-  | Destinatarios | EDUCOVID S.L y en caso de obligación legal |
-  | Derechos | Acceder, rectificar, y cancelar los datos, así como otros derechos, en los términos y con las limitaciones que se indican en la información adicional |
-  | Procedencia | El responsable de COVID del cenro educativo |
-  | Información Adicional | Puede consultar la información adicional y detallada sobre Protección de Datos en www.educovid.es/terms |
-`
-;
+
 const terms = `
 # POLÍTICA DE PRIVACIDAD DEL SITIO WEB
 
-www.educovid.es
+educovid.devve.space
 
 ## POLÍTICA DE PRIVACIDAD Y PROTECCIÓN DE DATOS
 
@@ -44,7 +33,7 @@ Dirección: C/ Calle Fernando El Santo Nº25 Piso 4 Puerta Iz 28041 - Madrid
 
 Teléfono de contacto: 900000000
 
-Email de contacto: educovid@educovid.es
+Email de contacto: educovid@educovid.devve.space
 
 ### Registro de Datos de Carácter Personal
 
@@ -123,7 +112,7 @@ Derecho a la limitación del tratamiento: Es el derecho del Usuario a limitar el
 Derecho a la portabilidad de los datos: En caso de que el tratamiento se efectúe por medios automatizados, el Usuario tendrá derecho a recibir del Responsable del tratamiento sus datos personales en un formato estructurado, de uso común y lectura mecánica, y a transmitirlos a otro responsable del tratamiento. Siempre que sea técnicamente posible, el Responsable del tratamiento transmitirá directamente los datos a ese otro responsable.
 Derecho de oposición: Es el derecho del Usuario a que no se lleve a cabo el tratamiento de sus datos de carácter personal o se cese el tratamiento de los mismos por parte de eduCOVID.
 Derecho a no ser a no ser objeto de una decisión basada únicamente en el tratamiento automatizado, incluida la elaboración de perfiles: Es el derecho del Usuario a no ser objeto de una decisión individualizada basada únicamente en el tratamiento automatizado de sus datos personales, incluida la elaboración de perfiles, existente salvo que la legislación vigente establezca lo contrario.
-Así pues, el Usuario podrá ejercitar sus derechos mediante comunicación escrita dirigida al Responsable del tratamiento con la referencia "RGPD-www.educovid.es", especificando:
+Así pues, el Usuario podrá ejercitar sus derechos mediante comunicación escrita dirigida al Responsable del tratamiento con la referencia "RGPD-educovid.devve.space", especificando:
 
 Nombre, apellidos del Usuario y copia del DNI. En los casos en que se admita la representación, será también necesaria la identificación por el mismo medio de la persona que representa al Usuario, así como el documento acreditativo de la representación. La fotocopia del DNI podrá ser sustituida, por cualquier otro medio válido en derecho que acredite la identidad.
 Petición con los motivos específicos de la solicitud o información a la que se quiere acceder.
@@ -134,7 +123,7 @@ Esta solicitud y todo otro documento adjunto podrá enviarse a la siguiente dire
 
 Dirección postal: C/ Calle Fernando El Santo Nº25 Piso 4 Puerta Iz 28041 - Madrid
 
-Correo electrónico: educovid@educovid.es
+Correo electrónico: educovid@educovid.devve.space
 
 ### Enlaces a sitios web de terceros
 
@@ -167,7 +156,6 @@ function Terms(props) {
           </Button>
         </LinkContainer>
       </div>
-      
     </div>
   );
 }

@@ -78,7 +78,7 @@ function Register({ history }) {
     const validateID = () => {
       // Validate responsable ID via regex
       let idNumberRegex = /^[0-9]{8,8}[A-Za-z]$/;
-      msgs.idNumber = "El DNI o pasaporte no es válido";
+      msgs.idNumber = "El NIF o NIE no es válido";
       errs.idNumber = !idNumberRegex.test(idNumber);
       // TODO: Check with backend if DNI or passport already in center
     };
