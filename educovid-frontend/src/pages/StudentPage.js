@@ -27,6 +27,14 @@ function StudentPage({ history, userId }) {
           {studentState}
         </h2>
 
+        <p className="description">
+          {studentGroup?.state === "Confinado" ||
+          studentGroup?.state === "Online" ||
+          studentState === "Confinado"
+            ? "Debe recibir clase de manera online"
+            : "Debe recibir clase de manera presencial"}
+        </p>
+
         <Card
           className={
             studentGroup.state === ("Confinado" || "Online")
@@ -35,16 +43,8 @@ function StudentPage({ history, userId }) {
           }
           as={Card.Header}
         >
-          {studentGroup.name} - {studentGroup.state}
+          {studentGroup.name} - 1°B - {studentGroup.state}
         </Card>
-
-        <p className="description">
-          {studentGroup?.state === "Confinado" ||
-          studentGroup?.state === "Online" ||
-          studentState === "Confinado"
-            ? "Debe recibir clase de manera online"
-            : "Debe recibir clase de manera presencial"}
-        </p>
       </div>
     </div>
   );
