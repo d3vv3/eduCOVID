@@ -1,0 +1,24 @@
+package es.upm.dit.isst.educovid.model;
+
+import java.sql.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "grupos_burbuja")
+public class GrupoBurbuja {
+	@Id
+	@GeneratedValue
+	private Integer id;
+	private String estadoSanitario;
+	private String estadoDocencia;
+	private Date fechaConfinamiento;
+	private Integer prioridad;
+	private Date fechaUltimaConmutacion;
+	@ManyToOne()
+	@JoinColumn(name = "fk_id_clase")
+	private Clase clase;
+}

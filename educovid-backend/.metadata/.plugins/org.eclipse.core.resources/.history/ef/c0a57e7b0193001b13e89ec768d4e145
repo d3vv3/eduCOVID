@@ -1,0 +1,21 @@
+package es.upm.dit.isst.educovid.model;
+
+import java.io.Serializable;
+import java.sql.Date;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "profesores")
+public class Profesor extends Usuario implements Serializable {
+
+	private String nifNie;
+	private String estadoSanitario;
+	private Date fechaConfinamiento;
+	@ManyToMany(mappedBy = "profesores")
+	private Set<Clase> clases;
+	private static final long serialVersionUID = 1L;
+}

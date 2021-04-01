@@ -1,0 +1,9 @@
+package es.upm.dit.isst.educovid.model;
+
+import java.io.Serializable;
+
+@Entity
+@Table(name = "clases")
+public class Clase implements Serializable {
+
+}
