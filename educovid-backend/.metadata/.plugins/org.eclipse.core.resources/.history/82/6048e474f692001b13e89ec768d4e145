@@ -1,0 +1,5 @@
+package es.upm.dit.isst.educovid.model;
+
+public class ResponsableCOVID {
+
+}

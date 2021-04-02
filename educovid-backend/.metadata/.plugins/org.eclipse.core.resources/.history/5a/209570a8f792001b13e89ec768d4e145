@@ -1,0 +1,12 @@
+package es.upm.dit.isst.educovid.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Usuarios")
+public class Usuario {
+	@Id
+	@GeneratedValue
+	private Integer id;
+}

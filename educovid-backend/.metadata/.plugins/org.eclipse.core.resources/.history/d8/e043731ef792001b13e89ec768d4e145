@@ -1,0 +1,10 @@
+package es.upm.dit.isst.educovid.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "responsable_COVID")
+public class ResponsableCOVID {
+	
+}

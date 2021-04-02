@@ -1,0 +1,13 @@
+package es.upm.dit.isst.educovid.model;
+
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "alumnos")
+public class Alumno extends Usuario implements Serializable {
+	private String numeroMatricula;
+	private 
+}
