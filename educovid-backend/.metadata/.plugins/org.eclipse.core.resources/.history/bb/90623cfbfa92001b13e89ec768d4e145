@@ -1,7 +1,0 @@
-package es.upm.dit.isst.educovid.model;
-
-import java.io.Serializable;
-
-public class Clase implements Serializable {
-
-}

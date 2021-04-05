@@ -1,7 +1,0 @@
-package es.upm.dit.isst.educovid.model;
-
-@Entity
-@Table(name = "Users")
-public class Usuario {
-	
-}
