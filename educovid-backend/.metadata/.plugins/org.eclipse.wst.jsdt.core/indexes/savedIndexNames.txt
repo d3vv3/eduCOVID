@@ -1,7 +1,0 @@
-INDEX VERSION 1.4+/home/devve/projects/ISST/eduCOVID/educovid-backend/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
-311028225.index
-881007643.index
-2821376652.index
-2770280240.index
-1740054120.index
-2759091794.index
