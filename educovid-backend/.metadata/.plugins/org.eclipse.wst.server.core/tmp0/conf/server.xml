@@ -153,7 +153,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="/home/kali/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/ROOT" path="" reloadable="false"/><Context docBase="/home/kali/eclipse-workspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/educovid-backend" path="/educovid-backend" reloadable="true" source="org.eclipse.jst.jee.server:educovid-backend"/></Host>
+      <Context docBase="/home/devve/projects/ISST/eduCOVID/educovid-backend/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/ROOT" path="" reloadable="false"/><Context docBase="/home/devve/projects/ISST/eduCOVID/educovid-backend/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/educovid-backend" path="/educovid-backend" reloadable="true" source="org.eclipse.jst.jee.server:educovid-backend"/></Host>
     </Engine>
   </Service>
 </Server>
