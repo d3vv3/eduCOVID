@@ -8,12 +8,9 @@ import org.hibernate.Session;
 import es.upm.dit.isst.educovid.dao.AlumnoDAO;
 import es.upm.dit.isst.educovid.model.Alumno;
 
-<<<<<<< HEAD
-//@ApplicationPath("/api")
-public class EducovidDAOImpl implements EducovidDAO{
-=======
+
 public class AlumnoDAOImpl implements AlumnoDAO{
->>>>>>> minor changes to fix errors
+
 
 	@Override
 	public Alumno createAlumno(Alumno alumno) {
