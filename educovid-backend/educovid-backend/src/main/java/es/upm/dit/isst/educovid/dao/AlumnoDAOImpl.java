@@ -34,6 +34,16 @@ public class AlumnoDAOImpl implements AlumnoDAO{
         session.close();
         return alumno;
 	}
+	
+	@Override
+	public Alumno readAlumnobyId(String id) {
+		Session session = SessionFactoryService.get().openSession();
+        session.beginTransaction();
+        Alumno alumno = session.get(Alumno.class, id);
+        session.getTransaction().commit();
+        session.close();
+        return alumno;
+	}
 
 	@Override
 	public Alumno updateAlumno(Alumno Alumno) {

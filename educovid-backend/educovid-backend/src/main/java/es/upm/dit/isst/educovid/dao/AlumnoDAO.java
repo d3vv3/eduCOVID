@@ -8,6 +8,7 @@ public interface AlumnoDAO {
 
 	public Alumno createAlumno (Alumno Alumno);
 	public Alumno readAlumnobyMatNum (String numeroMatricula);
+	public Alumno readAlumnobyId(String id);
 	public Alumno updateAlumno (Alumno Alumno);
 	public Alumno updateAlumnobyEstadoSanitario (String estadoSanitario);
 	public Alumno updateAlumnobyFechaConfinamiento(Date fechaConfinamiento);
