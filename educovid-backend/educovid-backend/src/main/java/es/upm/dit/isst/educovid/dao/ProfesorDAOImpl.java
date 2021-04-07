@@ -12,7 +12,16 @@ import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.Profesor;
 
 public class ProfesorDAOImpl implements ProfesorDAO{
-
+	private static ProfesorDAOImpl instance = null;
+	private ProfesorDAOImpl() {
+	}
+	
+	public static ProfesorDAOImpl getInstance() {
+		if(null == instance)
+			instance = new ProfesorDAOImpl();
+		return instance;
+	}
+	
 	@Override
 	public Profesor createProfesor(Profesor profesor) {
 		Session session = SessionFactoryService.get().openSession();

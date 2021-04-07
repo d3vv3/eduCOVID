@@ -10,6 +10,15 @@ import es.upm.dit.isst.educovid.dao.AlumnoDAO;
 import es.upm.dit.isst.educovid.model.Alumno;
 
 public class AlumnoDAOImpl implements AlumnoDAO{
+	private static AlumnoDAOImpl instance = null;
+	private AlumnoDAOImpl() {
+	}
+	
+	public static AlumnoDAOImpl getInstance() {
+		if(null == instance)
+			instance = new AlumnoDAOImpl();
+		return instance;
+	}
 
 	@Override
 	public Alumno createAlumno(Alumno alumno) {
