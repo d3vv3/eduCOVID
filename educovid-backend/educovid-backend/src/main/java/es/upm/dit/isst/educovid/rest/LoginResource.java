@@ -17,7 +17,7 @@ public class LoginResource {
 			return Response.status(Response.Status.OK).build();
 		}
 		
-		return Response.status(Response.Status.FORBIDDEN).build();
+		return Response.status(Response.Status.UNAUTHORIZED).build();
 	}
 	
 	@POST
@@ -27,7 +27,7 @@ public class LoginResource {
 			return Response.status(Response.Status.OK).build();
 		}
 		
-		return Response.status(Response.Status.FORBIDDEN).build();
+		return Response.status(Response.Status.UNAUTHORIZED).build();
 	}
 	
 	@POST
@@ -37,7 +37,7 @@ public class LoginResource {
 			return Response.status(Response.Status.OK).build();
 		}
 		
-		return Response.status(Response.Status.FORBIDDEN).build();
+		return Response.status(Response.Status.UNAUTHORIZED).build();
 	}
 	
 	// TODO: Search user and return true if exists, false otherwise. DAOs needed
@@ -46,7 +46,7 @@ public class LoginResource {
 		case "profesor":
 			return true;
 		case "alumno":
-			return true;
+			return false;
 		case "responsable":
 			return true;
 		default:
