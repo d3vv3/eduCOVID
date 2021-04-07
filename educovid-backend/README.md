@@ -8,9 +8,10 @@
 # Project Setup
 1. If `src/main/resources` is not there, `File New -> Source Folder`. Folder name it `src/main/resources`.
 2. Right click `Project Folder -> Maven -> Update Project`. Click Ok.
-3. Configure Tomcat: Right click `Project folder -> Build Path -> Add Library -> Server Runtime and add Apache Tomcat v9.0.
-4. Right click Project Folder -> Run as -> Run on Server and select Tomcat v9.
-5. Happy Tomcat!
+3. Configure Tomcat: Right click `Project folder -> Build Path -> Add Library -> Server Runtime and add Apache Tomcat v9.0.`
+4. Right click `Project Folder -> Run as -> Run on Server and select Tomcat v9`.
+5. (Optional) Here you might need to configure Apache Tomcat under the Apache folder and select the instalation path.
+6. Happy Tomcat!
 
 # Git
 
