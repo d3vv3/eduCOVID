@@ -13,7 +13,6 @@ import es.upm.dit.isst.educovid.model.Profesor;
 import es.upm.dit.isst.educovid.model.ResponsableCOVID;
 import es.upm.dit.isst.educovid.model.Usuario;
 
-//@ApplicationPath("/api")
 public class EducovidDAOImpl implements EducovidDAO{
 
 	@Override
@@ -376,7 +375,7 @@ public class EducovidDAOImpl implements EducovidDAO{
 		return null;
 	}
 
-	
-	
+
+
 
 }
