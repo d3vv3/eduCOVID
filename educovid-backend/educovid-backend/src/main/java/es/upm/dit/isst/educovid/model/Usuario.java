@@ -24,12 +24,12 @@ public class Usuario implements Serializable {
 		super();
 	}
 	
-	public Usuario(Integer id, String nombre, byte[] hash, byte[] salt) {
+	public Usuario(String nombre) {
 		super();
-		this.id = id;
+		this.id = null;
 		this.nombre = nombre;
-		this.hash = hash;
-		this.salt = salt;
+		this.hash = null;
+		this.salt = null;
 	}
 	public Integer getId() {
 		return id;
