@@ -1,6 +1,10 @@
 package es.upm.dit.isst.educovid.model;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,15 +16,15 @@ public class Usuario implements Serializable {
 	@GeneratedValue
 	private Integer id;
 	private String nombre;
-	private String hash;
-	private String salt;
+	private byte[] hash;
+	private byte[] salt;
 	private static final long serialVersionUID = 1L;
 	
 	public Usuario() {
 		super();
 	}
 	
-	public Usuario(Integer id, String nombre, String hash, String salt) {
+	public Usuario(Integer id, String nombre, byte[] hash, byte[] salt) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -39,17 +43,49 @@ public class Usuario implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getHash() {
+	public byte[] getHash() {
 		return hash;
 	}
-	public void setHash(String hash) {
+	public void setHash(byte[] hash) {
 		this.hash = hash;
 	}
-	public String getSalt() {
+	public byte[] getSalt() {
 		return salt;
 	}
-	public void setSalt(String salt) {
+	public void setSalt(byte[] salt) {
 		this.salt = salt;
+	}
+	public void generateAndSaveSalt() {
+		SecureRandom random = new SecureRandom();
+		byte[] salt = new byte[16];
+		random.nextBytes(salt);
+		this.setSalt(salt);
+	}
+	public void setPassword(String password) {
+		this.generateAndSaveSalt();
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
+			md.update(this.salt);
+			byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
+			this.hash = hashedPassword;
+	    }
+	    catch (NoSuchAlgorithmException e) {
+	        System.err.println("SHA-512 is not a valid message digest algorithm");
+	        System.err.println(e);
+	    }
+	}
+	public Boolean checkPassword(String passwordToCheck) {
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
+			md.update(this.salt);
+			byte[] hashedPasswordToCheck = md.digest(passwordToCheck.getBytes(StandardCharsets.UTF_8));
+			return hashedPasswordToCheck.equals(this.hash);
+	    }
+	    catch (NoSuchAlgorithmException e) {
+	    	System.err.println("SHA-512 is not a valid message digest algorithm");
+	        System.err.println(e);
+	        return false;
+	    }
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
