@@ -35,13 +35,14 @@ public class AlumnoDAOImpl implements AlumnoDAO{
 	}
 
 	@Override
-	public Alumno readAlumnobyMatNum(String numeroMatricula) {
+	public Alumno readAlumnobyMatNumCenter(String numeroMatricula, String centro) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        Alumno alumno = session.get(Alumno.class, numeroMatricula);
+        //Alumno alumno = session.get(Alumno.class, numeroMatricula);
+        // TODO: numeroMatricula unique only in centro, so we need to get the alumno with that numeroMatricula in that centro
         session.getTransaction().commit();
         session.close();
-        return alumno;
+        return null;
 	}
 	
 	@Override

@@ -24,12 +24,13 @@ public class LoginResource {
 
 	@POST
 	@Path("/profesor")
-	public Response loginProfesor(@FormParam("username") String username, @FormParam("password") String password)
-			throws URISyntaxException {
-		if (authenticate(username, password, "profesor")) {
+	public Response loginProfesor(@FormParam("username") String username, @FormParam("password") String password,
+			@FormParam("center") String center) throws URISyntaxException {
+		if (authenticate(username, password, center, "profesor")) {
 			Profesor profesor = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(username);
 			String token = this.issueToken(profesor.getId().toString());
-			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
+			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+					.entity(profesor).build();
 		}
 
 		return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -37,12 +38,13 @@ public class LoginResource {
 
 	@POST
 	@Path("/alumno")
-	public Response loginAlumno(@FormParam("username") String username, @FormParam("password") String password)
-			throws URISyntaxException {
-		if (authenticate(username, password, "alumno")) {
-			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyMatNum(username);
+	public Response loginAlumno(@FormParam("username") String username, @FormParam("password") String password,
+			@FormParam("center") String center) throws URISyntaxException {
+		if (authenticate(username, password, center, "alumno")) {
+			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyMatNumCenter(username, center);
 			String token = this.issueToken(alumno.getId().toString());
-			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
+			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+					.entity(alumno).build();
 		}
 
 		return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -50,18 +52,19 @@ public class LoginResource {
 
 	@POST
 	@Path("/responsable")
-	public Response loginResponsable(@FormParam("username") String username, @FormParam("password") String password)
-			throws URISyntaxException {
-		if (authenticate(username, password, "responsable")) {
+	public Response loginResponsable(@FormParam("username") String username, @FormParam("password") String password,
+			@FormParam("center") String center) throws URISyntaxException {
+		if (authenticate(username, password, center, "responsable")) {
 			ResponsableCOVID responsable = ResponsableDAOImpl.getInstance().readResponsablebyNIFNIE(username);
 			String token = this.issueToken(responsable.getId().toString());
-			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token).build();
+			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+					.entity(responsable).build();
 		}
 
 		return Response.status(Response.Status.UNAUTHORIZED).build();
 	}
 
-	private Boolean authenticate(String username, String password, String role) {
+	private Boolean authenticate(String username, String password, String center, String role) {
 		switch (role) {
 		case "profesor":
 			// Get profesor by username
@@ -73,7 +76,7 @@ public class LoginResource {
 			return true;
 		case "alumno":
 			// Get alumno by username
-			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyMatNum(username);
+			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyMatNumCenter(username, center);
 			if (alumno == null)
 				return false;
 			if (!alumno.checkPassword(password))
