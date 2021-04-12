@@ -21,7 +21,7 @@ public class ProfesorDAOImpl implements ProfesorDAO{
 			instance = new ProfesorDAOImpl();
 		return instance;
 	}
-	
+
 	@Override
 	public Profesor createProfesor(Profesor profesor) {
 		Session session = SessionFactoryService.get().openSession();
@@ -118,6 +118,5 @@ public class ProfesorDAOImpl implements ProfesorDAO{
         session.close();
         return profesor;
 	}
-	
 
 }
