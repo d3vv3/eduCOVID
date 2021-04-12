@@ -12,7 +12,6 @@ import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.Profesor;
 
 public class ProfesorDAOImpl implements ProfesorDAO{
-
 	private static ProfesorDAOImpl instance = null;
 	private ProfesorDAOImpl() {
 	}

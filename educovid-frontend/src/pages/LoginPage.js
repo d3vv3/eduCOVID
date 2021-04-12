@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
 // Bootstrap imports
@@ -8,9 +8,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { LinkContainer } from "react-router-bootstrap";
 
 // Constants
-import { professor } from "../tests/prueba";
-import { students } from "../tests/prueba";
-import { responsables } from "../tests/prueba";
+import { backUrl } from "../constants/constants";
 
 function LoginPage(props) {
   const { onLogIn } = props;
@@ -22,7 +20,9 @@ function LoginPage(props) {
   const [centerField, setCenterField] = useState("");
   const [errors, setErrors] = useState({});
 
-  const updateInputField = (event) => {
+  const centers = (await fetch(backUrl + "/centro")).json(); // Get all centers (not secure, everyone can read all centers)
+
+  const updateInputField = async (event) => {
     const { name, value } = event.target;
     switch (name) {
       case "username":
@@ -39,21 +39,6 @@ function LoginPage(props) {
         setCenterField("");
         break;
       case "center":
-        let centers = [];
-        switch (roleField.toLowerCase()) {
-          case "alumno":
-            centers = professor.map((user) => user.center);
-            break;
-          case "profesor":
-            centers = students.map((user) => user.center);
-            break;
-          case "responsable de covid":
-            centers = responsables.map((user) => user.center);
-            break;
-          default:
-            break;
-        }
-
         let suggestions = centers
           .filter((center, index) => centers.indexOf(center) === index) // Remove duplicates
           .filter((center) =>
@@ -74,51 +59,56 @@ function LoginPage(props) {
     }
   };
 
-  const handleSubmit = (event) => {
-    // fetch REST API
-    // TODO
-
-    // Mock up for the moment
+  const handleSubmit = async (event) => {
+    /* fetch REST API */
+    // Prepare body
+    const details = {
+      username: usernameField,
+      password: passwordField,
+      center: centerField
+    };
+    let formBody = [];
+    for (var property in details) {
+      const encodedKey = encodeURIComponent(property);
+      const encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+    // Make request
     setErrors({ username: "", password: "Usuario o contraseña inválidos." });
     switch (roleField.toLowerCase()) {
       case "alumno":
-        students.forEach((user, index) => {
-          if (
-            user.mat === usernameField &&
-            user.password === passwordField &&
-            user.center.trim().toLowerCase() ===
-              centerField.trim().toLowerCase()
-          ) {
-            onLogIn({ ...user, role: "alumno" });
-            setErrors({});
-          }
+        const res = await fetch(backUrl + "/login/alumno", {
+          method: "POST",
+          body: formBody
         });
+        if (res.ok) {
+          const userData = res.json();
+          onLogIn({ ...userData, role: "alumno" });
+          setErrors({});
+        }
         break;
       case "profesor":
-        professor.forEach((user, index) => {
-          if (
-            user.dni === usernameField &&
-            user.password === passwordField &&
-            user.center.trim().toLowerCase() ===
-              centerField.trim().toLowerCase()
-          ) {
-            onLogIn({ ...user, role: "profesor" });
-            setErrors({});
-          }
+        const res = await fetch(backUrl + "/login/profesor", {
+          method: "POST",
+          body: formBody
         });
+        if (res.ok) {
+          const userData = res.json();
+          onLogIn({ ...userData, role: "profesor" });
+          setErrors({});
+        }
         break;
       case "responsable de covid":
-        responsables.forEach((user, index) => {
-          if (
-            user.dni === usernameField &&
-            user.password === passwordField &&
-            user.center.trim().toLowerCase() ===
-              centerField.trim().toLowerCase()
-          ) {
-            onLogIn({ ...user, role: "responsable" });
-            setErrors({});
-          }
+        const res = await fetch(backUrl + "/login/responsable", {
+          method: "POST",
+          body: formBody
         });
+        if (res.ok) {
+          const userData = res.json();
+          onLogIn({ ...userData, role: "responsable" });
+          setErrors({});
+        }
         break;
       default:
         break;
@@ -127,13 +117,6 @@ function LoginPage(props) {
     // Clean fields
     setPasswordField("");
     setUsernameField("");
-  };
-
-  const handleKeypress = (e) => {
-    //it triggers by pressing the enter key
-    if (e.keyCode === 13) {
-      handleSubmit();
-    }
   };
 
   return (
@@ -171,8 +154,8 @@ function LoginPage(props) {
             <ListGroup>
               {centerField.length > 0
                 ? suggestions.map((center) => (
-                    <ListGroup.Item variant="light" key={center}>{center}</ListGroup.Item>
-                  ))
+                  <ListGroup.Item variant="light" key={center}>{center}</ListGroup.Item>
+                ))
                 : null}
             </ListGroup>
           </Form.Group>
