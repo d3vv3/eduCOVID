@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,11 +18,10 @@ public class CentroEducativo implements Serializable {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	@Column(nullable = false)
 	private String nombre;
-	@ManyToOne()
-	@JoinColumn(name = "fk_id_responsable_covid")
-	private ResponsableCOVID responsable;
-	@OneToMany(mappedBy = "centro", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "fk_id_centro")
 	private List<Clase> clases;
 	private static final long serialVersionUID = 1L;
 
@@ -30,11 +29,9 @@ public class CentroEducativo implements Serializable {
 		super();
 	}
 	
-	public CentroEducativo(Integer id, String nombre, ResponsableCOVID responsable, List<Clase> clases) {
+	public CentroEducativo(String nombre, List<Clase> clases) {
 		super();
-		this.id = id;
 		this.nombre = nombre;
-		this.responsable = responsable;
 		this.clases = clases;
 	}
 
@@ -54,16 +51,16 @@ public class CentroEducativo implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public ResponsableCOVID getResponsable() {
-		return responsable;
-	}
-
-	public void setResponsable(ResponsableCOVID responsable) {
-		this.responsable = responsable;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public List<Clase> getClases() {
+		return clases;
+	}
+
+	public void setClases(List<Clase> clases) {
+		this.clases = clases;
 	}
 	
 	

@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -15,8 +16,11 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue
 	private Integer id;
+	@Column(nullable = false)
 	private String nombre;
+	@Column(nullable = false)
 	private byte[] hash;
+	@Column(nullable = false)
 	private byte[] salt;
 	private static final long serialVersionUID = 1L;
 	
@@ -24,13 +28,18 @@ public class Usuario implements Serializable {
 		super();
 	}
 	
-	public Usuario(Integer id, String nombre, byte[] hash, byte[] salt) {
+	public Usuario(Integer id, String nombre, String password) {
 		super();
-		this.id = id;
 		this.nombre = nombre;
-		this.hash = hash;
-		this.salt = salt;
+		this.setPassword(password);
 	}
+	
+	public Usuario(String nombre, String password) {
+		super();
+		this.nombre = nombre;
+		this.setPassword(password);
+	}
+	
 	public Integer getId() {
 		return id;
 	}

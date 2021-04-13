@@ -3,32 +3,29 @@ package es.upm.dit.isst.educovid.model;
 import java.io.Serializable;
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "alumnos")
 public class Alumno extends Usuario implements Serializable {
+	@Column(nullable = false)
 	private String numeroMatricula;
+	@Column(nullable = false)
 	private String estadoSanitario;
-	private Date fechaConfinamiento; 
-	@ManyToOne()
-	@JoinColumn(name = "fk_id_grupo_burbuja")
-	private GrupoBurbuja grupoBurbuja;
+	private Date fechaConfinamiento;
 	private static final long serialVersionUID = 1L;
 	
 	public Alumno() {
 		super();
 	}
 	
-	public Alumno(String numeroMatricula, String estadoSanitario, Date fechaConfinamiento, GrupoBurbuja grupoBurbuja) {
-		super();
+	public Alumno(String nombre, String password, String numeroMatricula, String estadoSanitario, Date fechaConfinamiento) {
+		super(nombre, password);
 		this.numeroMatricula = numeroMatricula;
 		this.estadoSanitario = estadoSanitario;
 		this.fechaConfinamiento = fechaConfinamiento;
-		this.grupoBurbuja = grupoBurbuja;
 	}
 	
 	public String getNumeroMatricula() {
@@ -49,12 +46,7 @@ public class Alumno extends Usuario implements Serializable {
 	public void setFechaConfinamiento(Date fechaConfinamiento) {
 		this.fechaConfinamiento = fechaConfinamiento;
 	}
-	public GrupoBurbuja getGrupoBurbuja() {
-		return grupoBurbuja;
-	}
-	public void setGrupoBurbuja(GrupoBurbuja grupoBurbuja) {
-		this.grupoBurbuja = grupoBurbuja;
-	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

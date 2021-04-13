@@ -74,7 +74,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 	}
 
 	@Override
-	public GrupoBurbuja updateGrupoBurbujabyFechaConfinaiento(Date fechaConfinamiento) {
+	public GrupoBurbuja updateGrupoBurbujabyFechaConfinamiento(Date fechaConfinamiento) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -146,7 +146,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 	}
 
 	@Override
-	public List<GrupoBurbuja> readAllGruposBurbujabyFechaConfinaiento(Date fechaConfinamiento) {
+	public List<GrupoBurbuja> readAllGruposBurbujabyFechaConfinamiento(Date fechaConfinamiento) {
 		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();

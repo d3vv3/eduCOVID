@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -12,7 +13,9 @@ import javax.persistence.Table;
 @Table(name = "profesores")
 public class Profesor extends Usuario implements Serializable {
 
+	@Column(nullable = false, unique = true)
 	private String nifNie;
+	@Column(nullable = false)
 	private String estadoSanitario;
 	private Date fechaConfinamiento;
 	@ManyToMany(mappedBy = "profesores")
@@ -23,8 +26,8 @@ public class Profesor extends Usuario implements Serializable {
 		super();
 	}
 	
-	public Profesor(String nifNie, String estadoSanitario, Date fechaConfinamiento, Set<Clase> clases) {
-		super();
+	public Profesor(String nombre, String password, String nifNie, String estadoSanitario, Date fechaConfinamiento, Set<Clase> clases) {
+		super(nombre, password);
 		this.nifNie = nifNie;
 		this.estadoSanitario = estadoSanitario;
 		this.fechaConfinamiento = fechaConfinamiento;

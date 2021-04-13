@@ -13,7 +13,7 @@ public interface GrupoBurbujaDAO {
 	public GrupoBurbuja updateGrupoBurbujabyEstadoSanitario (String estadoSanitario);
 	public GrupoBurbuja updateGrupoBurbujabyEstadoDocencia (String estadoDocencia);
 	public GrupoBurbuja updateGrupoBurbujabyClase(Clase clase);
-	public GrupoBurbuja updateGrupoBurbujabyFechaConfinaiento(Date fechaConfinamiento);
+	public GrupoBurbuja updateGrupoBurbujabyFechaConfinamiento(Date fechaConfinamiento);
 	public GrupoBurbuja updateGrupoBurbujabyFechaUltimaConmutacion(Date fechaUltConmutacion);
 	public GrupoBurbuja updateGrupoBurbujabyPrioridad(Integer prioridad);
 	public GrupoBurbuja deleteGrupoBurbuja (GrupoBurbuja GrupoBurbuja);
@@ -21,7 +21,7 @@ public interface GrupoBurbujaDAO {
 	public List<GrupoBurbuja> readAllGruposBurbujabyEstadoSanitario(String estadoSanitario);
 	public List<GrupoBurbuja> readAllGruposBurbujabyEstadoDocencia(String estadoDocencia);
 	public List<GrupoBurbuja> readAllGruposBurbujabyClase(Clase clase);
-	public List<GrupoBurbuja> readAllGruposBurbujabyFechaConfinaiento(Date fechaConfinamiento);
+	public List<GrupoBurbuja> readAllGruposBurbujabyFechaConfinamiento(Date fechaConfinamiento);
 	public List<GrupoBurbuja> readAllGruposBurbujabyFechaUltimaConmutacion(Date fechaUltConmutacion);
 	public List<GrupoBurbuja> readAllGruposBurbujabyPrioridad(Integer prioridad);
 		
