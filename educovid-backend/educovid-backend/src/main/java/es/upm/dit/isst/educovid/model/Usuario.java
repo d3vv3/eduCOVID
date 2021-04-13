@@ -23,23 +23,23 @@ public class Usuario implements Serializable {
 	@Column(nullable = false)
 	private byte[] salt;
 	private static final long serialVersionUID = 1L;
-	
+
 	public Usuario() {
 		super();
 	}
-	
+
 	public Usuario(Integer id, String nombre, String password) {
 		super();
 		this.nombre = nombre;
 		this.setPassword(password);
 	}
-	
+
 	public Usuario(String nombre, String password) {
 		super();
 		this.nombre = nombre;
 		this.setPassword(password);
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -99,5 +99,5 @@ public class Usuario implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
+
 }

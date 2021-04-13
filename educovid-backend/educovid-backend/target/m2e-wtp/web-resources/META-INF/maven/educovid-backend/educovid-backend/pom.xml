@@ -258,6 +258,16 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<version>0.7.0</version>
+
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+
+	    	<groupId>org.json</groupId>
+
+	    	<artifactId>json</artifactId>
+
+	    	<version>20210307</version>
+
 		</dependency>
 
 	</dependencies>
