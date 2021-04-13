@@ -25,7 +25,10 @@ import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
+import es.upm.dit.isst.educovid.model.Profesor;
+import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
+import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
 import es.upm.dit.isst.educovid.dao.ResponsableDAOImpl;
 
 
@@ -46,13 +49,12 @@ public class RegisterResource {
 
 		// 3. Create responsible (class) (needs list of centers)
 		List<CentroEducativo> centros = new ArrayList<CentroEducativo>();
-		ResponsableCOVID newResponsible = new ResponsableCOVID(nifNie, centros);
+		ResponsableCOVID newResponsible = new ResponsableCOVID(null, password, nifNie, terms, centros);
 		// TODO: save terms acceptance
-		newResponsible.setPassword(password);
 		ResponsableCOVID responsible = ResponsableDAOImpl.getInstance().createResponsable(newResponsible);
 
 		List<Clase> classes = new ArrayList<Clase>();
-		CentroEducativo newCenter = new CentroEducativo(centerName, responsible, classes);
+		CentroEducativo newCenter = new CentroEducativo(centerName, classes);
 		CentroEducativo center = CentroEducativoDAOImpl.getInstance().createCentroEducativo(newCenter);
 
 		// Return a 201 (created)
@@ -70,7 +72,8 @@ public class RegisterResource {
 			r = r.subList(1, r.size());
 		    r.forEach(student -> {
 		    	System.out.println(Arrays.toString(student));
-		    	Alumno newStudent = new Alumno(nifNie, centros);
+		    	Alumno newStudent = new Alumno(student[1], student[2], student[2], "no confinado", null);
+		    	AlumnoDAOImpl.getInstance().createAlumno(newStudent);
 		    	// TODO: register each row somehow. For example: x = [11,  Jaime Conde Segovia,  mtAAAAA]
 		    	// [Clase, Nombre, Numero de matricula]
 		    });
@@ -92,8 +95,10 @@ public class RegisterResource {
 			r = r.subList(1, r.size());
 		    r.forEach(professor -> {
 		    	System.out.println(Arrays.toString(professor));
-		    	// TODO: register each row somehow. For example: x = [11,  Jaime,  Conde Segovia,  mtAAAAA]
-		    	// [Clase, Nombre, Apellidos, NIF/NIE]
+		    	Profesor newProfesor = new Profesor(professor[1], professor[2], professor[2], "no confinado", null, null);
+		    	ProfesorDAOImpl.getInstance().createProfesor(newProfesor);
+		    	// TODO: register each row somehow. For example: x = [11, Yod Samuel Martín García, 00000000A]
+		    	// [Clase, Nombre, NIF/NIE]
 		    });
 		} catch(Exception e) {
 			System.out.println(e);
