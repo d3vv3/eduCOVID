@@ -3,7 +3,6 @@ package es.upm.dit.isst.educovid.dao;
 import java.util.*;
 
 import es.upm.dit.isst.educovid.model.Clase;
-import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 
 public interface ClaseDAO {
 
