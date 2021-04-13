@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -12,8 +14,12 @@ import javax.persistence.Table;
 @Table(name = "responsables_COVID")
 public class ResponsableCOVID extends Usuario implements Serializable {
 	
+	@Column(unique = true, nullable = false)
 	private String nifNie;
-	@OneToMany(mappedBy = "responsable", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Column(nullable = false)
+	private Boolean privacidadAceptada;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "fk_id_responsable")
 	private List<CentroEducativo> centros;
 	private static final long serialVersionUID = 1L;
 
@@ -21,18 +27,28 @@ public class ResponsableCOVID extends Usuario implements Serializable {
 		super();
 	}
 	
-	public ResponsableCOVID(String nifNie, List<CentroEducativo> centros) {
-		super();
+	public ResponsableCOVID(String nombre, String password, String nifNie, Boolean privacidadAceptada, List<CentroEducativo> centros) {
+		super(nombre, password);
 		this.nifNie = nifNie;
+		this.privacidadAceptada = privacidadAceptada;
 		this.centros = centros;
 	}
 
-	public String getNif_nie() {
+	public Boolean getPrivacidadAceptada() {
+		return privacidadAceptada;
+	}
+
+	public void setPrivacidadAceptada(Boolean privacidadAceptada) {
+		this.privacidadAceptada = privacidadAceptada;
+	}
+
+
+	public String getNifNie() {
 		return nifNie;
 	}
 
-	public void setNif_nie(String nif_nie) {
-		this.nifNie = nif_nie;
+	public void setNifNie(String nifNie) {
+		this.nifNie = nifNie;
 	}
 
 	public List<CentroEducativo> getCentros() {

@@ -66,6 +66,18 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO{
         session.close();
         return centros;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CentroEducativo> readAllCentroEducativo() {
+		List<CentroEducativo> centros = new ArrayList<CentroEducativo> ();
+        Session session = SessionFactoryService.get().openSession();
+        session.beginTransaction();
+        centros.addAll(session.createQuery("from centros_educativos").list());
+        session.getTransaction().commit();
+        session.close();
+        return centros;
+	}
 
 	@Override
 	public CentroEducativo updateCentroEducativo(CentroEducativo CentroEducativo) {

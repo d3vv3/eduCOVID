@@ -6,8 +6,10 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import es.upm.dit.isst.educovid.dao.AlumnoDAO;
 import es.upm.dit.isst.educovid.model.Alumno;
+import es.upm.dit.isst.educovid.model.CentroEducativo;
+import es.upm.dit.isst.educovid.model.Clase;
+import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 
 public class AlumnoDAOImpl implements AlumnoDAO {
 	private static AlumnoDAOImpl instance = null;
@@ -19,6 +21,21 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		if (null == instance)
 			instance = new AlumnoDAOImpl();
 		return instance;
+	}
+	
+	public String getNombreCentro(Alumno alumno) {
+		for (CentroEducativo centro : CentroEducativoDAOImpl.getInstance().readAllCentroEducativo()) {
+			for (Clase clase : centro.getClases()) {
+				for (GrupoBurbuja grupo : clase.getGruposBurbuja()) {
+					for (Alumno alumnoTest : grupo.getAlumnos()) {
+						if (alumno.getId() == alumnoTest.getId()) {
+							return centro.getNombre();
+						}
+					}
+				}
+			}
+		}
+		return "";
 	}
 
 	@Override
@@ -44,7 +61,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		session.getTransaction().commit();
 		session.close();
 		for (Alumno alumno : alumnos) {
-			String centroAlumno = alumno.getGrupoBurbuja().getClase().getCentro().getNombre();
+			String centroAlumno = this.getNombreCentro(alumno);
 			if (alumno.getNumeroMatricula().equals(numeroMatricula)
 					&& centroAlumno.trim().toLowerCase() == centro.trim().toLowerCase()) {
 				return alumno;

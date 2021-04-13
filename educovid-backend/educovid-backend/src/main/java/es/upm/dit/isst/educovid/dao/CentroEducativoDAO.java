@@ -11,6 +11,7 @@ public interface CentroEducativoDAO {
 	public CentroEducativo readCentroEducativobyName (String nombre);
 	public CentroEducativo readCentroEducativobyId (String id);
 	public List<CentroEducativo> readAllCentroEducativobyResponsable (ResponsableCOVID responsable);
+	public List<CentroEducativo> readAllCentroEducativo ();
 	public CentroEducativo updateCentroEducativo (CentroEducativo CentroEducativo);
 	public CentroEducativo updateCentroEducativobyResponsable (ResponsableCOVID responsable);
 	public CentroEducativo deleteCentroEducativo (CentroEducativo CentroEducativo);
