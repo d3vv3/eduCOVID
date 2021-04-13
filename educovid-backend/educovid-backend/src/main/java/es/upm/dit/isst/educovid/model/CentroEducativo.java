@@ -28,7 +28,7 @@ public class CentroEducativo implements Serializable {
 	public CentroEducativo() {
 		super();
 	}
-	
+
 	public CentroEducativo(String nombre, List<Clase> clases) {
 		super();
 		this.nombre = nombre;
@@ -62,6 +62,6 @@ public class CentroEducativo implements Serializable {
 	public void setClases(List<Clase> clases) {
 		this.clases = clases;
 	}
-	
-	
+
+
 }
