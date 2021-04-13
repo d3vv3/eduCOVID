@@ -5,19 +5,21 @@ import { withRouter } from "react-router-dom"; // No sé si es necesario
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 
-import { professor, students } from "../tests/prueba";
+//import { professor, students } from "../tests/prueba";
 
-function ProfessorPage({ history, userId }) {
-  const [professorId] = useState(userId);
-  const [professorName, setProfessorName] = useState("");
-  const [professorState, setProfessorState] = useState("");
-  const [professorGroups, setProfessorGroups] = useState([]);
+function ProfessorPage(props) {
+  const { history, userData } = props;
 
-  useEffect(() => {
-    setProfessorName(professor[professorId].name); //BBDD
-    setProfessorState(professor[professorId].state); //BBDD
-    setProfessorGroups(professor[professorId].groups); //BBDD
-  }, [professorId]);
+  //const [professorId] = useState(userId);
+  const [professorName, setProfessorName] = useState(userData.nombre);
+  const [professorState, setProfessorState] = useState(userData.estadoSanitario);
+  const [professorClasses, setprofessorClasses] = useState(userData.clases);
+
+  // useEffect(() => {
+  //   setProfessorName(userData.nombre);
+  //   setProfessorState(userData.estadoSanitario);
+  //   setprofessorClasses(userData.clases);
+  // }, [userData]);
 
   return (
     <div className="professor-page-container">
@@ -35,52 +37,54 @@ function ProfessorPage({ history, userId }) {
         </p>
 
         <Accordion className="accordion">
-          {professorGroups?.map((group, index) => (
-            <Card key={index}>
-              <Accordion.Toggle
-                key={index}
-                className={
-                  group.teachingState === "Online"
-                    ? "card-header-bad"
-                    : "card-header-good"
-                }
-                as={Card.Header}
-                eventKey={index + 1}
-              >
-                {group.name} - 1ºB - {group.teachingState}
-              </Accordion.Toggle>
-              {group.teachingState === "Presencial" ? (
-                <Accordion.Collapse
-                  className="card-body"
-                  key={index + professorGroups.length}
+          {professorClasses?.map((clase, index) => (
+            (clase.gruposBurbuja).map((group, index) => (
+              <Card key={index}>
+                <Accordion.Toggle
+                  key={index}
+                  className={
+                    group.estadoDocencia === "Online"
+                      ? "card-header-bad"
+                      : "card-header-good"
+                  }
+                  as={Card.Header}
                   eventKey={index + 1}
                 >
-                  <Card.Body key={index}>
-                    {students.map((student, index) => (
-                      <div key={index} className="accordion-item">
-                        <p
-                          className={
-                            student.state === "Confinado" ? "p-bad" : "p-good"
-                          }
-                          key={index}
-                        >
-                          {student.name}
-                        </p>
-                        <p
-                          className={
-                            student.state === "Confinado" ? "p-bad" : "p-good"
-                          }
-                          key={index + student.length}
-                        >
-                          {student.state}
-                        </p>
-                        {index === students.length - 1 ? null : <hr />}
-                      </div>
-                    ))}
-                  </Card.Body>
-                </Accordion.Collapse>
-              ) : null}
-            </Card>
+                  {clase.nombre} - {group.id}
+                </Accordion.Toggle>
+                {group.estadoDocencia === "Presencial" ? (
+                  <Accordion.Collapse
+                    className="card-body"
+                    key={index + professorClasses.length}
+                    eventKey={index + 1}
+                  >
+                    <Card.Body key={index}>
+                      {(group.alumnos).map((student, index) => (
+                        <div key={index} className="accordion-item">
+                          <p
+                            className={
+                              student.estadoSanitario === "Confinado" ? "p-bad" : "p-good"
+                            }
+                            key={index}
+                          >
+                            {student.nombre}
+                          </p>
+                          <p
+                            className={
+                              student.estadoSanitario === "Confinado" ? "p-bad" : "p-good"
+                            }
+                            key={index + student.length}
+                          >
+                            {student.estadoSanitario}
+                          </p>
+                          {index === students.length - 1 ? null : <hr />}
+                        </div>
+                      ))}
+                    </Card.Body>
+                  </Accordion.Collapse>
+                ) : null}
+              </Card>
+            ))
           ))}
         </Accordion>
       </div>
