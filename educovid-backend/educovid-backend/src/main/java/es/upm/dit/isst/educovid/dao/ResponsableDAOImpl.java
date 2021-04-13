@@ -12,13 +12,13 @@ public class ResponsableDAOImpl implements ResponsableDAO{
 	private static ResponsableDAOImpl instance = null;
 	private ResponsableDAOImpl() {
 	}
-	
+
 	public static ResponsableDAOImpl getInstance() {
 		if(null == instance)
 			instance = new ResponsableDAOImpl();
 		return instance;
 	}
-	
+
 	@Override
 	public ResponsableCOVID createResponsable(ResponsableCOVID responsableCOVID) {
 		Session session = SessionFactoryService.get().openSession();
@@ -52,7 +52,7 @@ public class ResponsableDAOImpl implements ResponsableDAO{
         session.close();
         return responsableCOVID;
 	}
-	
+
 	@Override
 	public ResponsableCOVID updateResponsable(ResponsableCOVID responsableCOVID) {
 		Session session = SessionFactoryService.get().openSession();

@@ -21,6 +21,16 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO{
 		return instance;
 	}
 	
+	private static CentroEducativoDAOImpl instance = null;
+	private CentroEducativoDAOImpl() {
+	}
+	
+	public static CentroEducativoDAOImpl getInstance() {
+		if(null == instance)
+			instance = new CentroEducativoDAOImpl();
+		return instance;
+	}
+	
 	@Override
 	public CentroEducativo createCentroEducativo(CentroEducativo centroEducativo) {
 		Session session = SessionFactoryService.get().openSession();
