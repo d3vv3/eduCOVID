@@ -11,7 +11,16 @@ import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 
 public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
-
+	private static GrupoBurbujaDAOImpl instance = null;
+	private GrupoBurbujaDAOImpl() {
+	}
+	
+	public static GrupoBurbujaDAOImpl getInstance() {
+		if(null == instance)
+			instance = new GrupoBurbujaDAOImpl();
+		return instance;
+	}
+	
 	@Override
 	public GrupoBurbuja createGrupoBurbuja(GrupoBurbuja grupoBurbuja) {
 		Session session = SessionFactoryService.get().openSession();

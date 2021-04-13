@@ -11,6 +11,15 @@ import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.ResponsableCOVID;
 
 public class CentroEducativoDAOImpl implements CentroEducativoDAO{
+	private static CentroEducativoDAOImpl instance = null;
+	private CentroEducativoDAOImpl() {
+	}
+	
+	public static CentroEducativoDAOImpl getInstance() {
+		if(null == instance)
+			instance = new CentroEducativoDAOImpl();
+		return instance;
+	}
 	
 	@Override
 	public CentroEducativo createCentroEducativo(CentroEducativo centroEducativo) {

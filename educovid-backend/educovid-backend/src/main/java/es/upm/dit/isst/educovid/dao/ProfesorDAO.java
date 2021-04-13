@@ -19,5 +19,4 @@ public interface ProfesorDAO {
 	public List<Profesor> readAllProfesorbyFechaConfinamiento(Date fechaConfinamiento);
 	public List<Profesor> readAllProfesorbyClase(Clase clase);
 	
-	
 }

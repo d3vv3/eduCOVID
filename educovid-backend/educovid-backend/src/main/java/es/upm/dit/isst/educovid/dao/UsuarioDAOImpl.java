@@ -6,7 +6,16 @@ import es.upm.dit.isst.educovid.dao.UsuarioDAO;
 import es.upm.dit.isst.educovid.model.Usuario;
 
 public class UsuarioDAOImpl implements UsuarioDAO{
-
+	private static UsuarioDAOImpl instance = null;
+	private UsuarioDAOImpl() {
+	}
+	
+	public static UsuarioDAOImpl getInstance() {
+		if(null == instance)
+			instance = new UsuarioDAOImpl();
+		return instance;
+	}
+	
 	@Override
 	public Usuario createUsuario(Usuario usuario) {
 		Session session = SessionFactoryService.get().openSession();
