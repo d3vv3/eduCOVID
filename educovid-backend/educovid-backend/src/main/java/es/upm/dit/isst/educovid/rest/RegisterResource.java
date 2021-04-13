@@ -31,39 +31,39 @@ import es.upm.dit.isst.educovid.dao.ResponsableDAOImpl;
 
 @Path("/register")
 public class RegisterResource {
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/responsible")
 	public Response registerResponsible(String JSONBodyString) throws URISyntaxException {
-		
+
 		System.out.println(JSONBodyString);
 		JSONObject body = new JSONObject(JSONBodyString);
 		String centerName = body.getString("center");
 		String nifNie = body.getString("nifNie");
 		String password = body.getString("nifNie");
 		Boolean terms = body.getBoolean("terms");
-	
+
 		// 3. Create responsible (class) (needs list of centers)
 		List<CentroEducativo> centros = new ArrayList<CentroEducativo>();
 		ResponsableCOVID newResponsible = new ResponsableCOVID(nifNie, centros);
 		// TODO: save terms acceptance
 		newResponsible.setPassword(password);
 		ResponsableCOVID responsible = ResponsableDAOImpl.getInstance().createResponsable(newResponsible);
-		
+
 		List<Clase> classes = new ArrayList<Clase>();
 		CentroEducativo newCenter = new CentroEducativo(centerName, responsible, classes);
 		CentroEducativo center = CentroEducativoDAOImpl.getInstance().createCentroEducativo(newCenter);
-		
+
 		// Return a 201 (created)
 		return Response.status(Response.Status.CREATED).build();
 	}
-	
+
 	@POST
 	@Consumes("text/csv")
 	@Path("/students")
 	public Response registerStudents(String CSVString) throws URISyntaxException, IOException, CsvException {
-		
+
 		System.out.println(CSVString);
 		try (CSVReader reader = new CSVReader(new StringReader(CSVString))) {
 			List<String[]> r = reader.readAll();
@@ -80,12 +80,12 @@ public class RegisterResource {
 
 		return Response.status(Response.Status.CREATED).build();
 	}
-	
+
 	@POST
 	@Consumes("text/csv")
 	@Path("/professors")
 	public Response registerProfessors(String CSVString) throws URISyntaxException {
-		
+
 		System.out.println(CSVString);
 		try (CSVReader reader = new CSVReader(new StringReader(CSVString))) {
 			List<String[]> r = reader.readAll();
@@ -98,8 +98,8 @@ public class RegisterResource {
 		} catch(Exception e) {
 			System.out.println(e);
 		};
-		
-		
+
+
 		// Return a 201 (created)
 		return Response.status(Response.Status.CREATED).build();
 	}

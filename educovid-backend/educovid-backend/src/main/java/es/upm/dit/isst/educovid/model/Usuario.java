@@ -28,12 +28,6 @@ public class Usuario implements Serializable {
 		super();
 	}
 
-	public Usuario(Integer id, String nombre, String password) {
-		super();
-		this.nombre = nombre;
-		this.setPassword(password);
-	}
-
 	public Usuario(String nombre, String password) {
 		super();
 		this.nombre = nombre;
