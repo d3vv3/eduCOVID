@@ -7,7 +7,7 @@ import es.upm.dit.isst.educovid.model.Alumno;
 public interface AlumnoDAO {
 
 	public Alumno createAlumno (Alumno Alumno);
-	public Alumno readAlumnobyMatNum (String numeroMatricula, String centro);
+	public Alumno readAlumnobyMatNumCenter (String numeroMatricula, String centro);
 	public Alumno readAlumnobyId(String id);
 	public Alumno updateAlumno (Alumno Alumno);
 	public Alumno updateAlumnobyEstadoSanitario (String estadoSanitario);
