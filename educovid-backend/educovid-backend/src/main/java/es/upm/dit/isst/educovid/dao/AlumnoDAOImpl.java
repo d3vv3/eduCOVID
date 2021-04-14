@@ -57,7 +57,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		List<Alumno> alumnos = new ArrayList<Alumno>();
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		alumnos.addAll(session.createQuery("from alumnos").list());
+		alumnos.addAll(session.createQuery("from Alumno").list());
 		session.getTransaction().commit();
 		session.close();
 		for (Alumno alumno : alumnos) {

@@ -88,6 +88,9 @@ public class Usuario implements Serializable {
 			MessageDigest md = MessageDigest.getInstance("SHA-512");
 			md.update(this.salt);
 			byte[] hashedPasswordToCheck = md.digest(passwordToCheck.getBytes(StandardCharsets.UTF_8));
+			System.out.println("Introduced password: " + passwordToCheck);
+			System.out.println("Computed hash: " + hashedPasswordToCheck);
+			System.out.println("Expected hash: " + this.hash);
 			return hashedPasswordToCheck.equals(this.hash);
 	    }
 	    catch (NoSuchAlgorithmException e) {

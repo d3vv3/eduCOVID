@@ -29,10 +29,11 @@ public class LoginResource {
 		if (authenticate(username, password, center, "profesor")) {
 			Profesor profesor = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(username);
 			String token = this.issueToken(profesor.getId().toString());
+			System.out.print(token);
 			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
 					.entity(profesor).build();
 		}
-
+		System.out.print("Not valid profesor");
 		return Response.status(Response.Status.UNAUTHORIZED).build();
 	}
 
