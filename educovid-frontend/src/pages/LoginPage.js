@@ -19,10 +19,17 @@ function LoginPage(props) {
   const [roleField, setRoleField] = useState("Alumno");
   const [centerField, setCenterField] = useState("");
   const [errors, setErrors] = useState({});
+  const [centers, setCenters] = useState({});
 
-  const centers = (await fetch(backUrl + "/centro")).json(); // Get all centers (not secure, everyone can read all centers)
+  useEffect(() => {
+    const callCenters = async () => {
+      // Get all centers (not secure, everyone can read all centers)
+      setCenters(await fetch(backUrl + "/centro").json());
+    };
+    callCenters();
+  }, [centers]);
 
-  const updateInputField = async (event) => {
+  const updateInputField = event => {
     const { name, value } = event.target;
     switch (name) {
       case "username":
@@ -41,7 +48,7 @@ function LoginPage(props) {
       case "center":
         let suggestions = centers
           .filter((center, index) => centers.indexOf(center) === index) // Remove duplicates
-          .filter((center) =>
+          .filter(center =>
             center.toLowerCase().startsWith(value.toLowerCase())
           );
         if (suggestions.length > 0) {
@@ -59,7 +66,7 @@ function LoginPage(props) {
     }
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     /* fetch REST API */
     // Prepare body
     const details = {
@@ -78,7 +85,7 @@ function LoginPage(props) {
     setErrors({ username: "", password: "Usuario o contraseña inválidos." });
     switch (roleField.toLowerCase()) {
       case "alumno":
-        const res = await fetch(backUrl + "/login/alumno", {
+        let res = await fetch(backUrl + "/login/alumno", {
           method: "POST",
           body: formBody
         });
@@ -89,22 +96,22 @@ function LoginPage(props) {
         }
         break;
       case "profesor":
-        const res = await fetch(backUrl + "/login/profesor", {
+        let response = await fetch(backUrl + "/login/profesor", {
           method: "POST",
           body: formBody
         });
-        if (res.ok) {
+        if (response.ok) {
           const userData = res.json();
           onLogIn({ ...userData, role: "profesor" });
           setErrors({});
         }
         break;
       case "responsable de covid":
-        const res = await fetch(backUrl + "/login/responsable", {
+        let res1 = await fetch(backUrl + "/login/responsable", {
           method: "POST",
           body: formBody
         });
-        if (res.ok) {
+        if (res1.ok) {
           const userData = res.json();
           onLogIn({ ...userData, role: "responsable" });
           setErrors({});
@@ -153,9 +160,11 @@ function LoginPage(props) {
             />
             <ListGroup>
               {centerField.length > 0
-                ? suggestions.map((center) => (
-                  <ListGroup.Item variant="light" key={center}>{center}</ListGroup.Item>
-                ))
+                ? suggestions.map(center => (
+                    <ListGroup.Item variant="light" key={center}>
+                      {center}
+                    </ListGroup.Item>
+                  ))
                 : null}
             </ListGroup>
           </Form.Group>
