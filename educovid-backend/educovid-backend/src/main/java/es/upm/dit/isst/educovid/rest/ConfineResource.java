@@ -1,48 +1,107 @@
 package es.upm.dit.isst.educovid.rest;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
+import es.upm.dit.isst.educovid.dao.AlumnoDAO;
+import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
+import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
+import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
+import es.upm.dit.isst.educovid.model.Alumno;
+import es.upm.dit.isst.educovid.model.GrupoBurbuja;
+import es.upm.dit.isst.educovid.model.Profesor;
+
 @Path("/manage")
 public class ConfineResource {
 	
 	@POST
-	@Path("/confine")
-	public Response confine(@FormParam("username") String username, @FormParam("password") String password) throws URISyntaxException {
+	@Path("/confinestudents")
+	public Response confineStudents(List<Alumno> alumnos) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
-			return Response.status(Response.Status.OK).build();
+		for (Alumno a: alumnos) {
+			a.setEstadoSanitario("Confinado");
+		}
+		return Response.status(Response.Status.OK).entity(alumnos).build();
+	}
+	
+	
+	@POST
+	@Path("/confinegroups")
+	public Response confineGroups(List<GrupoBurbuja> grupos) throws URISyntaxException {
+		//TODO design an endpoint that changes the health status of the people or groups selected into confine
+		for (GrupoBurbuja gb: grupos) {
+			gb.setEstadoSanitario("Confinado");
+		}
+		return Response.status(Response.Status.OK).entity(grupos).build();
 	}
 	
 	@POST
-	@Path("/unconfine")
-	public Response unconfine(@FormParam("username") String username, @FormParam("password") String password) throws URISyntaxException {
-		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
-			return Response.status(Response.Status.OK).build();
-		
+	@Path("/confineteachers")
+	public Response confineTeachers(List<Profesor> profesores) throws URISyntaxException {
+		//TODO design an endpoint that changes the health status of the people or groups selected into confine
+		for (Profesor p: profesores) {
+			p.setEstadoSanitario("Confinado");
+		}
+		return Response.status(Response.Status.OK).entity(profesores).build();
 	}
+	
+	@POST
+	@Path("/unconfinestudents")
+	public Response unconfineStudents(List<Alumno> alumnos) throws URISyntaxException {
+		//TODO design an endpoint that changes the health status of the people or groups selected into confine
+		for (Alumno a: alumnos) {
+			a.setEstadoSanitario("No Confinado");
+		}
+		return Response.status(Response.Status.OK).entity(alumnos).build();
+	}
+	
+	@POST
+	@Path("/unconfinegroups")
+	public Response unconfineGroups(List<GrupoBurbuja> grupos) throws URISyntaxException {
+		//TODO design an endpoint that changes the health status of the people or groups selected into confine
+		for (GrupoBurbuja gb: grupos) {
+			gb.setEstadoSanitario("No Confinado");
+		}
+		return Response.status(Response.Status.OK).entity(grupos).build();
+	}
+	
+	@POST
+	@Path("/unconfineteachers")
+	public Response unconfineTeachers(List<Profesor> profesores) throws URISyntaxException {
+		//TODO design an endpoint that changes the health status of the people or groups selected into confine
+		for (Profesor p: profesores) {
+			p.setEstadoSanitario("No Confinado");
+		}
+		return Response.status(Response.Status.OK).entity(profesores).build();
+	}
+
 	@GET
 	@Path("/students")
-	public Response students(@FormParam("username") String username, @FormParam("password") String password) throws URISyntaxException {
+	public Response students() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
-			return Response.status(Response.Status.OK).build();
+		List<Alumno> alumnos = AlumnoDAOImpl.getInstance().readAllAlumnos();
+		return Response.status(Response.Status.OK).entity(alumnos).build();
 		
 	}
 	@GET
 	@Path("/teachers")
-	public Response teachers(@FormParam("username") String username, @FormParam("password") String password) throws URISyntaxException {
+	public Response teachers() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
-			return Response.status(Response.Status.OK).build();
+		List<Profesor> profesores = ProfesorDAOImpl.getInstance().readAllProfesores();
+		return Response.status(Response.Status.OK).entity(profesores).build();
 		
 	}
 	@GET
 	@Path("/bubblegoups")
-	public Response bubblegroups(@FormParam("username") String username, @FormParam("password") String password) throws URISyntaxException {
+	public Response bubblegroups() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
-			return Response.status(Response.Status.OK).build();
+		List<GrupoBurbuja> gruposBurbuja = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbuja();
+		return Response.status(Response.Status.OK).entity(gruposBurbuja).build();
 		
 	}
 }
