@@ -73,7 +73,7 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO{
 		List<CentroEducativo> centros = new ArrayList<CentroEducativo> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        centros.addAll(session.createQuery("from centros_educativos").list());
+        centros.addAll(session.createQuery("from CentroEducativo").list());
         session.getTransaction().commit();
         session.close();
         return centros;

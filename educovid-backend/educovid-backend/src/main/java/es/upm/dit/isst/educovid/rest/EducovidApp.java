@@ -8,5 +8,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 public class EducovidApp extends ResourceConfig {
 	public EducovidApp() {
 		packages("es.upm.dit.isst.educovid.rest");
+		register(new CorsFilter());
 	}
 }

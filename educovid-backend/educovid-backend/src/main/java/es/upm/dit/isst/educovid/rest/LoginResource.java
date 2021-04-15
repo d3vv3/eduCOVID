@@ -1,15 +1,18 @@
 package es.upm.dit.isst.educovid.rest;
 
 import java.net.URISyntaxException;
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import es.upm.dit.isst.educovid.aux.Security;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
 import es.upm.dit.isst.educovid.dao.ResponsableDAOImpl;
@@ -24,6 +27,7 @@ public class LoginResource {
 
 	@POST
 	@Path("/profesor")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response loginProfesor(@FormParam("username") String username, @FormParam("password") String password,
 			@FormParam("center") String center) throws URISyntaxException {
 		if (authenticate(username, password, center, "profesor")) {
@@ -39,20 +43,23 @@ public class LoginResource {
 
 	@POST
 	@Path("/alumno")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response loginAlumno(@FormParam("username") String username, @FormParam("password") String password,
 			@FormParam("center") String center) throws URISyntaxException {
 		if (authenticate(username, password, center, "alumno")) {
 			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyMatNumCenter(username, center);
 			String token = this.issueToken(alumno.getId().toString());
+			System.out.print(token);
 			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
 					.entity(alumno).build();
 		}
-
+		System.out.print("Not valid alumno");
 		return Response.status(Response.Status.UNAUTHORIZED).build();
 	}
 
 	@POST
 	@Path("/responsable")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response loginResponsable(@FormParam("username") String username, @FormParam("password") String password,
 			@FormParam("center") String center) throws URISyntaxException {
 		if (authenticate(username, password, center, "responsable")) {
@@ -72,7 +79,7 @@ public class LoginResource {
 			Profesor profesor = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(username);
 			if (profesor == null)
 				return false;
-			if (!profesor.checkPassword(password))
+			if (!Security.checkPassword(password, profesor.getHash(), profesor.getSalt()))
 				return false;
 			return true;
 		case "alumno":
@@ -80,7 +87,7 @@ public class LoginResource {
 			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyMatNumCenter(username, center);
 			if (alumno == null)
 				return false;
-			if (!alumno.checkPassword(password))
+			if (!Security.checkPassword(password, alumno.getHash(), alumno.getSalt()))
 				return false;
 			return true;
 		case "responsable":
@@ -88,7 +95,7 @@ public class LoginResource {
 			ResponsableCOVID responsable = ResponsableDAOImpl.getInstance().readResponsablebyNIFNIE(username);
 			if (responsable == null)
 				return false;
-			if (!responsable.checkPassword(password))
+			if (!Security.checkPassword(password, responsable.getHash(), responsable.getSalt()))
 				return false;
 			return true;
 		default:
