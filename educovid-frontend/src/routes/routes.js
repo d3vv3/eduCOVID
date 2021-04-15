@@ -68,7 +68,7 @@ function Routes(props) {
         </Route>
         <Route path="/professor">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <ProfessorPage history={history} userId={userData ? userData.id : null} />
+          <ProfessorPage history={history} userData={userData} />
         </Route>
         <Route path="/" exact>
           {loggedIn ? (

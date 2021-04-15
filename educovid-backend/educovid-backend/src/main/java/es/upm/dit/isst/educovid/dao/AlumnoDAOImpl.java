@@ -53,7 +53,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 	}
 
 	@Override
-	public Alumno readAlumnobyMatNumCenter(String numeroMatricula, String centro) {
+	public Alumno readAlumnobyMatNum(String numeroMatricula, String centro) {
 		List<Alumno> alumnos = new ArrayList<Alumno>();
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();

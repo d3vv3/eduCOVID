@@ -1,14 +1,11 @@
 package es.upm.dit.isst.educovid.dao;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
 
-import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAO;
 import es.upm.dit.isst.educovid.model.Clase;
-import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 
 public class ClaseDAOImpl implements ClaseDAO{
 	private static ClaseDAOImpl instance = null;
