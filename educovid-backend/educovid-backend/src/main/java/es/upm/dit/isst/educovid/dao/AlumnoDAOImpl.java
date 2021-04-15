@@ -22,7 +22,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 			instance = new AlumnoDAOImpl();
 		return instance;
 	}
-	
+
 	public String getNombreCentro(Alumno alumno) {
 		for (CentroEducativo centro : CentroEducativoDAOImpl.getInstance().readAllCentroEducativo()) {
 			for (Clase clase : centro.getClases()) {
@@ -60,10 +60,12 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		alumnos.addAll(session.createQuery("from Alumno").list());
 		session.getTransaction().commit();
 		session.close();
+		System.out.println("Centro received: " + centro.trim().toLowerCase());
 		for (Alumno alumno : alumnos) {
 			String centroAlumno = this.getNombreCentro(alumno);
 			if (alumno.getNumeroMatricula().equals(numeroMatricula)
-					&& centroAlumno.trim().toLowerCase() == centro.trim().toLowerCase()) {
+					&& centroAlumno.trim().toLowerCase().equals(centro.trim().toLowerCase())) {
+				System.out.println("Alumno encontrado: " + alumno.getNombre());
 				return alumno;
 			}
 		}

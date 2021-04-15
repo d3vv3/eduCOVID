@@ -5,19 +5,15 @@ import java.net.URISyntaxException;
 import java.sql.Date;
 import java.util.List;
 
-import javax.websocket.server.PathParam;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.glassfish.jersey.client.ClientConfig;
-
-import org.glassfish.jersey.jsonp.JsonProcessingFeature;
 
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;

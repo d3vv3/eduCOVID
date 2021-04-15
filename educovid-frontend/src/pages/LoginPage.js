@@ -22,18 +22,21 @@ function LoginPage(props) {
   const [centers, setCenters] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
     const callCenters = async () => {
       // Get all centers (not secure, everyone can read all centers)
       try {
         const centersRes = await fetch(backUrl + "/centro");
-        const centers = await centersRes.json();
+        let centersData = await centersRes.json();
+        console.log(centersData);
+        if (isMounted) setCenters(centersData);
       } catch (e) {
         // Nothing to do
       }
-      setCenters(centers);
     };
     callCenters();
-  }, [centers]);
+    return () => { isMounted = false };
+  }, []);
 
   const updateInputField = event => {
     const { name, value } = event.target;
