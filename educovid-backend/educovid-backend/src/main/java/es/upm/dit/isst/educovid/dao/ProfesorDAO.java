@@ -18,5 +18,6 @@ public interface ProfesorDAO {
 	public List<Profesor> readAllProfesorbyEstadoSanitario(String estadoSanitario);
 	public List<Profesor> readAllProfesorbyFechaConfinamiento(Date fechaConfinamiento);
 	public List<Profesor> readAllProfesorbyClase(Clase clase);
+	List<Profesor> readAllProfesores();
 	
 }

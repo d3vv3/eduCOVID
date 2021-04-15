@@ -56,17 +56,18 @@ public class AlumnoResource {
 		return Response.ok(a, MediaType.APPLICATION_JSON).build();
 	}
 	
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("{id}")
-	public Response updateAlumno(@PathParam("id") String id, Alumno alumno) {
-		System.out.println("Update request for " + id + " " + alumno.toString());
-		Alumno antiguo = AlumnoDAOImpl.getInstance().readAlumnobyId(id);
-	    if ((antiguo == null) || (! antiguo.getId().equals(alumno.getId()))) 
-	    	return Response.notModified().build();
-	    AlumnoDAOImpl.getInstance().updateAlumno(alumno);
-	    return Response.ok().build();
-	}
+//	@POST
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("{id}")
+//	public Response updateAlumno(@PathParam("id") String id, Alumno alumno) {
+//		System.out.println("Update request for " + id + " " + alumno.toString());
+//		Alumno antiguo = AlumnoDAOImpl.getInstance().readAlumnobyId(id);
+//	    if ((antiguo == null) || (! antiguo.getId().equals(alumno.getId()))) 
+//	    	return Response.notModified().build();
+//	    AlumnoDAOImpl.getInstance().updateAlumno(alumno);
+//	    return Response.ok().build();
+//	}
 	
 	@DELETE
 	@Path("{id}")

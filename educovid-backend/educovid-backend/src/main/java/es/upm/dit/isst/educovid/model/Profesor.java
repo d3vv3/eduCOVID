@@ -18,8 +18,6 @@ public class Profesor extends Usuario implements Serializable {
 	@Column(nullable = false)
 	private String estadoSanitario;
 	private Date fechaConfinamiento;
-	@ManyToMany(mappedBy = "profesores")
-	private Set<Clase> clases;
 	private static final long serialVersionUID = 1L;
 	
 	public Profesor() {
@@ -31,32 +29,32 @@ public class Profesor extends Usuario implements Serializable {
 		this.nifNie = nifNie;
 		this.estadoSanitario = estadoSanitario;
 		this.fechaConfinamiento = fechaConfinamiento;
-		this.clases = clases;
 	}
+	
 	public String getNifNie() {
 		return nifNie;
 	}
+	
 	public void setNifNie(String nifNie) {
 		this.nifNie = nifNie;
 	}
+	
 	public String getEstadoSanitario() {
 		return estadoSanitario;
 	}
+	
 	public void setEstadoSanitario(String estadoSanitario) {
 		this.estadoSanitario = estadoSanitario;
 	}
+	
 	public Date getFechaConfinamiento() {
 		return fechaConfinamiento;
 	}
+
 	public void setFechaConfinamiento(Date fechaConfinamiento) {
 		this.fechaConfinamiento = fechaConfinamiento;
 	}
-	public Set<Clase> getClases() {
-		return clases;
-	}
-	public void setClases(Set<Clase> clases) {
-		this.clases = clases;
-	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

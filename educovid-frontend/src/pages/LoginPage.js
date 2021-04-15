@@ -24,8 +24,12 @@ function LoginPage(props) {
   useEffect(() => {
     const callCenters = async () => {
       // Get all centers (not secure, everyone can read all centers)
-      const centersRes = await fetch(backUrl + "/centro");
-      const centers = await centersRes.json();
+      try {
+        const centersRes = await fetch(backUrl + "/centro");
+        const centers = await centersRes.json();
+      } catch (e) {
+        // Nothing to do
+      }
       setCenters(centers);
     };
     callCenters();
@@ -84,7 +88,6 @@ function LoginPage(props) {
     }
     formBody = formBody.join("&");
     // Make request
-    setErrors({ username: "", password: "Usuario o contraseña inválidos." });
     switch (roleField.toLowerCase()) {
       case "alumno":
         const alumnoRes = await fetch(backUrl + "/login/alumno", {
@@ -95,9 +98,11 @@ function LoginPage(props) {
           body: formBody
         });
         if (alumnoRes.ok) {
-          const alumnoData = alumnoRes.json();
-          onLogIn({ ...alumnoData, role: "alumno" });
           setErrors({});
+          const alumnoData = await alumnoRes.json();
+          onLogIn({ ...alumnoData, role: "alumno" });
+        } else {
+          setErrors({ username: "", password: "Usuario o contraseña inválidos." });
         }
         break;
       case "profesor":
@@ -109,9 +114,12 @@ function LoginPage(props) {
           body: formBody
         });
         if (profesorRes.ok) {
-          const profesorData = profesorRes.json();
-          onLogIn({ ...profesorData, role: "profesor" });
           setErrors({});
+          const profesorData = await profesorRes.json();
+          console.log(profesorData);
+          onLogIn({ ...profesorData, role: "profesor" });
+        } else {
+          setErrors({ username: "", password: "Usuario o contraseña inválidos." });
         }
         break;
       case "responsable de covid":
@@ -123,9 +131,11 @@ function LoginPage(props) {
           body: formBody
         });
         if (responsableRes.ok) {
-          const responsableData = responsableRes.json();
-          onLogIn({ ...responsableData, role: "responsable" });
           setErrors({});
+          const responsableData = await responsableRes.json();
+          onLogIn({ ...responsableData, role: "responsable" });
+        } else {
+          setErrors({ username: "", password: "Usuario o contraseña inválidos." });
         }
         break;
       default:
@@ -172,10 +182,10 @@ function LoginPage(props) {
             <ListGroup>
               {centerField.length > 0
                 ? suggestions.map(center => (
-                    <ListGroup.Item variant="light" key={center}>
-                      {center}
-                    </ListGroup.Item>
-                  ))
+                  <ListGroup.Item variant="light" key={center}>
+                    {center}
+                  </ListGroup.Item>
+                ))
                 : null}
             </ListGroup>
           </Form.Group>

@@ -77,7 +77,7 @@ function ProfessorPage(props) {
                           >
                             {student.estadoSanitario}
                           </p>
-                          {index === students.length - 1 ? null : <hr />}
+                          {index === group.alumnos.length - 1 ? null : <hr />}
                         </div>
                       ))}
                     </Card.Body>

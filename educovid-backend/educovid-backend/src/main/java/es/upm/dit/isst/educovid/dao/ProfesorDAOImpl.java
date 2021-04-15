@@ -105,7 +105,7 @@ public class ProfesorDAOImpl implements ProfesorDAO{
 		List<Profesor> profesor = new ArrayList<Profesor> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        profesor.addAll(session.createQuery("from profesores").list());
+        profesor.addAll(session.createQuery("from profesores p where profesores.fechaConfinamiento=" +fechaConfinamiento).list());
         session.getTransaction().commit();
         session.close();
         return profesor;
@@ -117,6 +117,18 @@ public class ProfesorDAOImpl implements ProfesorDAO{
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
         profesor.addAll(session.createQuery("from profesores").list());
+        session.getTransaction().commit();
+        session.close();
+        return profesor;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Profesor> readAllProfesores() {
+		List<Profesor> profesor = new ArrayList<Profesor> ();
+        Session session = SessionFactoryService.get().openSession();
+        session.beginTransaction();
+        profesor.addAll(session.createQuery("from Profesor").list());
         session.getTransaction().commit();
         session.close();
         return profesor;
