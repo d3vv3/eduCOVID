@@ -9,9 +9,13 @@ import { LinkContainer } from "react-router-bootstrap";
 // Local imports
 import PasswordStrength from "../components/PasswordStrength";
 import DropZone from "../components/DropZone";
+import zxcvbn from "zxcvbn";
+
+// Constants
+import { backUrl } from "../constants/constants";
 
 // External library imports
-import zxcvbn from "zxcvbn";
+const fetch = require("node-fetch");
 
 function Register({ history }) {
   const [centerName, setCenterName] = useState("");
@@ -27,6 +31,11 @@ function Register({ history }) {
     password: "",
     gdprAcceptance: "Debe aceptar los términos y condiciones de uso"
   });
+  const [studentCSV, setStudentCSV] = useState("");
+  const [professorCSV, setProfessorCSV] = useState("");
+  const [responsibleResponse, setResponsibleResponse] = useState({});
+  const [studentCSVResponse, setStudentCSVResponse] = useState({});
+  const [professorCSVResponse, setProfessorCSVResponse] = useState({});
 
   function download(filename, text) {
     var element = document.createElement("a");
@@ -53,7 +62,18 @@ function Register({ history }) {
         reader.onload = () => {
           const binaryStr = reader.result;
           // TODO: Process file contents
-          console.log(binaryStr);
+          let decoder = new TextDecoder("utf-8");
+          // console.log(binaryStr);
+          let content = decoder.decode(binaryStr);
+          if (file.name.includes("student") || file.name.includes("alumno")) {
+            setStudentCSV(content);
+          }
+          if (
+            file.name.includes("professor") ||
+            file.name.includes("profesor")
+          ) {
+            setProfessorCSV(content);
+          }
         };
 
         reader.readAsArrayBuffer(file);
@@ -103,7 +123,7 @@ function Register({ history }) {
     return !Object.values(errs).some(item => item === true);
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     // Handle submit and prevent the form from submiting to validate
     event.preventDefault();
     let valid = validateForm();
@@ -113,6 +133,31 @@ function Register({ history }) {
       return true;
     } else if (valid && registerStep === 2) {
       // TODO: Should validate files!
+      // Register the responsible
+      let response = await fetch(`${backUrl}/register/responsible`, {
+        method: "post",
+        body: JSON.stringify({
+          center: centerName,
+          nifNie: idNumber,
+          password: password,
+          terms: gdprAcceptance
+        }),
+        headers: { "Content-Type": "application/json" }
+      });
+      setResponsibleResponse(await response.json());
+      response = await fetch(`${backUrl}/register/students`, {
+        method: "post",
+        body: studentCSV,
+        headers: { "Content-Type": "text/csv" }
+      });
+      setStudentCSVResponse(await response.json());
+      response = await fetch(`${backUrl}/register/professors`, {
+        method: "post",
+        body: professorCSV,
+        headers: { "Content-Type": "text/csv" }
+      });
+      setProfessorCSVResponse(await response.json());
+
       history.push("/");
       return true;
     }

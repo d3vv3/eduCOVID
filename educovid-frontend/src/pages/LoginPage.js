@@ -31,7 +31,7 @@ function LoginPage(props) {
     callCenters();
   }, [centers]);
 
-  const updateInputField = async (event) => {
+  const updateInputField = event => {
     const { name, value } = event.target;
     switch (name) {
       case "username":
@@ -50,7 +50,7 @@ function LoginPage(props) {
       case "center":
         let suggestions = centers
           .filter((center, index) => centers.indexOf(center) === index) // Remove duplicates
-          .filter((center) =>
+          .filter(center =>
             center.toLowerCase().startsWith(value.toLowerCase())
           );
         if (suggestions.length > 0) {
@@ -68,7 +68,7 @@ function LoginPage(props) {
     }
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     /* fetch REST API */
     // Prepare body
     const details = {
@@ -171,9 +171,11 @@ function LoginPage(props) {
             />
             <ListGroup>
               {centerField.length > 0
-                ? suggestions.map((center) => (
-                  <ListGroup.Item variant="light" key={center}>{center}</ListGroup.Item>
-                ))
+                ? suggestions.map(center => (
+                    <ListGroup.Item variant="light" key={center}>
+                      {center}
+                    </ListGroup.Item>
+                  ))
                 : null}
             </ListGroup>
           </Form.Group>
