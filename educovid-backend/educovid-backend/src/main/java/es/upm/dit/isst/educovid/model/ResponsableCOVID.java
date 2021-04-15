@@ -27,8 +27,8 @@ public class ResponsableCOVID extends Usuario implements Serializable {
 		super();
 	}
 	
-	public ResponsableCOVID(String nombre, String password, String nifNie, Boolean privacidadAceptada, List<CentroEducativo> centros) {
-		super(nombre, password);
+	public ResponsableCOVID(String nombre, String hash, String salt, String nifNie, Boolean privacidadAceptada, List<CentroEducativo> centros) {
+		super(nombre, hash, salt);
 		this.nifNie = nifNie;
 		this.privacidadAceptada = privacidadAceptada;
 		this.centros = centros;

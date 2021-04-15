@@ -53,11 +53,11 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 	}
 
 	@Override
-	public Alumno readAlumnobyMatNum(String numeroMatricula, String centro) {
+	public Alumno readAlumnobyMatNumCenter(String numeroMatricula, String centro) {
 		List<Alumno> alumnos = new ArrayList<Alumno>();
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		alumnos.addAll(session.createQuery("from alumnos").list());
+		alumnos.addAll(session.createQuery("from Alumno").list());
 		session.getTransaction().commit();
 		session.close();
 		for (Alumno alumno : alumnos) {

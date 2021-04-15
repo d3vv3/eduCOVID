@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.sun.xml.fastinfoset.algorithm.HexadecimalEncodingAlgorithm;
+
 @MappedSuperclass
 public class Usuario implements Serializable {
 	@Id
@@ -19,77 +21,65 @@ public class Usuario implements Serializable {
 	@Column(nullable = false)
 	private String nombre;
 	@Column(nullable = false)
-	private byte[] hash;
+	private String hash;
 	@Column(nullable = false)
-	private byte[] salt;
+	private String salt;
 	private static final long serialVersionUID = 1L;
 
 	public Usuario() {
 		super();
 	}
-
-	public Usuario(String nombre, String password) {
+	
+	public Usuario(String nombre, String hash, String salt) {
 		super();
 		this.nombre = nombre;
-		this.setPassword(password);
+		this.hash = hash;
+		this.salt = salt;
+		//System.out.println("User name: '" + this.nombre + "'");
+		//System.out.println("User salt: '" + this.salt.toString() + "'");
+		//System.out.println("User hash: '" + this.hash.toString() + "'");
 	}
-
+	
+//	public Usuario(String nombre, String password) {
+//		super();
+//		this.nombre = nombre;
+//		this.setPassword(password);
+//	}
+	
 	public Integer getId() {
 		return id;
 	}
+	
 	public void setId(Integer id) {
 		this.id = id;
+		System.out.println("Setting id: '" + id + "'");
 	}
+	
 	public String getNombre() {
 		return nombre;
 	}
+	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+		System.out.println("Setting nombre: '" + nombre + "'");
 	}
-	public byte[] getHash() {
+	
+	public String getHash() {
 		return hash;
 	}
-	public void setHash(byte[] hash) {
+	
+	public void setHash(String hash) {
 		this.hash = hash;
 	}
-	public byte[] getSalt() {
+	
+	public String getSalt() {
 		return salt;
 	}
-	public void setSalt(byte[] salt) {
+	
+	public void setSalt(String salt) {
 		this.salt = salt;
 	}
-	public void generateAndSaveSalt() {
-		SecureRandom random = new SecureRandom();
-		byte[] salt = new byte[16];
-		random.nextBytes(salt);
-		this.setSalt(salt);
-	}
-	public void setPassword(String password) {
-		this.generateAndSaveSalt();
-		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			md.update(this.salt);
-			byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
-			this.hash = hashedPassword;
-	    }
-	    catch (NoSuchAlgorithmException e) {
-	        System.err.println("SHA-512 is not a valid message digest algorithm");
-	        System.err.println(e);
-	    }
-	}
-	public Boolean checkPassword(String passwordToCheck) {
-		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			md.update(this.salt);
-			byte[] hashedPasswordToCheck = md.digest(passwordToCheck.getBytes(StandardCharsets.UTF_8));
-			return hashedPasswordToCheck.equals(this.hash);
-	    }
-	    catch (NoSuchAlgorithmException e) {
-	    	System.err.println("SHA-512 is not a valid message digest algorithm");
-	        System.err.println(e);
-	        return false;
-	    }
-	}
+	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

@@ -21,8 +21,8 @@ public class Alumno extends Usuario implements Serializable {
 		super();
 	}
 	
-	public Alumno(String nombre, String password, String numeroMatricula, String estadoSanitario, Date fechaConfinamiento) {
-		super(nombre, password);
+	public Alumno(String nombre, String hash, String salt, String numeroMatricula, String estadoSanitario, Date fechaConfinamiento) {
+		super(nombre, hash, salt);
 		this.numeroMatricula = numeroMatricula;
 		this.estadoSanitario = estadoSanitario;
 		this.fechaConfinamiento = fechaConfinamiento;

@@ -36,15 +36,15 @@ public class AlumnoResource {
 	    return Response.status(Response.Status.NOT_FOUND).build();
 	}
 	
-	@GET
-	@Path("mat/{numeroMatricula}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response readAlumnobyMatNum(@PathParam("numeroMatricula") String numeroMatricula) {
-		Alumno a = AlumnoDAOImpl.getInstance().readAlumnobyMatNum(numeroMatricula);
-		if (a == null)
-			return Response.status(Response.Status.NOT_FOUND).build();
-		return Response.ok(a, MediaType.APPLICATION_JSON).build();
-	}
+//	@GET
+//	@Path("mat/{numeroMatricula}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response readAlumnobyMatNum(@PathParam("numeroMatricula") String numeroMatricula) {
+//		Alumno a = AlumnoDAOImpl.getInstance().readAlumnobyMatNum(numeroMatricula);
+//		if (a == null)
+//			return Response.status(Response.Status.NOT_FOUND).build();
+//		return Response.ok(a, MediaType.APPLICATION_JSON).build();
+//	}
 	
 	@GET
 	@Path("id/{id}")

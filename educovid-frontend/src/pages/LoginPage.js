@@ -19,8 +19,17 @@ function LoginPage(props) {
   const [roleField, setRoleField] = useState("Alumno");
   const [centerField, setCenterField] = useState("");
   const [errors, setErrors] = useState({});
+  const [centers, setCenters] = useState([]);
 
-  const centers = (await fetch(backUrl + "/centro")).json(); // Get all centers (not secure, everyone can read all centers)
+  useEffect(() => {
+    const callCenters = async () => {
+      // Get all centers (not secure, everyone can read all centers)
+      const centersRes = await fetch(backUrl + "/centro");
+      const centers = await centersRes.json();
+      setCenters(centers);
+    };
+    callCenters();
+  }, [centers]);
 
   const updateInputField = async (event) => {
     const { name, value } = event.target;
@@ -78,35 +87,44 @@ function LoginPage(props) {
     setErrors({ username: "", password: "Usuario o contraseña inválidos." });
     switch (roleField.toLowerCase()) {
       case "alumno":
-        const res = await fetch(backUrl + "/login/alumno", {
+        const alumnoRes = await fetch(backUrl + "/login/alumno", {
           method: "POST",
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
           body: formBody
         });
-        if (res.ok) {
-          const userData = res.json();
-          onLogIn({ ...userData, role: "alumno" });
+        if (alumnoRes.ok) {
+          const alumnoData = alumnoRes.json();
+          onLogIn({ ...alumnoData, role: "alumno" });
           setErrors({});
         }
         break;
       case "profesor":
-        const res = await fetch(backUrl + "/login/profesor", {
+        const profesorRes = await fetch(backUrl + "/login/profesor", {
           method: "POST",
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
           body: formBody
         });
-        if (res.ok) {
-          const userData = res.json();
-          onLogIn({ ...userData, role: "profesor" });
+        if (profesorRes.ok) {
+          const profesorData = profesorRes.json();
+          onLogIn({ ...profesorData, role: "profesor" });
           setErrors({});
         }
         break;
       case "responsable de covid":
-        const res = await fetch(backUrl + "/login/responsable", {
+        const responsableRes = await fetch(backUrl + "/login/responsable", {
           method: "POST",
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
           body: formBody
         });
-        if (res.ok) {
-          const userData = res.json();
-          onLogIn({ ...userData, role: "responsable" });
+        if (responsableRes.ok) {
+          const responsableData = responsableRes.json();
+          onLogIn({ ...responsableData, role: "responsable" });
           setErrors({});
         }
         break;

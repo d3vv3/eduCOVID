@@ -6,6 +6,7 @@ import org.hibernate.Session;
 
 import es.upm.dit.isst.educovid.dao.ResponsableDAO;
 import es.upm.dit.isst.educovid.model.CentroEducativo;
+import es.upm.dit.isst.educovid.model.Profesor;
 import es.upm.dit.isst.educovid.model.ResponsableCOVID;
 
 public class ResponsableDAOImpl implements ResponsableDAO{
@@ -37,10 +38,13 @@ public class ResponsableDAOImpl implements ResponsableDAO{
 	public ResponsableCOVID readResponsablebyNIFNIE(String nifNie) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        ResponsableCOVID responsableCOVID = session.get(ResponsableCOVID.class, nifNie);
+        ResponsableCOVID responsable = null;
+        Object object = session.createQuery("from ResponsableCOVID r where r.nifNie='" + nifNie + "'").uniqueResult();
+        if (object != null)
+        	responsable = (ResponsableCOVID) object;
         session.getTransaction().commit();
         session.close();
-        return responsableCOVID;
+        return responsable;
 	}
 
 	@Override

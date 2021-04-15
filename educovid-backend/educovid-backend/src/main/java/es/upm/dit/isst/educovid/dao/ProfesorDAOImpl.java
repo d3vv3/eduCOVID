@@ -40,7 +40,10 @@ public class ProfesorDAOImpl implements ProfesorDAO{
 	public Profesor readProfesorbyNIFNIE(String nifNie) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        Profesor profesor = session.get(Profesor.class, nifNie);
+        Profesor profesor = null;
+        Object object = session.createQuery("from Profesor p where p.nifNie='" + nifNie + "'").uniqueResult();
+        if (object != null)
+        	profesor = (Profesor) object;
         session.getTransaction().commit();
         session.close();
         return profesor;

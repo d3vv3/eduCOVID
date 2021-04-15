@@ -26,6 +26,7 @@ import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 import es.upm.dit.isst.educovid.model.Profesor;
+import es.upm.dit.isst.educovid.aux.Security;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
@@ -42,6 +43,7 @@ public class RegisterResource {
 
 		System.out.println(JSONBodyString);
 		JSONObject body = new JSONObject(JSONBodyString);
+		String name = body.getString("name");
 		String centerName = body.getString("center");
 		String nifNie = body.getString("nifNie");
 		String password = body.getString("nifNie");
@@ -49,7 +51,8 @@ public class RegisterResource {
 
 		// 3. Create responsible (class) (needs list of centers)
 		List<CentroEducativo> centros = new ArrayList<CentroEducativo>();
-		ResponsableCOVID newResponsible = new ResponsableCOVID(null, password, nifNie, terms, centros);
+		String salt = Security.getSalt();
+		ResponsableCOVID newResponsible = new ResponsableCOVID(name, Security.getHash(password, salt), salt, nifNie, terms, centros);
 		// TODO: save terms acceptance
 		ResponsableCOVID responsible = ResponsableDAOImpl.getInstance().createResponsable(newResponsible);
 
@@ -72,8 +75,8 @@ public class RegisterResource {
 			r = r.subList(1, r.size());
 		    r.forEach(student -> {
 		    	System.out.println(Arrays.toString(student));
-		    	Alumno newStudent = new Alumno(student[1], student[2], student[2], "no confinado", null);
-		    	AlumnoDAOImpl.getInstance().createAlumno(newStudent);
+//		    	Alumno newStudent = new Alumno(student[1], student[2], student[2], "no confinado", null);
+//		    	AlumnoDAOImpl.getInstance().createAlumno(newStudent);
 		    	// TODO: register each row somehow. For example: x = [11,  Jaime Conde Segovia,  mtAAAAA]
 		    	// [Clase, Nombre, Numero de matricula]
 		    });
@@ -95,8 +98,8 @@ public class RegisterResource {
 			r = r.subList(1, r.size());
 		    r.forEach(professor -> {
 		    	System.out.println(Arrays.toString(professor));
-		    	Profesor newProfesor = new Profesor(professor[1], professor[2], professor[2], "no confinado", null, null);
-		    	ProfesorDAOImpl.getInstance().createProfesor(newProfesor);
+//		    	Profesor newProfesor = new Profesor(professor[1], professor[2], professor[2], "no confinado", null, null);
+//		    	ProfesorDAOImpl.getInstance().createProfesor(newProfesor);
 		    	// TODO: register each row somehow. For example: x = [11, Yod Samuel Martín García, 00000000A]
 		    	// [Clase, Nombre, NIF/NIE]
 		    });
