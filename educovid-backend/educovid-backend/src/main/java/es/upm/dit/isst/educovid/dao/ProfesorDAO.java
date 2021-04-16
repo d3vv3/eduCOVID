@@ -9,6 +9,7 @@ public interface ProfesorDAO {
 
 	public Profesor createProfesor (Profesor Profesor);
 	public Profesor readProfesorbyNIFNIE (String nifNie);
+	public Profesor readProfesorbyId(String id);
 	public Profesor updateProfesor (Profesor Profesor);
 	public Profesor updateProfesorbyEstadoSanitario (String estadoSanitario);
 	public Profesor updateProfesorbyFechaConfinamiento (Date fechaConfinamiento);

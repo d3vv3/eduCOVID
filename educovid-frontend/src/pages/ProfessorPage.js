@@ -5,15 +5,33 @@ import { withRouter } from "react-router-dom"; // No sé si es necesario
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 
+// Constants
+import { backUrl } from "../constants/constants";
+
 //import { professor, students } from "../tests/prueba";
 
 function ProfessorPage(props) {
   const { history, userData } = props;
 
-  //const [professorId] = useState(userId);
+  const [professorId] = useState(userData.id);
   const [professorName, setProfessorName] = useState(userData.nombre);
   const [professorState, setProfessorState] = useState(userData.estadoSanitario);
-  const [professorClasses, setprofessorClasses] = useState(userData.clases);
+  const [professorClasses, setProfessorClasses] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    const callClasses = async () => {
+      try {
+        const classesRes = await fetch(backUrl + "/clase/" + professorId);
+        let classesData = await classesRes.json();
+        setProfessorClasses(classesData);
+      } catch (e) {
+        // Nothing to do
+      }
+    };
+    callClasses();
+    return () => { isMounted = false };
+  }, []);
 
   // useEffect(() => {
   //   setProfessorName(userData.nombre);

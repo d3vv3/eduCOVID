@@ -8,6 +8,7 @@ import java.util.Set;
 import org.hibernate.Session;
 
 import es.upm.dit.isst.educovid.dao.ProfesorDAO;
+import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.Profesor;
 
@@ -47,6 +48,16 @@ public class ProfesorDAOImpl implements ProfesorDAO{
         session.getTransaction().commit();
         session.close();
         return profesor;
+	}
+	
+	@Override
+	public Profesor readProfesorbyId(String id) {
+		Session session = SessionFactoryService.get().openSession();
+		session.beginTransaction();
+		Profesor profesor = session.get(Profesor.class, id);
+		session.getTransaction().commit();
+		session.close();
+		return profesor;
 	}
 
 	@Override
