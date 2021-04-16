@@ -4,18 +4,48 @@ import { withRouter } from "react-router-dom";
 // Bootstrap imports
 import Card from "react-bootstrap/Card";
 
-import { students } from "../tests/prueba";
+// import { students } from "../tests/prueba";
+import { backUrl } from "../constants/constants";
 
-function StudentPage({ history, userId }) {
-  const [studentId] = useState(userId);
-  const [studentName, setStudentName] = useState("");
-  const [studentState, setStudentState] = useState("");
-  const [studentGroup, setStudentGroup] = useState("");
+function StudentPage(props) {
 
+  const { history, userData } = props;
+
+  const [studentId] = useState(userData.id);
+  const [studentName, setStudentName] = useState(userData.nombre);
+  const [studentState, setStudentEstadoSanitario] = useState(userData.estadoSanitario);
+  const [studentGroup, setStudentGroup] = useState();
+  const [studentClass, setStudentClass] = useState();
+
+  let groupDownloaded = false;
+  let classDownloaded = false;
   useEffect(() => {
-    setStudentName(students[studentId]?.name); //BBDD
-    setStudentState(students[studentId]?.state); //BBDD
-    setStudentGroup(students[studentId]?.group); //BBDD
+    let isMounted = true;
+    const callGroup = async () => {
+      try {
+        const groupRes = await fetch(backUrl + "/grupo/alumno/" + studentId);
+        let groupData = await groupRes.json();
+        setStudentGroup(groupData);
+        console.log(groupData);
+        groupDownloaded = true;
+      } catch (e) {
+        // Nothing to do
+      }
+    };
+    const callClass = async () => {
+      try {
+        const classRes = await fetch(backUrl + "/clase/alumno/" + studentId);
+        let classData = await classRes.json();
+        setStudentClass(classData);
+        console.log(classData);
+        classDownloaded = true;
+      } catch (e) {
+        // Nothing to do
+      }
+    };
+    callClass();
+    callGroup();
+    return () => { isMounted = false };
   }, [studentId]);
 
   return (
@@ -23,28 +53,20 @@ function StudentPage({ history, userId }) {
       <div className="centered-div">
         <h4>Alumno/a</h4>
         <h1>{studentName}</h1>
-        <h2 className={studentState === "Confinado" ? "bad" : "good"}>
-          {studentState}
+        <h2 className={studentState.toLowerCase() === "confinado" ? "bad" : "good"}>
+        {studentState.toLowerCase() === "confinado" ? "Confinado" : "No confinado"}
         </h2>
+            <p className="description">
+             {studentGroup?.estadoSanitario.toLowerCase() === "confinado" ||
+                studentGroup?.estadoDocencia.toLowerCase() === "online" ||
+                studentState.toLowerCase() === "confinado"
+                ? "Debe recibir clase de manera online" : "Debe recibir clase de manera presencial"}
+            </p>
 
-        <p className="description">
-          {studentGroup?.state === "Confinado" ||
-          studentGroup?.state === "Online" ||
-          studentState === "Confinado"
-            ? "Debe recibir clase de manera online"
-            : "Debe recibir clase de manera presencial"}
-        </p>
-
-        <Card
-          className={
-            studentGroup.state === ("Confinado" || "Online")
-              ? "card-header-bad"
-              : "card-header-good"
-          }
-          as={Card.Header}
-        >
-          {studentGroup.name} - 1°B - {studentGroup.state}
-        </Card>
+            <Card className={studentGroup?.estadoSanitario.toLowerCase() === "confinado" || studentGroup?.estadoDocencia?.toLowerCase() === "online"
+               ? "card-header-bad" : "card-header-good"} as={Card.Header}>
+                  {studentClass?.nombre} - {studentGroup?.nombre} - Docencia: {studentGroup?.estadoDocencia.toLowerCase() === "online" ? "Online" : "Presecial"}
+            </Card>
       </div>
     </div>
   );

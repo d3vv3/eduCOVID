@@ -56,6 +56,14 @@ public class GrupoBurbuja implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
 	public String getEstadoSanitario() {
 		return estadoSanitario;

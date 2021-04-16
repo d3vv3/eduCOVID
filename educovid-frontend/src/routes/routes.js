@@ -64,7 +64,7 @@ function Routes(props) {
         </Route>
         <Route path="/student">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <StudentPage history={history} userId={userData ? userData.id : null} />
+          <StudentPage history={history} userData={userData} />
         </Route>
         <Route path="/professor">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
