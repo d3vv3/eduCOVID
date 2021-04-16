@@ -67,7 +67,7 @@ public class ClaseDAOImpl implements ClaseDAO{
 		List<Clase> clases = new ArrayList<Clase> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        clases.addAll(session.createQuery("from clases").list());
+        clases.addAll(session.createQuery("from Clase").list());
         session.getTransaction().commit();
         session.close();
         return clases;
