@@ -1,17 +1,11 @@
 package es.upm.dit.isst.educovid.model;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-
-import com.sun.xml.fastinfoset.algorithm.HexadecimalEncodingAlgorithm;
 
 @MappedSuperclass
 public class Usuario implements Serializable {
@@ -24,6 +18,7 @@ public class Usuario implements Serializable {
 	private String hash;
 	@Column(nullable = false)
 	private String salt;
+	private String subscriptionEndpoint;
 	private static final long serialVersionUID = 1L;
 
 	public Usuario() {
@@ -80,6 +75,14 @@ public class Usuario implements Serializable {
 		this.salt = salt;
 	}
 	
+	public String getSubscriptionEndpoint() {
+		return subscriptionEndpoint;
+	}
+
+	public void setSubscriptionEndpoint(String subscriptionEndpoint) {
+		this.subscriptionEndpoint = subscriptionEndpoint;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
