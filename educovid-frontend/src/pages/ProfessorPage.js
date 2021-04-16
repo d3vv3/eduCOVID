@@ -44,12 +44,12 @@ function ProfessorPage(props) {
       <div className="centered-div">
         <h4>Profesor/a</h4>
         <h1>{professorName}</h1>
-        <h2 className={professorState === "Confinado" ? "bad" : "good"}>
+        <h2 className={professorState.toLowerCase() === "confinado" ? "bad" : "good"}>
           {professorState}
         </h2>
 
         <p className="description">
-          {professorState === "Confinado"
+          {professorState.toLowerCase() === "confinado"
             ? "Debe impartir clase de manera online"
             : "Puede impartir clase de manera presencial"}
         </p>
@@ -61,7 +61,7 @@ function ProfessorPage(props) {
                 <Accordion.Toggle
                   key={index}
                   className={
-                    group.estadoDocencia === "Online"
+                    group.estadoDocencia.toLowerCase() === "online"
                       ? "card-header-bad"
                       : "card-header-good"
                   }
@@ -70,7 +70,7 @@ function ProfessorPage(props) {
                 >
                   {clase.nombre} - {group.id}
                 </Accordion.Toggle>
-                {group.estadoDocencia === "Presencial" ? (
+                {group.estadoDocencia.toLowerCase() === "presencial" ? (
                   <Accordion.Collapse
                     className="card-body"
                     key={index + professorClasses.length}
@@ -81,7 +81,7 @@ function ProfessorPage(props) {
                         <div key={index} className="accordion-item">
                           <p
                             className={
-                              student.estadoSanitario === "Confinado" ? "p-bad" : "p-good"
+                              student.estadoSanitario.toLowerCase() === "confinado" ? "p-bad" : "p-good"
                             }
                             key={index}
                           >
@@ -89,7 +89,7 @@ function ProfessorPage(props) {
                           </p>
                           <p
                             className={
-                              student.estadoSanitario === "Confinado" ? "p-bad" : "p-good"
+                              student.estadoSanitario.toLowerCase() === "confinado" ? "p-bad" : "p-good"
                             }
                             key={index + student.length}
                           >

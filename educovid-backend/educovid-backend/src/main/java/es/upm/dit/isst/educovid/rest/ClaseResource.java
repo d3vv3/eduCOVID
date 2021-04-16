@@ -32,8 +32,10 @@ public class ClaseResource {
 			}
 			List<Clase> clasesProfesor = new ArrayList<Clase> ();
 			for (Clase c: clases) {
-				if(c.getProfesores().contains(p)) {
-					clasesProfesor.add(c);
+				for (Profesor profesor: c.getProfesores()) {
+					if(profesor.getNifNie().equals(p.getNifNie())) {
+						clasesProfesor.add(c);
+					}
 				}
 			}
 			return Response.ok(clasesProfesor, MediaType.APPLICATION_JSON).build();
