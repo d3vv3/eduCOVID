@@ -76,7 +76,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 	public Alumno readAlumnobyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		Alumno alumno = session.get(Alumno.class, id);
+		Alumno alumno = session.get(Alumno.class, Integer.parseInt(id));
 		session.getTransaction().commit();
 		session.close();
 		return alumno;

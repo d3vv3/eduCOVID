@@ -16,7 +16,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
+import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;
+import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 
 @Path("/alumno")
 public class AlumnoResource {
