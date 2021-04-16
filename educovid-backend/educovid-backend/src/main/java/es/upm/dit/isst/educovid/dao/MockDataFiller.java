@@ -27,13 +27,28 @@ public class MockDataFiller {
 		
 		Alumno alumno1 = new Alumno("Pepe", Security.getHash("S01546", salt), salt, "S01546", "no confinado", null);
 		AlumnoDAOImpl.getInstance().createAlumno(alumno1);
-		List<Alumno> alumnos = new ArrayList<Alumno>();
-		alumnos.add(alumno1);
+		List<Alumno> alumnos1 = new ArrayList<Alumno>();
+		alumnos1.add(alumno1);
+		Alumno alumno2 = new Alumno("Jose", Security.getHash("S01546", salt), salt, "S01546", "confinado", null);
+		AlumnoDAOImpl.getInstance().createAlumno(alumno2);
+		List<Alumno> alumnos2 = new ArrayList<Alumno>();
+		alumnos2.add(alumno2);
+		Alumno alumno3= new Alumno("Pepe", Security.getHash("S01546", salt), salt, "S01546", "no confinado", null);
+		AlumnoDAOImpl.getInstance().createAlumno(alumno1);
+		List<Alumno> alumnos3 = new ArrayList<Alumno>();
+		alumnos3.add(alumno3);
 		
-		GrupoBurbuja burbuja1 = new GrupoBurbuja("Grupo 1", "no confinado", "presencial", null, null, null, alumnos);
+		GrupoBurbuja burbuja1 = new GrupoBurbuja("Grupo 1", "no confinado", "presencial", null, null, null, alumnos1);
 		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(burbuja1);
+		GrupoBurbuja burbuja2 = new GrupoBurbuja("Grupo 2", "confinado", "presencial", null, null, null, alumnos2);
+		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(burbuja2);
+		GrupoBurbuja burbuja3 = new GrupoBurbuja("Grupo 3", "confinado", "online", null, null, null, alumnos3);
+		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(burbuja3);
 		List <GrupoBurbuja> grupos = new ArrayList<>();
 		grupos.add(burbuja1);
+		grupos.add(burbuja2);
+		grupos.add(burbuja3);
+
 		
 		Clase clase = new Clase("1ºD", null, profesores, grupos);
 		ClaseDAOImpl.getInstance().createClase(clase);

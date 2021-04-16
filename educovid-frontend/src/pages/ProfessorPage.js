@@ -16,28 +16,62 @@ function ProfessorPage(props) {
   const [professorId] = useState(userData.id);
   const [professorName, setProfessorName] = useState(userData.nombre);
   const [professorState, setProfessorState] = useState(userData.estadoSanitario);
-  const [professorClasses, setProfessorClasses] = useState([]);
+  // const [professorClasses, setProfessorClasses] = useState([]);
+  const [professorGroups, setProfessorGroups] = useState([]);
+  // const [professorGroupsState, setProfessorGroupsState] = useState([]);
+
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const callClasses = async () => {
+  //     try {
+  //       let groups = [];
+  //       let groupsState = [];
+  //       const classesRes = await fetch(backUrl + "/clase/" + professorId);
+  //       let classesData = await classesRes.json();
+  //       //Getting groups
+  //       classesData.forEach((clase, index) => {
+  //         clase.gruposBurbuja.forEach((group, i) => {
+  //           groups.push(group);
+  //         });
+  //       });
+  //       //Getting groups state
+  //       groups.forEach(async (item, i) => {
+  //         const stateRes = await fetch(backUrl + "/grupoburbuja/" + item.id);
+  //         let stateData = await stateRes.json();
+  //         groupsState.push(stateData);
+  //       });
+  //       if(isMounted){
+  //         setProfessorClasses(classesData);
+  //         setProfessorGroups(groups)
+  //         setProfessorGroupsState(groupsState);
+  //         console.log(professorGroupsState)
+  //         console.log(professorGroups)
+  //       }
+  //     } catch (e) {
+  //       // Nothing to do
+  //     }
+  //   };
+  //   callClasses();
+  //   return () => { isMounted = false };
+  // }, []);
 
   useEffect(() => {
     let isMounted = true;
-    const callClasses = async () => {
+    const callGroups = async () => {
       try {
-        const classesRes = await fetch(backUrl + "/clase/" + professorId);
-        let classesData = await classesRes.json();
-        setProfessorClasses(classesData);
+        const groupsRes = await fetch(backUrl + "/grupoburbuja/" + professorId);
+        let groupsData = await groupsRes.json();
+        console.log(groupsData)
+        if(isMounted){
+          setProfessorGroups(groupsData)
+        }
       } catch (e) {
         // Nothing to do
       }
     };
-    callClasses();
+    callGroups();
     return () => { isMounted = false };
   }, []);
-
-  // useEffect(() => {
-  //   setProfessorName(userData.nombre);
-  //   setProfessorState(userData.estadoSanitario);
-  //   setprofessorClasses(userData.clases);
-  // }, [userData]);
 
   return (
     <div className="professor-page-container">
@@ -47,62 +81,45 @@ function ProfessorPage(props) {
         <h2 className={professorState.toLowerCase() === "confinado" ? "bad" : "good"}>
           {professorState}
         </h2>
-
         <p className="description">
           {professorState.toLowerCase() === "confinado"
             ? "Debe impartir clase de manera online"
             : "Puede impartir clase de manera presencial"}
         </p>
-
         <Accordion className="accordion">
-          {professorClasses?.map((clase, index) => (
-            (clase.gruposBurbuja).map((group, index) => (
-              <Card key={index}>
-                <Accordion.Toggle
-                  key={index}
-                  className={
-                    group.estadoDocencia.toLowerCase() === "online"
-                      ? "card-header-bad"
-                      : "card-header-good"
-                  }
-                  as={Card.Header}
-                  eventKey={index + 1}
-                >
-                  {clase.nombre} - {group.id}
-                </Accordion.Toggle>
-                {group.estadoDocencia.toLowerCase() === "presencial" ? (
-                  <Accordion.Collapse
+        {professorGroups.map((group, index) => (
+            <Card key={index}>
+              <Accordion.Toggle
+                key={index}
+                className={
+                  group.estadoDocencia.toLowerCase() === "online"
+                    ? "card-header-bad"
+                    : "card-header-good"
+                }
+                as={Card.Header}
+                eventKey={index + 1}
+              >
+                {group.nombre}
+              </Accordion.Toggle>
+              {group.estadoDocencia.toLowerCase() === "presencial" ? (
+                <Accordion.Collapse
                     className="card-body"
-                    key={index + professorClasses.length}
+                    key={index + professorGroups.length}
                     eventKey={index + 1}
                   >
                     <Card.Body key={index}>
-                      {(group.alumnos).map((student, index) => (
                         <div key={index} className="accordion-item">
                           <p
-                            className={
-                              student.estadoSanitario.toLowerCase() === "confinado" ? "p-bad" : "p-good"
-                            }
+                            className="p-good"
                             key={index}
                           >
-                            {student.nombre}
+                            {group.estadoSanitario === "alumnosconfinados" ? "Hay alumnos confinados" : "No hay alumnos confinados"}
                           </p>
-                          <p
-                            className={
-                              student.estadoSanitario.toLowerCase() === "confinado" ? "p-bad" : "p-good"
-                            }
-                            key={index + student.length}
-                          >
-                            {student.estadoSanitario}
-                          </p>
-                          {index === group.alumnos.length - 1 ? null : <hr />}
                         </div>
-                      ))}
                     </Card.Body>
                   </Accordion.Collapse>
-                ) : null}
-              </Card>
-            ))
+              ) : null}
+            </Card>
           ))}
         </Accordion>
       </div>
