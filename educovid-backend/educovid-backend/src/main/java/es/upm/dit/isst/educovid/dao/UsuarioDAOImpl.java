@@ -31,7 +31,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
 	}
 
 	@Override
-	public Usuario readUsuariobyId(String id) {
+	public Usuario readUsuariobyId(Integer id) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
         Usuario usuario = session.get(Usuario.class, id);
@@ -44,7 +44,7 @@ public class UsuarioDAOImpl implements UsuarioDAO{
 	public Usuario readUsuariobyName(String name) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        Usuario usuario = session.get(Usuario.class, name);
+        Usuario usuario = session.get(Usuario.class, name); // TODO: MAL
         session.getTransaction().commit();
         session.close();
         return usuario;
