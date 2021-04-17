@@ -52,7 +52,7 @@ function StudentPage(props) {
 
   return (
     <div className="student-page-container">
-      <Notifications userId={studentId} />
+      <Notifications userId={studentId} role="alumno" />
       <div className="centered-div">
         <h4>Alumno/a</h4>
         <h1>{studentName}</h1>

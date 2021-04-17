@@ -10,12 +10,13 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Date;
 
-import javax.ws.rs.FormParam;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.auth0.jwt.JWT;
@@ -25,8 +26,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.upm.dit.isst.educovid.aux.CryptoService;
 import es.upm.dit.isst.educovid.aux.ECDSAKeys;
 import es.upm.dit.isst.educovid.aux.PushMessage;
-import es.upm.dit.isst.educovid.dao.UsuarioDAOImpl;
-import es.upm.dit.isst.educovid.model.Usuario;
+import es.upm.dit.isst.educovid.aux.Subscription;
+import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
+import es.upm.dit.isst.educovid.model.Alumno;
 
 @Path("/notification")
 public class NotificationResource {
@@ -39,31 +41,38 @@ public class NotificationResource {
 	}
 
 	@POST
-	@Path("/subscription/{userId}")
+	@Path("/subscription/alumno/{userId}")
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createSubscription(@PathParam("userId") String userId,
-			@FormParam("subscriptionEndpoint") String subscriptionEndpoint, @FormParam("p256dh") String p256dh,
-			@FormParam("auth") String auth) {
-		Usuario usuario = UsuarioDAOImpl.getInstance().readUsuariobyId(Integer.parseInt(userId));
-		usuario.setSubscriptionEndpoint(subscriptionEndpoint);
-		UsuarioDAOImpl.getInstance().updateUsuario(usuario);
-		System.out.println("Subscription endpoint: " + subscriptionEndpoint);
+			Subscription subscription) {
+		Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyId(userId);
+		alumno.setSubscriptionEndpoint(subscription.getEndpoint());
+		alumno.setAuth(subscription.getKeys().getAuth());
+		alumno.setP256dh(subscription.getKeys().getP256dh());
+		AlumnoDAOImpl.getInstance().updateAlumno(alumno);
+		System.out.println("Subscription endpoint: " + subscription.getEndpoint());
 		return Response.status(Response.Status.OK).build();
 	}
 
 	@GET
-	@Path("/subscription/{userId}")
+	@Path("/subscription/alumno/{userId}")
 	public Response readSubscription(@PathParam("userId") String userId) {
 		try {
 
-			Usuario usuario = UsuarioDAOImpl.getInstance().readUsuariobyId(Integer.parseInt(userId));
-			String subscriptionEndpoint = usuario.getSubscriptionEndpoint();
-			String auth = usuario.getAuth();
-			String p256dh = usuario.getP256dh();
+			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyId(userId);
+			System.out.println("Usuario obtenido: " + alumno);
+			String subscriptionEndpoint = alumno.getSubscriptionEndpoint();
+			String auth = alumno.getAuth();
+			String p256dh = alumno.getP256dh();
 			String origin = null;
+			System.out.println("Subscription Endpoint: " + subscriptionEndpoint);
+			System.out.println("Auth: " + auth);
+			System.out.println("p256dh: " + p256dh);
 
 			URI endpointURI = URI.create(subscriptionEndpoint);
 			URL url = new URL(subscriptionEndpoint);
 			origin = url.getProtocol() + "://" + url.getHost();
+			System.out.println("Origin: " + origin);
 
 			Algorithm jwtAlgorithm = Algorithm.ECDSA256(ECDSAKeys.getInstance().getPublicKey(),
 					ECDSAKeys.getInstance().getPrivateKey());
@@ -72,6 +81,7 @@ public class NotificationResource {
 
 			String token = JWT.create().withAudience(origin).withExpiresAt(expires)
 					.withSubject("mailto:example@example.com").sign(jwtAlgorithm);
+			System.out.println("JWT: " + token);
 
 			Builder httpRequestBuilder = HttpRequest.newBuilder();
 			CryptoService cryptoService = new CryptoService();
@@ -86,6 +96,7 @@ public class NotificationResource {
 					.build();
 			HttpClient httpClient = HttpClient.newHttpClient();
 			HttpResponse<Void> response = httpClient.send(request, BodyHandlers.discarding());
+			System.out.println("Response status code from push API: " + response.statusCode());
 
 			switch (response.statusCode()) {
 			case 201:
@@ -110,6 +121,7 @@ public class NotificationResource {
 
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
