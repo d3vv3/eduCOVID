@@ -229,7 +229,6 @@ function Register({ history }) {
               <Form.Label>Nombre del centro</Form.Label>
               <Form.Control
                 required
-                autoFocus
                 type="text"
                 placeholder="Introduzca el nombre del centro"
                 name="centerName"
