@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom"; // No sé si es necesario
+import { withRouter } from "react-router-dom"; 
 
 // Bootstrap imports
 import Accordion from "react-bootstrap/Accordion";

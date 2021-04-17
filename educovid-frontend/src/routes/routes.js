@@ -20,6 +20,7 @@ import ProfessorPage from "../pages/ProfessorPage";
 import LoginPage from "../pages/LoginPage";
 import Terms from "../pages/Terms";
 import Confine from "../pages/Confine";
+import Dashboard from "../pages/Dashboard";
 
 function Routes(props) {
   // Create the history of the user (to go back and forth from the browser or
@@ -75,6 +76,9 @@ function Routes(props) {
             <Redirect to={`/${routesMapper[userData.role]}`} />
           ) : null}
           <MainPage loggedIn={loggedIn} />
+        </Route>
+        <Route exact path="/dashboard">
+          <Dashboard />
         </Route>
       </Switch>
     </BrowserRouter>
