@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Session;
 
 import es.upm.dit.isst.educovid.model.Clase;
+import es.upm.dit.isst.educovid.model.Profesor;
 
 public class ClaseDAOImpl implements ClaseDAO{
 	private static ClaseDAOImpl instance = null;
@@ -37,6 +38,19 @@ public class ClaseDAOImpl implements ClaseDAO{
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
         Clase clase = session.get(Clase.class, id);
+        session.getTransaction().commit();
+        session.close();
+        return clase;
+	}
+	
+	@Override
+	public Clase readClasebyName(String name) {
+		Session session = SessionFactoryService.get().openSession();
+        session.beginTransaction();
+        Clase clase = null;
+        Object object = session.createQuery("from Clase c where c.nombre='" + name + "'").uniqueResult();
+        if (object != null)
+        	clase = (Clase) object;
         session.getTransaction().commit();
         session.close();
         return clase;

@@ -18,6 +18,7 @@ import { backUrl } from "../constants/constants";
 const fetch = require("node-fetch");
 
 function Register({ history }) {
+  const [responsibleName, setResponsibleName] = useState("");
   const [centerName, setCenterName] = useState("");
   const [idNumber, setIdNumber] = useState("");
   const [password, setPassword] = useState("");
@@ -88,6 +89,14 @@ function Register({ history }) {
     let errs = {};
     let msgs = {};
 
+    const validateResponsibleName = () => {
+      // Validate center name field by string length
+      msgs.responsibleName =
+        "El nombre del responsable debe tener al menos 4 caracteres";
+      errs.responsibleName = responsibleName.length < 4;
+      // TODO: Check if the center name already exists in the service
+    };
+
     const validateCenterName = () => {
       // Validate center name field by string length
       msgs.centerName = "El nombre del centro debe tener al menos 4 caracteres";
@@ -111,6 +120,7 @@ function Register({ history }) {
     };
 
     // Run the validations
+    validateResponsibleName();
     validateCenterName();
     validateID();
     validatePassword();
@@ -137,6 +147,7 @@ function Register({ history }) {
       let response = await fetch(`${backUrl}/register/responsible`, {
         method: "post",
         body: JSON.stringify({
+          name: responsibleName,
           center: centerName,
           nifNie: idNumber,
           password: password,
@@ -144,19 +155,19 @@ function Register({ history }) {
         }),
         headers: { "Content-Type": "application/json" }
       });
-      setResponsibleResponse(await response.json());
+      // setResponsibleResponse(await response.json());
       response = await fetch(`${backUrl}/register/students`, {
         method: "post",
         body: studentCSV,
         headers: { "Content-Type": "text/csv" }
       });
-      setStudentCSVResponse(await response.json());
+      // setStudentCSVResponse(await response.json());
       response = await fetch(`${backUrl}/register/professors`, {
         method: "post",
         body: professorCSV,
         headers: { "Content-Type": "text/csv" }
       });
-      setProfessorCSVResponse(await response.json());
+      // setProfessorCSVResponse(await response.json());
 
       history.push("/");
       return true;
@@ -165,8 +176,12 @@ function Register({ history }) {
 
   const updateFormState = event => {
     // On change, set the states with the updates
+    // console.log(event);
     const { name, value } = event.target;
     switch (name) {
+      case "responsibleName":
+        setResponsibleName(value);
+        break;
       case "centerName":
         setCenterName(value);
         break;
@@ -177,7 +192,7 @@ function Register({ history }) {
         setPassword(value);
         break;
       case "gdprAcceptance":
-        setGdprAcceptance(value);
+        setGdprAcceptance(!gdprAcceptance);
         break;
       default:
         return;
@@ -190,11 +205,30 @@ function Register({ history }) {
       {registerStep === 1 ? (
         <div className="register-center-form">
           <Form onSubmit={handleSubmit.bind(this)}>
+            <Form.Group controlId="formResponsibleName">
+              <Form.Label>Nombre del responsable de COVID</Form.Label>
+              <Form.Control
+                required
+                autoFocus
+                type="text"
+                placeholder="Introduzca el nombre del responsable"
+                name="responsibleName"
+                onChange={updateFormState}
+                value={responsibleName}
+                isInvalid={!!errors.responsibleName}
+              />
+              <Form.Control.Feedback type="invalid">
+                {feedbacks.responsibleName}
+              </Form.Control.Feedback>
+              <Form.Control.Feedback type="valid">
+                Perfecto
+              </Form.Control.Feedback>
+            </Form.Group>
+
             <Form.Group controlId="formCenterName">
               <Form.Label>Nombre del centro</Form.Label>
               <Form.Control
                 required
-                autoFocus
                 type="text"
                 placeholder="Introduzca el nombre del centro"
                 name="centerName"
@@ -252,9 +286,11 @@ function Register({ history }) {
               <div className="terms">
                 <Form.Check
                   required
+                  name="gdprAcceptance"
                   type="checkbox"
                   feedback={feedbacks.gdprAcceptance}
                   isInvalid={!!errors.gdprAcceptance}
+                  onChange={updateFormState}
                 />
                 <span>
                   Acepto los <a href="/terms">términos y condiciones</a> de uso.
