@@ -9,6 +9,8 @@ import {
   createNotificationSubscription
 } from "../notificationsServiceWorker";
 
+import { backUrl } from "../constants/constants";
+
 function Notifications(props) {
   useEffect(async () => {
     if (isPushNotificationSupported()) {
@@ -24,6 +26,8 @@ function Notifications(props) {
         let pushSubscription = await createNotificationSubscription();
         const details = {
           subscriptionEndpoint: pushSubscription.endpoint,
+          p256dh: pushSubscription.p256dh,
+          auth: pushSubscription.auth
         };
         let formBody = [];
         for (var property in details) {
@@ -32,17 +36,17 @@ function Notifications(props) {
           formBody.push(encodedKey + "=" + encodedValue);
         }
         formBody = formBody.join("&");
-      }
-      const subscriptionRes = await fetch(backUrl + "/notification/subscription/" + props.userId, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-        },
-        body: formBody
-      });
-      if (!subscriptionRes.ok) {
-        console.log("Subscription error");
-        return null;
+        const subscriptionRes = await fetch(backUrl + "/notification/subscription/" + props.userId, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
+          body: formBody
+        });
+        if (!subscriptionRes.ok) {
+          console.log("Subscription error");
+          return null;
+        }
       }
     }
   }, []);
