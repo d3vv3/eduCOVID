@@ -34,6 +34,11 @@ function Routes(props) {
     responsable: "confine",
   };
 
+  ///////////////////////////////
+  //ELIMINAR
+  ///////////////////////////////////
+  const prueba={ nombre: "Javier Rodríguez", id: 0, centro: "Universidad Politécnica de Madrid"};
+
   return (
     <BrowserRouter>
       <Switch>
@@ -78,7 +83,7 @@ function Routes(props) {
           <MainPage loggedIn={loggedIn} />
         </Route>
         <Route exact path="/dashboard">
-          <Dashboard />
+          <Dashboard userData={prueba}/>
         </Route>
       </Switch>
     </BrowserRouter>
