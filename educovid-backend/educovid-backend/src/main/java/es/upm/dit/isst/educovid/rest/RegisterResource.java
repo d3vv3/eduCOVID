@@ -46,15 +46,16 @@ public class RegisterResource {
 		String name = body.getString("name");
 		String centerName = body.getString("center");
 		String nifNie = body.getString("nifNie");
-		String password = body.getString("nifNie");
+		String password = body.getString("password");
 		Boolean terms = body.getBoolean("terms");
 
 		// 3. Create responsible (class) (needs list of centers)
 		List<CentroEducativo> centros = new ArrayList<CentroEducativo>();
 		String salt = Security.getSalt();
-		ResponsableCOVID newResponsible = new ResponsableCOVID(name, Security.getHash(password, salt), salt, nifNie, terms, centros);
+		String hash = Security.getHash(password, salt);
+		ResponsableCOVID newResponsible = new ResponsableCOVID(name, hash, salt, nifNie, terms, centros);
 		// TODO: save terms acceptance
-		ResponsableCOVID responsible = ResponsableDAOImpl.getInstance().createResponsable(newResponsible);
+		ResponsableDAOImpl.getInstance().createResponsable(newResponsible);
 
 		List<Clase> classes = new ArrayList<Clase>();
 		CentroEducativo newCenter = new CentroEducativo(centerName, classes);
@@ -75,8 +76,10 @@ public class RegisterResource {
 			r = r.subList(1, r.size());
 		    r.forEach(student -> {
 		    	System.out.println(Arrays.toString(student));
-//		    	Alumno newStudent = new Alumno(student[1], student[2], student[2], "no confinado", null);
-//		    	AlumnoDAOImpl.getInstance().createAlumno(newStudent);
+		    	String salt = Security.getSalt();
+		    	String hash = Security.getHash(student[2], salt);
+		    	Alumno newStudent = new Alumno(student[1], hash, salt, student[2], "no confinado", null);
+		    	AlumnoDAOImpl.getInstance().createAlumno(newStudent);
 		    	// TODO: register each row somehow. For example: x = [11,  Jaime Conde Segovia,  mtAAAAA]
 		    	// [Clase, Nombre, Numero de matricula]
 		    });
@@ -98,8 +101,10 @@ public class RegisterResource {
 			r = r.subList(1, r.size());
 		    r.forEach(professor -> {
 		    	System.out.println(Arrays.toString(professor));
-//		    	Profesor newProfesor = new Profesor(professor[1], professor[2], professor[2], "no confinado", null, null);
-//		    	ProfesorDAOImpl.getInstance().createProfesor(newProfesor);
+		    	String salt = Security.getSalt();
+		    	String hash = Security.getHash(professor[2], salt);
+		    	Profesor newProfesor = new Profesor(professor[1], hash, salt, professor[2], "no confinado", null, null);
+		    	ProfesorDAOImpl.getInstance().createProfesor(newProfesor);
 		    	// TODO: register each row somehow. For example: x = [11, Yod Samuel Martín García, 00000000A]
 		    	// [Clase, Nombre, NIF/NIE]
 		    });
