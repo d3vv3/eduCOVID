@@ -20,3 +20,13 @@ export const showLocalNotification = (title, body, swRegistration) => {
   };
   swRegistration.showNotification(title, options);
 };
+
+export const createNotificationSubscription = async () => {
+  // wait for service worker installation to be ready
+  const serviceWorker = await navigator.serviceWorker.ready;
+  // subscribe and return subscription
+  return await serviceWorker.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: pushServerPublicKey
+  });
+};

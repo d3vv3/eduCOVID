@@ -5,7 +5,8 @@ import {
   isPushNotificationSupported,
   showLocalNotification,
   askUserPermission,
-  registerServiceWorker
+  registerServiceWorker,
+  createNotificationSubscription
 } from "../notificationsServiceWorker";
 
 function Notifications() {
@@ -15,11 +16,12 @@ function Notifications() {
       let response = await askUserPermission(); // granted, default or denied
       console.log("NOTIFICATIONS:", response);
       if (response === "granted") {
-        showLocalNotification(
-          "eduCOVID",
-          "Has sido confinado. Entra en la aplicación para más detalles.",
-          swRegistration
-        );
+        // showLocalNotification(
+        //   "eduCOVID",
+        //   "Has sido confinado. Entra en la aplicación para más detalles.",
+        //   swRegistration
+        // );
+        let pushSubscription = await createNotificationSubscription();
       }
     }
   }, []);
