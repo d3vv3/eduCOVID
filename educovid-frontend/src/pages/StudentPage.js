@@ -7,6 +7,8 @@ import Card from "react-bootstrap/Card";
 // import { students } from "../tests/prueba";
 import { backUrl } from "../constants/constants";
 
+import Notifications from "../components/Notifications";
+
 function StudentPage(props) {
 
   const { history, userData } = props;
@@ -25,7 +27,7 @@ function StudentPage(props) {
       try {
         const groupRes = await fetch(backUrl + "/grupo/alumno/" + studentId);
         let groupData = await groupRes.json();
-        setStudentGroup(groupData);
+        if (isMounted) setStudentGroup(groupData);
         console.log(groupData);
         groupDownloaded = true;
       } catch (e) {
@@ -36,7 +38,7 @@ function StudentPage(props) {
       try {
         const classRes = await fetch(backUrl + "/clase/alumno/" + studentId);
         let classData = await classRes.json();
-        setStudentClass(classData);
+        if (isMounted) setStudentClass(classData);
         console.log(classData);
         classDownloaded = true;
       } catch (e) {
@@ -50,7 +52,7 @@ function StudentPage(props) {
 
   return (
     <div className="student-page-container">
-      <Notifications />
+      <Notifications userId={studentId} />
       <div className="centered-div">
         <h4>Alumno/a</h4>
         <h1>{studentName}</h1>

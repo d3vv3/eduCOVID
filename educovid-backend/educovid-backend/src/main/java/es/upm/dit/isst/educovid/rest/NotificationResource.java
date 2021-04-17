@@ -26,6 +26,7 @@ public class NotificationResource {
 		Usuario usuario = UsuarioDAOImpl.getInstance().readUsuariobyId(Integer.parseInt(userId));
 		usuario.setSubscriptionEndpoint(subscriptionEndpoint);
 		UsuarioDAOImpl.getInstance().updateUsuario(usuario);
+		System.out.println("Subscription endpoint: " + subscriptionEndpoint);
 		return Response.status(Response.Status.OK).build();
 	}
 

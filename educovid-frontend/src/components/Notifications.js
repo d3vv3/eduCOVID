@@ -9,7 +9,7 @@ import {
   createNotificationSubscription
 } from "../notificationsServiceWorker";
 
-function Notifications() {
+function Notifications(props) {
   useEffect(async () => {
     if (isPushNotificationSupported()) {
       let swRegistration = await registerServiceWorker();
@@ -22,6 +22,27 @@ function Notifications() {
         //   swRegistration
         // );
         let pushSubscription = await createNotificationSubscription();
+        const details = {
+          subscriptionEndpoint: pushSubscription.endpoint,
+        };
+        let formBody = [];
+        for (var property in details) {
+          const encodedKey = encodeURIComponent(property);
+          const encodedValue = encodeURIComponent(details[property]);
+          formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+      }
+      const subscriptionRes = await fetch(backUrl + "/notification/subscription/" + props.userId, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+      });
+      if (!subscriptionRes.ok) {
+        console.log("Subscription error");
+        return null;
       }
     }
   }, []);

@@ -24,9 +24,14 @@ export const showLocalNotification = (title, body, swRegistration) => {
 export const createNotificationSubscription = async () => {
   // wait for service worker installation to be ready
   const serviceWorker = await navigator.serviceWorker.ready;
+
+  const response = await fetch("./vapidPublicKey");
+  const vapidPublicKey = await response.text();
+  const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+
   // subscribe and return subscription
   return await serviceWorker.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: pushServerPublicKey
+    applicationServerKey: convertedVapidKey
   });
 };
