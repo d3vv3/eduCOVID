@@ -3,12 +3,11 @@ package es.upm.dit.isst.educovid.rest;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import es.upm.dit.isst.educovid.dao.AlumnoDAO;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;

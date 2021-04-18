@@ -18,8 +18,12 @@ function Confine({ history }) {
   const [selected, setSelected] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("*");
 
-  useEffect(() => {
+  useEffect(async () => {
     // TODO: load list from API
+    const pushRes = await fetch({
+      method: "GET",
+      
+    });
   }, []);
 
   return (

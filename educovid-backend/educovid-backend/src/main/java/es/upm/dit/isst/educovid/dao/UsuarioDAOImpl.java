@@ -2,7 +2,9 @@ package es.upm.dit.isst.educovid.dao;
 
 import org.hibernate.Session;
 
-import es.upm.dit.isst.educovid.dao.UsuarioDAO;
+import es.upm.dit.isst.educovid.model.Alumno;
+import es.upm.dit.isst.educovid.model.Profesor;
+import es.upm.dit.isst.educovid.model.ResponsableCOVID;
 import es.upm.dit.isst.educovid.model.Usuario;
 
 public class UsuarioDAOImpl implements UsuarioDAO{
@@ -31,20 +33,28 @@ public class UsuarioDAOImpl implements UsuarioDAO{
 	}
 
 	@Override
-	public Usuario readUsuariobyId(String id) {
+	public Usuario readUsuariobyId(Integer id) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        Usuario usuario = session.get(Usuario.class, id);
+        Alumno alumno =  session.get(Alumno.class, id);
+        Profesor profesor =  session.get(Profesor.class, id);
+        ResponsableCOVID responsable =  session.get(ResponsableCOVID.class, id);
+        if (alumno != null)
+        	return (Usuario) alumno;
+        if (profesor != null)
+        	return (Usuario) profesor;
+        if (responsable != null)
+        	return (Usuario) responsable;
         session.getTransaction().commit();
         session.close();
-        return usuario;
+        return null;
 	}
 
 	@Override
 	public Usuario readUsuariobyName(String name) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        Usuario usuario = session.get(Usuario.class, name);
+        Usuario usuario = session.get(Usuario.class, name); // TODO: MAL
         session.getTransaction().commit();
         session.close();
         return usuario;

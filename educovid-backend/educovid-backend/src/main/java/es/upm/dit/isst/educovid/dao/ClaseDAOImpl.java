@@ -6,7 +6,6 @@ import java.util.List;
 import org.hibernate.Session;
 
 import es.upm.dit.isst.educovid.model.Clase;
-import es.upm.dit.isst.educovid.model.Profesor;
 
 public class ClaseDAOImpl implements ClaseDAO{
 	private static ClaseDAOImpl instance = null;

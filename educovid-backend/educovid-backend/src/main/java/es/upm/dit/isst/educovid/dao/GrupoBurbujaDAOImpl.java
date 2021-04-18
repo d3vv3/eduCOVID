@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAO;
 import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
@@ -40,7 +39,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 	public GrupoBurbuja readGrupoBurbujabyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        GrupoBurbuja grupoBurbuja = session.get(GrupoBurbuja.class, id);
+        GrupoBurbuja grupoBurbuja = session.get(GrupoBurbuja.class, Integer.parseInt(id));
         session.getTransaction().commit();
         session.close();
         return grupoBurbuja;
