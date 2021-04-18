@@ -14,10 +14,12 @@ import { backUrl } from "../constants/constants";
 function Notifications(props) {
   useEffect(() => {
     const notifications = async () => {
-      if (isPushNotificationSupported()) {
+      let alreadySubscribed = await fetch(backUrl + `/notification/subscription/exists/${props.role}/${props.userId}`);
+      if (isPushNotificationSupported() && !alreadySubscribed.ok) {
         let swRegistration = await registerServiceWorker();
         let response = await askUserPermission(); // granted, default or denied
         console.log("NOTIFICATIONS:", response);
+        
         if (response === "granted") {
           // showLocalNotification(
           //   "eduCOVID",

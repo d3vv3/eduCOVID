@@ -114,6 +114,18 @@ function Confine({ history }) {
       });
       await callMainSelector();
     }
+    // notify everyone
+    selected.forEach(async (value) => {
+      try {
+        console.log(value);
+        const notificationRes = await fetch(
+          backUrl +
+          `/notification/subscription/${selectedType}/` + value.id
+        );
+      } catch (e) {
+        console.log("Error pushing notification");
+      }
+    });
   };
 
   return (
@@ -211,7 +223,7 @@ function Confine({ history }) {
               key={index}
               onClick={e => {
                 if (selected.some(e => e.nombre === person.nombre)) {
-                  var filtered = selected.filter(function(value, index, arr) {
+                  var filtered = selected.filter(function (value, index, arr) {
                     return value.nombre !== person.nombre;
                   });
                   setSelected(filtered);
@@ -265,10 +277,10 @@ function Confine({ history }) {
               )
                 ? "Desconfinar"
                 : selected.every(
-                    e => e.estadoSanitario.toLowerCase() === "no confinado"
-                  )
-                ? "Confinar"
-                : "Cambiar estados"}
+                  e => e.estadoSanitario.toLowerCase() === "no confinado"
+                )
+                  ? "Confinar"
+                  : "Cambiar estados"}
             </Button>
           ) : null}
         </Form>

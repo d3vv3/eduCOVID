@@ -28,8 +28,9 @@ public class ConfineResource {
 	public Response confineStudents(List<Alumno> alumnos) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (Alumno a: alumnos) {
-			a.setEstadoSanitario("confinado");
-			AlumnoDAOImpl.getInstance().updateAlumno(a);
+			Alumno b = AlumnoDAOImpl.getInstance().readAlumnobyId(a.getId().toString());
+			b.setEstadoSanitario("confinado");
+			AlumnoDAOImpl.getInstance().updateAlumno(b);
 		}
 		return Response.status(Response.Status.OK).entity(alumnos).build();
 	}
@@ -45,8 +46,9 @@ public class ConfineResource {
 			gb.setEstadoSanitario("confinado");
 			GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(gb);
 			for (Alumno a: gb.getAlumnos()) {
-				a.setEstadoSanitario("confinado");
-				AlumnoDAOImpl.getInstance().updateAlumno(a);
+				Alumno b = AlumnoDAOImpl.getInstance().readAlumnobyId(a.getId().toString());
+				b.setEstadoSanitario("confinado");
+				AlumnoDAOImpl.getInstance().updateAlumno(b);
 			}
 		}
 		return Response.status(Response.Status.OK).entity(grupos).build();
@@ -59,8 +61,9 @@ public class ConfineResource {
 	public Response confineTeachers(List<Profesor> profesores) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (Profesor p: profesores) {
-			p.setEstadoSanitario("confinado");
-			ProfesorDAOImpl.getInstance().updateProfesor(p);
+			Profesor p2 = ProfesorDAOImpl.getInstance().readProfesorbyId(p.getId().toString());
+			p2.setEstadoSanitario("confinado");
+			ProfesorDAOImpl.getInstance().updateProfesor(p2);
 		}
 		return Response.status(Response.Status.OK).entity(profesores).build();
 	}
@@ -72,8 +75,9 @@ public class ConfineResource {
 	public Response unconfineStudents(List<Alumno> alumnos) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (Alumno a: alumnos) {
-			a.setEstadoSanitario("no confinado");
-			AlumnoDAOImpl.getInstance().updateAlumno(a);
+			Alumno b = AlumnoDAOImpl.getInstance().readAlumnobyId(a.getId().toString());
+			b.setEstadoSanitario("no confinado");
+			AlumnoDAOImpl.getInstance().updateAlumno(b);
 		}
 		return Response.status(Response.Status.OK).entity(alumnos).build();
 	}
@@ -88,8 +92,9 @@ public class ConfineResource {
 			gb.setEstadoSanitario("no confinado");
 			GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(gb);
 			for (Alumno a: gb.getAlumnos()) {
-				a.setEstadoSanitario("no confinado");
-				AlumnoDAOImpl.getInstance().updateAlumno(a);
+				Alumno b = AlumnoDAOImpl.getInstance().readAlumnobyId(a.getId().toString());
+				b.setEstadoSanitario("no confinado");
+				AlumnoDAOImpl.getInstance().updateAlumno(b);
 			}
 		}
 		return Response.status(Response.Status.OK).entity(grupos).build();
@@ -102,8 +107,9 @@ public class ConfineResource {
 	public Response unconfineTeachers(List<Profesor> profesores) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (Profesor p: profesores) {
-			p.setEstadoSanitario("no confinado");
-			ProfesorDAOImpl.getInstance().updateProfesor(p);
+			Profesor p2 = ProfesorDAOImpl.getInstance().readProfesorbyId(p.getId().toString());
+			p2.setEstadoSanitario("no confinado");
+			ProfesorDAOImpl.getInstance().updateProfesor(p2);
 		}
 		return Response.status(Response.Status.OK).entity(profesores).build();
 	}
@@ -115,9 +121,10 @@ public class ConfineResource {
 	public Response switchStudents(List<Alumno> alumnos) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (Alumno a: alumnos) {
-			if (a.getEstadoSanitario().equals("confinado")) a.setEstadoSanitario("no confinado");
-			else a.setEstadoSanitario("confinado");
-			AlumnoDAOImpl.getInstance().updateAlumno(a);
+			Alumno b = AlumnoDAOImpl.getInstance().readAlumnobyId(a.getId().toString());
+			if (b.getEstadoSanitario().equals("confinado")) b.setEstadoSanitario("no confinado");
+			else b.setEstadoSanitario("confinado");
+			AlumnoDAOImpl.getInstance().updateAlumno(b);
 		}
 		return Response.status(Response.Status.OK).entity(alumnos).build();
 	}
@@ -133,9 +140,10 @@ public class ConfineResource {
 			else gb.setEstadoSanitario("confinado");
 			GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(gb);
 			for (Alumno a: gb.getAlumnos()) {
-				if (a.getEstadoSanitario().equals("confinado")) a.setEstadoSanitario("no confinado");
-				else a.setEstadoSanitario("confinado");
-				AlumnoDAOImpl.getInstance().updateAlumno(a);
+				Alumno b = AlumnoDAOImpl.getInstance().readAlumnobyId(a.getId().toString());
+				if (b.getEstadoSanitario().equals("confinado")) b.setEstadoSanitario("no confinado");
+				else b.setEstadoSanitario("confinado");
+				AlumnoDAOImpl.getInstance().updateAlumno(b);
 			}
 		}
 		return Response.status(Response.Status.OK).entity(grupos).build();
@@ -148,9 +156,10 @@ public class ConfineResource {
 	public Response switchTeachers(List<Profesor> profesores) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (Profesor p: profesores) {
-			if (p.getEstadoSanitario().equals("confinado")) p.setEstadoSanitario("no confinado");
-			else p.setEstadoSanitario("confinado");
-			ProfesorDAOImpl.getInstance().updateProfesor(p);
+			Profesor p2 = ProfesorDAOImpl.getInstance().readProfesorbyId(p.getId().toString());
+			if (p2.getEstadoSanitario().equals("confinado")) p2.setEstadoSanitario("no confinado");
+			else p2.setEstadoSanitario("confinado");
+			ProfesorDAOImpl.getInstance().updateProfesor(p2);
 		}
 		return Response.status(Response.Status.OK).entity(profesores).build();
 	}

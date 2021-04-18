@@ -9,10 +9,17 @@ self.addEventListener('notificationclose', event => console.info('notificationcl
 async function handlePushEvent(event) {
 	console.info('push event emitted');
 
-  self.registration.showNotification("eduCOVID", {
-    body: "Has sido confinado",
+  const msg = event.data.json();
+
+  self.registration.showNotification(msg.title, {
+    body: msg.body,
     icon: "logo192.png"
   });
+
+  // self.registration.showNotification("eduCOVID", {
+  //   body: "Has sido confinado",
+  //   icon: "logo192.png"
+  // });
 }
 
 const urlToOpen1 = new URL('/', self.location.origin).href;
