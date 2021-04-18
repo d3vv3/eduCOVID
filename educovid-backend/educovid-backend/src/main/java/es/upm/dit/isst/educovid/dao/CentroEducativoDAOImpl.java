@@ -32,12 +32,13 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO {
 		// 2. Alumno unique per Grupo Burbuja
 		Set<String> numsMatricula = new HashSet<String>();
 		Set<Integer> idAlumnoGruposBurbuja = new HashSet<Integer>();
+		Set<String> nombreClases = new HashSet<String>();
 		List<Clase> clases = centroEducativo.getClases();
 		for (Clase clase : clases) {
 			for (GrupoBurbuja grupo : clase.getGruposBurbuja()) {
 				for (Alumno alumno : grupo.getAlumnos()) {
 					if (numsMatricula.contains(alumno.getNumeroMatricula())) {
-						System.out.println("There cannot be two Alumno with the same numeroMatricula");
+						System.out.println("There cannot be two Alumno with the same numeroMatricula in the same CentroEducativo");
 						return null;
 					} else {
 						numsMatricula.add(alumno.getNumeroMatricula());
@@ -45,8 +46,17 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO {
 					if (idAlumnoGruposBurbuja.contains(alumno.getId())) {
 						System.out.println("The same Alumno cannot be in two GrupoBurbuja");
 						return null;
+					} else {
+						idAlumnoGruposBurbuja.add(alumno.getId());
 					}
 				}
+			}
+
+			if (nombreClases.contains(clase.getNombre())) {
+				System.out.println("There cannot be two Clase with the same nombre in the same CentroEducativo");
+				return null;
+			} else {
+				nombreClases.add(clase.getNombre());
 			}
 		}
 		Session session = SessionFactoryService.get().openSession();
@@ -78,23 +88,24 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO {
 	@Override
 	public CentroEducativo readCentroEducativobyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
-        session.beginTransaction();
-        CentroEducativo centroEducativo = session.get(CentroEducativo.class, id);
-        session.getTransaction().commit();
-        session.close();
-        return centroEducativo;
+		session.beginTransaction();
+		CentroEducativo centroEducativo = session.get(CentroEducativo.class, id);
+		session.getTransaction().commit();
+		session.close();
+		return centroEducativo;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<CentroEducativo> readAllCentroEducativobyResponsable(ResponsableCOVID responsable) {
-		List<CentroEducativo> centros = new ArrayList<CentroEducativo> ();
-        Session session = SessionFactoryService.get().openSession();
-        session.beginTransaction();
-        centros.addAll(session.createQuery("from CentroEducativo where CentroEducativo.ResponsableCOVID="+ responsable).list());
-        session.getTransaction().commit();
-        session.close();
-        return centros;
+		List<CentroEducativo> centros = new ArrayList<CentroEducativo>();
+		Session session = SessionFactoryService.get().openSession();
+		session.beginTransaction();
+		centros.addAll(session.createQuery("from CentroEducativo where CentroEducativo.ResponsableCOVID=" + responsable)
+				.list());
+		session.getTransaction().commit();
+		session.close();
+		return centros;
 	}
 
 //	@SuppressWarnings("unchecked")
@@ -128,6 +139,7 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO {
 		// 2. Alumno unique per Grupo Burbuja
 		Set<String> numsMatricula = new HashSet<String>();
 		Set<Integer> idAlumnoGruposBurbuja = new HashSet<Integer>();
+		Set<String> nombreClases = new HashSet<String>();
 		List<Clase> clases = centroEducativo.getClases();
 		for (Clase clase : clases) {
 			for (GrupoBurbuja grupo : clase.getGruposBurbuja()) {
@@ -141,10 +153,12 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO {
 					if (idAlumnoGruposBurbuja.contains(alumno.getId())) {
 						System.out.println("The same Alumno cannot be in two GrupoBurbuja");
 						return null;
-					} else {
-						idAlumnoGruposBurbuja.add(alumno.getId());
 					}
 				}
+			}
+
+			if (nombreClases.contains(clase.getNombre())) {
+				nombreClases.add(clase.getNombre());
 			}
 		}
 		Session session = SessionFactoryService.get().openSession();
