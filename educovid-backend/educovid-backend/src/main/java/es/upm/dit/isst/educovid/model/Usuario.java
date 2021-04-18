@@ -18,6 +18,9 @@ public class Usuario implements Serializable {
 	private String hash;
 	@Column(nullable = false)
 	private String salt;
+	private String subscriptionEndpoint;
+	private String p256dh;
+	private String auth;
 	private static final long serialVersionUID = 1L;
 
 	public Usuario() {
@@ -74,8 +77,33 @@ public class Usuario implements Serializable {
 		this.salt = salt;
 	}
 	
+	public String getSubscriptionEndpoint() {
+		return subscriptionEndpoint;
+	}
+
+	public void setSubscriptionEndpoint(String subscriptionEndpoint) {
+		this.subscriptionEndpoint = subscriptionEndpoint;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
+	public String getP256dh() {
+		return p256dh;
+	}
+
+	public void setP256dh(String p256dh) {
+		this.p256dh = p256dh;
+	}
+
+	public String getAuth() {
+		return auth;
+	}
+
+	public void setAuth(String auth) {
+		this.auth = auth;
+	}
+
+	
 }

@@ -18,7 +18,7 @@ public class CentroEducativo implements Serializable {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String nombre;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "fk_id_centro")
