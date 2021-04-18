@@ -106,16 +106,16 @@ public class RegisterResource {
 					configuration.put(student[0].trim(), alumnos);
 				}
 				;
-				// TODO: register each row somehow. For example: x = [11, Jaime Conde Segovia,
+				// 
+				// Example: x = [11, Jaime Conde Segovia,
 				// mtAAAAA]
 				// [Clase, Nombre, Numero de matricula]
 			});
 			// Save classes with one BubbleGroup and classes to center
 			List<Clase> classes = new ArrayList<Clase>();
-			configuration.keySet().forEach(key -> {
-				String randomWord1 = RandomWordGenerator.getRandomWord().split(" ")[0];
-				String randomWord2 = RandomWordGenerator.getRandomWord().split(" ")[0];
-				String name = "GRUPO " + randomWord1 + "_" + randomWord2;
+			configuration.keySet().forEach((key) -> {
+				String[] names = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+				String name = " GRUPO " + names[(int) Math.floor(Math.random()*names.length)] + names[(int) Math.floor(Math.random()*names.length)];
 				GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", "presencial", null, null, null,
 						configuration.get(key));
 				GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(newBubbleGroup);
@@ -154,10 +154,14 @@ public class RegisterResource {
 				String salt = Security.getSalt();
 				String hash = Security.getHash(professor[2].trim(), salt);
 				Profesor newProfessor = new Profesor(professor[1].trim(), hash, salt, professor[2].trim(),
-						"no confinado", null, null);
-				ProfesorDAOImpl.getInstance().createProfesor(newProfessor);
-				// TODO: register each row somehow. For example: x = [11, Yod Samuel Martín
-				// García, 00000000A]
+						"no confinado", null);
+				Profesor existingProfessor = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(professor[2].trim());
+				if (existingProfessor == null) {
+					ProfesorDAOImpl.getInstance().createProfesor(newProfessor);
+				} else {
+					newProfessor = existingProfessor;
+				}
+				// Example: x = [11, Yod Samuel Martín García, 00000000A]
 				// [Clase, Nombre, NIF/NIE]
 
 				try {

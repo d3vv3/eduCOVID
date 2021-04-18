@@ -23,7 +23,7 @@ public class Profesor extends Usuario implements Serializable {
 		super();
 	}
 	
-	public Profesor(String nombre, String hash, String salt, String nifNie, String estadoSanitario, Date fechaConfinamiento, Set<Clase> clases) {
+	public Profesor(String nombre, String hash, String salt, String nifNie, String estadoSanitario, Date fechaConfinamiento) {
 		super(nombre, hash, salt);
 		this.nifNie = nifNie;
 		this.estadoSanitario = estadoSanitario;
