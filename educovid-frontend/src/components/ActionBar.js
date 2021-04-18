@@ -1,15 +1,23 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
+import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 
 function ActionBar(props){
   return(
-    <Navbar bg="primary" variant="dark">
+    <Navbar bg="dark" variant="dark">
       <Navbar.Brand href="/dashboard">eduCOVID</Navbar.Brand>
       <Nav className="mr-auto">
-        <Nav.Link href="/confine">Gestionar confinamientos</Nav.Link>
-        <Nav.Link href="/teaching">Gestionar docencia</Nav.Link>
-        <Nav.Link href="/center">Gestionar centro</Nav.Link>
+        <LinkContainer to="/confine">
+          <Nav.Link>Gestionar confinamientos</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to="/teaching">
+          <Nav.Link>Gestionar docencia</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to="/center">
+          <Nav.Link>Gestionar centro</Nav.Link>
+        </LinkContainer>
+
       </Nav>
     </Navbar>
   );

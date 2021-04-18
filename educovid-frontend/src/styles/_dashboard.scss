@@ -9,6 +9,10 @@
       text-align: center;
   }
 
+  h2 {
+    color: $success;
+  }
+
   hr {
       border-color: $clearMint;
       width: 100%;
@@ -24,11 +28,17 @@
   }
 
   .cards-container {
+      @include nordButton();
       @include flexCenter(row);
+      margin: 20px;
   }
 
   .card-body {
       background-color: $dark400;
       text-align: center;
+  }
+
+  .card {
+    background-color: $dark400;
   }
 }
