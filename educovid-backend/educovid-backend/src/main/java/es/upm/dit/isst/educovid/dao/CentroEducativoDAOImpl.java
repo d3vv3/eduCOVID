@@ -61,7 +61,7 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO{
 		List<CentroEducativo> centros = new ArrayList<CentroEducativo> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        centros.addAll(session.createQuery("from centros_educativos where centros_educativos.ResponsableCOVID="+ responsable).list());
+        centros.addAll(session.createQuery("from CentroEducativo where CentroEducativo.ResponsableCOVID="+ responsable).list());
         session.getTransaction().commit();
         session.close();
         return centros;
