@@ -2,7 +2,7 @@ package es.upm.dit.isst.educovid.model;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,11 +10,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "grupos_burbuja")
+@Table(name = "gruposburbuja")
 public class GrupoBurbuja implements Serializable {
 	@Id
 	@GeneratedValue
@@ -28,9 +29,11 @@ public class GrupoBurbuja implements Serializable {
 	private Date fechaConfinamiento;
 	private Integer prioridad;
 	private Date fechaUltimaConmutacion;
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "fk_id_grupoburbuja")
-	private List<Alumno> alumnos;
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "gruposburbuja_alumnos", joinColumns = { @JoinColumn(name = "fk_id_grupoburbuja") }, inverseJoinColumns = {
+			@JoinColumn(name = "fk_id_alumnos") })
+	private Set<Alumno> alumnos; // Set because List uses too many queries:
+										// https://www.adictosaltrabajo.com/2020/04/02/hibernate-onetoone-onetomany-manytoone-y-manytomany/
 	private static final long serialVersionUID = 1L;
 
 	public GrupoBurbuja() {
@@ -38,7 +41,7 @@ public class GrupoBurbuja implements Serializable {
 	}
 
 	public GrupoBurbuja(String nombre, String estadoSanitario, String estadoDocencia, Date fechaConfinamiento, Integer prioridad,
-			Date fechaUltimaConmutacion, List<Alumno> alumnos) {
+			Date fechaUltimaConmutacion, Set<Alumno> alumnos) {
 		super();
 		this.nombre = nombre;
 		this.estadoSanitario = estadoSanitario;
@@ -105,11 +108,11 @@ public class GrupoBurbuja implements Serializable {
 		this.fechaUltimaConmutacion = fechaUltimaConmutacion;
 	}
 
-	public List<Alumno> getAlumnos() {
+	public Set<Alumno> getAlumnos() {
 		return alumnos;
 	}
 
-	public void setAlumnos(List<Alumno> alumnos) {
+	public void setAlumnos(Set<Alumno> alumnos) {
 		this.alumnos = alumnos;
 	}
 

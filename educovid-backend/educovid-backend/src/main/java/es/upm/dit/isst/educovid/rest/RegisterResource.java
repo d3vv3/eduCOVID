@@ -1,6 +1,8 @@
 
 package es.upm.dit.isst.educovid.rest;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,18 +21,10 @@ import javax.ws.rs.core.Response;
 
 import org.json.JSONObject;
 
+import com.github.dhiraj072.randomwordgenerator.RandomWordGenerator;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 
-import java.io.IOException;
-import java.io.StringReader;
-
-import es.upm.dit.isst.educovid.model.ResponsableCOVID;
-import es.upm.dit.isst.educovid.model.Alumno;
-import es.upm.dit.isst.educovid.model.CentroEducativo;
-import es.upm.dit.isst.educovid.model.Clase;
-import es.upm.dit.isst.educovid.model.GrupoBurbuja;
-import es.upm.dit.isst.educovid.model.Profesor;
 import es.upm.dit.isst.educovid.aux.Security;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
@@ -38,8 +32,12 @@ import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
 import es.upm.dit.isst.educovid.dao.ResponsableDAOImpl;
-
-import com.github.dhiraj072.randomwordgenerator.RandomWordGenerator;
+import es.upm.dit.isst.educovid.model.Alumno;
+import es.upm.dit.isst.educovid.model.CentroEducativo;
+import es.upm.dit.isst.educovid.model.Clase;
+import es.upm.dit.isst.educovid.model.GrupoBurbuja;
+import es.upm.dit.isst.educovid.model.Profesor;
+import es.upm.dit.isst.educovid.model.ResponsableCOVID;
 
 @Path("/register")
 public class RegisterResource {
@@ -80,7 +78,7 @@ public class RegisterResource {
 	@Path("/students")
 	public Response registerStudents(@FormParam("centerName") String centerName, String CSVString) throws URISyntaxException, IOException, CsvException {
 		
-		Map<String, List<Alumno>> configuration = new HashMap<String, List<Alumno>>();
+		Map<String, Set<Alumno>> configuration = new HashMap<String, Set<Alumno>>();
 
 		System.out.println(CSVString);
 		try (CSVReader reader = new CSVReader(new StringReader(CSVString))) {
@@ -95,11 +93,11 @@ public class RegisterResource {
 		    	AlumnoDAOImpl.getInstance().createAlumno(newStudent);
 		    	
 			    	try {
-			    		List<Alumno> currentStudents = configuration.get(student[0]);
+			    		Set<Alumno> currentStudents = configuration.get(student[0]);
 			    		currentStudents.add(newStudent);
 			    		configuration.put(student[0], currentStudents);
 			    	} catch(Exception e) {
-			    		List<Alumno> alumnos = new ArrayList<Alumno>();
+			    		Set<Alumno> alumnos = new HashSet<Alumno>();
 			    		alumnos.add(newStudent);
 			    		configuration.put(student[0], alumnos);
 			    	};

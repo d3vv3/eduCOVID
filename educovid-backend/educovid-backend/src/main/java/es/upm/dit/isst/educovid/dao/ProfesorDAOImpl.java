@@ -7,8 +7,6 @@ import java.util.Set;
 
 import org.hibernate.Session;
 
-import es.upm.dit.isst.educovid.dao.ProfesorDAO;
-import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.Profesor;
 

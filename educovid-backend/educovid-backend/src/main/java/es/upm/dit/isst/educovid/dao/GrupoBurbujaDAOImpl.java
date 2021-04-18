@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAO;
 import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;

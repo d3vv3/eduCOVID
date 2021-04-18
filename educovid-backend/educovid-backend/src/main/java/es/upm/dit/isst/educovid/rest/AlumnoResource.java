@@ -2,7 +2,6 @@ package es.upm.dit.isst.educovid.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -16,9 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
-import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;
-import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 
 @Path("/alumno")
 public class AlumnoResource {
@@ -83,24 +80,24 @@ public class AlumnoResource {
 		return AlumnoDAOImpl.getInstance().readAllAlumnos();
 	}
 	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("grupo/{grupoBurbuja}")
-	public List<Alumno> readAllAlumnosbyGroup(@PathParam("grupoBurbuja") String grupoBurbuja) {
-		return AlumnoDAOImpl.getInstance().readAllAlumnosbyGroup(grupoBurbuja);
-	}
-	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("estadoSanitario/{estadoSanitario}")
-	public List<Alumno> readAllAlumnosbyEstadoSanitario(@PathParam("estadoSanitario") String estadoSanitario) {
-		return AlumnoDAOImpl.getInstance().readAllAlumnosbyEstadoSanitario(estadoSanitario);
-	}
-	
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("fechaConfinamiento/{fechaConfinamiento}")
-	public List<Alumno> readAllAlumnosbyFechaConfinamiento(@PathParam("fechaConfinamiento") Date fechaConfinamiento) {
-		return AlumnoDAOImpl.getInstance().readAllAlumnosbyFechaConfinamiento(fechaConfinamiento);
-	}
+//	@GET
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("grupo/{grupoBurbuja}")
+//	public List<Alumno> readAllAlumnosbyGroup(@PathParam("grupoBurbuja") String grupoBurbuja) {
+//		return AlumnoDAOImpl.getInstance().readAllAlumnosbyGroup(grupoBurbuja);
+//	}
+//	
+//	@GET
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("estadoSanitario/{estadoSanitario}")
+//	public List<Alumno> readAllAlumnosbyEstadoSanitario(@PathParam("estadoSanitario") String estadoSanitario) {
+//		return AlumnoDAOImpl.getInstance().readAllAlumnosbyEstadoSanitario(estadoSanitario);
+//	}
+//	
+//	@GET
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("fechaConfinamiento/{fechaConfinamiento}")
+//	public List<Alumno> readAllAlumnosbyFechaConfinamiento(@PathParam("fechaConfinamiento") Date fechaConfinamiento) {
+//		return AlumnoDAOImpl.getInstance().readAllAlumnosbyFechaConfinamiento(fechaConfinamiento);
+//	}
 }

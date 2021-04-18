@@ -14,9 +14,12 @@ import javax.ws.rs.core.Response;
 
 import es.upm.dit.isst.educovid.aux.Security;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
+import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
 import es.upm.dit.isst.educovid.dao.ResponsableDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;
+import es.upm.dit.isst.educovid.model.CentroEducativo;
+import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.Profesor;
 import es.upm.dit.isst.educovid.model.ResponsableCOVID;
 import io.jsonwebtoken.Jwts;
@@ -73,10 +76,16 @@ public class LoginResource {
 	}
 
 	private Boolean authenticate(String username, String password, String center, String role) {
+		CentroEducativo centro = CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(center);
+		System.out.println("Nombre del centro recuperado: " + centro.getNombre());
+		if (centro == null)
+			return false;
 		switch (role) {
 		case "profesor":
 			// Get profesor by username
 			Profesor profesor = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(username);
+			if (!validCentroProfesor(profesor, center))
+				return false;
 			if (profesor == null)
 				return false;
 			if (!Security.checkPassword(password, profesor.getHash(), profesor.getSalt()))
@@ -93,6 +102,8 @@ public class LoginResource {
 		case "responsable":
 			// Get responsable by username
 			ResponsableCOVID responsable = ResponsableDAOImpl.getInstance().readResponsablebyNIFNIE(username);
+			if (!validCentroResponsable(responsable, centro))
+				return false;
 			if (responsable == null)
 				return false;
 			if (!Security.checkPassword(password, responsable.getHash(), responsable.getSalt()))
@@ -116,5 +127,34 @@ public class LoginResource {
 				.setIssuedAt(issueDate).setExpiration(expireDate)
 				.signWith(SignatureAlgorithm.HS512, RestSecurityFilter.KEY).compact();
 		return jwtToken;
+	}
+
+	private Boolean validCentroProfesor(Profesor profesor, String nombreCentro) {
+		for (CentroEducativo centro : CentroEducativoDAOImpl.getInstance().readAllCentroEducativo()) {
+			for (Clase clase : centro.getClases()) {
+//				System.out.println("Contains profesor: " + clase.getProfesores().contains(profesor));
+//				System.out.println("Same centro: "
+//						+ (centro.getNombre().trim().toLowerCase().equals(nombreCentro.trim().toLowerCase())));
+//				System.out.println("Profesores de clase: " + clase.getProfesores());
+//				System.out.println("Profesor: " + profesor);
+				if (centro.getNombre().trim().toLowerCase().equals(nombreCentro.trim().toLowerCase())) {
+					for (Profesor profesorAux : clase.getProfesores()) {
+						if (profesorAux.getId().equals(profesor.getId())) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private Boolean validCentroResponsable(ResponsableCOVID responsable, CentroEducativo centro) {
+		for (CentroEducativo centroAux : responsable.getCentros()) {
+			if (centroAux.getId().equals(centro.getId())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
