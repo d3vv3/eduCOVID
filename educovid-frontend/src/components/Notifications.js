@@ -44,8 +44,8 @@ function Notifications(props) {
             formBody = formBody.join("&");
             const subscriptionRes = await fetch(
               backUrl +
-                `/notification/subscription/${props.role}/` +
-                props.userId,
+              `/notification/subscription/${props.role}/` +
+              props.userId,
               {
                 // Testing alumno first
                 method: "POST",
@@ -67,8 +67,8 @@ function Notifications(props) {
           try {
             const notificationRes = await fetch(
               backUrl +
-                `/notification/subscription/${props.role}/` +
-                props.userId
+              `/notification/subscription/${props.role}/` +
+              props.userId
             );
           } catch (e) {
             console.log("Error pushing notification");

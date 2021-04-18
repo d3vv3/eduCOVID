@@ -146,7 +146,7 @@ public class CryptoService {
     // PRK_key = HMAC-SHA-256(auth_secret, ecdh_secret)
     Mac hmacSHA256 = Mac.getInstance("HmacSHA256");
     hmacSHA256
-        .init(new SecretKeySpec(Base64.getUrlDecoder().decode(authSecret), "HmacSHA256"));
+        .init(new SecretKeySpec(Base64.getDecoder().decode(authSecret), "HmacSHA256"));
     byte[] prkKey = hmacSHA256.doFinal(ecdhSecret);
 
     // # HKDF-Expand(PRK_key, key_info, L_key=32)

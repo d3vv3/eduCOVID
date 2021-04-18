@@ -68,7 +68,7 @@ function StudentPage(props) {
 
             <Card className={studentGroup?.estadoSanitario.toLowerCase() === "confinado" || studentGroup?.estadoDocencia?.toLowerCase() === "online"
                ? "card-header-bad" : "card-header-good"} as={Card.Header}>
-                  {studentClass?.nombre} - {studentGroup?.nombre} - Docencia: {studentGroup?.estadoDocencia.toLowerCase() === "online" ? "Online" : "Presecial"}
+                  {studentClass?.nombre} - {studentGroup?.nombre} - Docencia: {studentGroup?.estadoDocencia.toLowerCase() === "online" ? "Online" : "Presencial"}
             </Card>
       </div>
     </div>
