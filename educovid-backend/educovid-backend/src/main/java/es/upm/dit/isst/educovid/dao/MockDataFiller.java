@@ -47,9 +47,9 @@ public class MockDataFiller {
 		AlumnoDAOImpl.getInstance().createAlumno(alumno7);
 		AlumnoDAOImpl.getInstance().createAlumno(alumno8);
 		AlumnoDAOImpl.getInstance().createAlumno(alumno9);
-		List<Alumno> alumnos1 = new ArrayList<Alumno>();
-		List<Alumno> alumnos2 = new ArrayList<Alumno>();
-		List<Alumno> alumnos3 = new ArrayList<Alumno>();
+		Set<Alumno> alumnos1 = new HashSet<Alumno>();
+		Set<Alumno> alumnos2 = new HashSet<Alumno>();
+		Set<Alumno> alumnos3 = new HashSet<Alumno>();
 		alumnos1.add(alumno1);
 		alumnos2.add(alumno2);
 		alumnos3.add(alumno3);
