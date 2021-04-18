@@ -141,6 +141,8 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO {
 					if (idAlumnoGruposBurbuja.contains(alumno.getId())) {
 						System.out.println("The same Alumno cannot be in two GrupoBurbuja");
 						return null;
+					} else {
+						idAlumnoGruposBurbuja.add(alumno.getId());
 					}
 				}
 			}
