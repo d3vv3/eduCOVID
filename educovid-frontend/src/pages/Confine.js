@@ -2,25 +2,60 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
 // Temporary import during first sprint
-import { professor, students, bubbleGroups } from "../tests/prueba";
+//import { professor, students, bubbleGroups } from "../tests/prueba";
 
 // Bootstrap imports
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
+// Constants
+import { backUrl } from "../constants/constants";
+
 function Confine({ history }) {
   const [data, setData] = useState({
-    professors: professor,
-    students: students,
-    bubbleGroups: bubbleGroups
+    professors: [],
+    students: [],
+    bubbleGroups: []
   });
   const [selectedType, setSelectedType] = useState("bubbleGroups");
   const [selected, setSelected] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("*");
 
   useEffect(() => {
-    // TODO: load list from API
-  }, []);
+    const callUsers = async () => {
+      // Get all centers (not secure, everyone can read all centers)
+
+      let method = "";
+      switch (selectedType) {
+        case 'bubbleGroups':
+          method = "/manage/bubblegroups";
+          break;
+        case 'students':
+          method = "/manage/students";
+          break;
+        case 'professors':
+          method = "/manage/teachers";
+          break;
+        default:
+          method = "/manage/bubblegroups";
+      }
+      try {
+        const usersRes = await fetch(backUrl + 
+          method
+          );
+        let usersData = await usersRes.json();
+        console.log(usersData);
+        setData(data[selectedType] = usersData)
+      } catch (e) {
+        // Nothing to do
+      }
+    };
+    callUsers();
+  }, [selectedType]);
+
+  const handleConfine = async () => {
+
+  }
 
   return (
     <div className="confine-container">
@@ -149,6 +184,7 @@ function Confine({ history }) {
                       ? (e.state = "No Confinado")
                       : (e.state = "Confinado")
                   );
+                  handleConfine();
                   setSelected([]);
                 } else {
                   alert("Seleccione las personas a confinar");
@@ -162,36 +198,7 @@ function Confine({ history }) {
                 : "Cambiar estados"}
             </Button>
           ) : null}
-          {/* <Button
-            variant="primary"
-            className="nord-button"
-            onClick={e => {
-              if (selected != null) {
-                let x = selected;
-                let confined = x.forEach(e => (e.state = "No confinado"));
-                setSelected([]);
-              } else {
-                alert("Seleccione las personas a confinar");
-              }
-            }}
-          >
-            {selected.every(e => e.state === "Confinado") ? "Desconfinar" : (selected.every(e => e.state === "No Confinado") ? "Confinar" : "Cambiar estados")}
-          </Button> : null}
-          {/* <Button
-            variant="primary"
-            className="nord-button"
-            onClick={e => {
-              if (selected != null) {
-                let x = selected;
-                let confined = x.forEach(e => (e.state = "No confinado"));
-                setSelected([]);
-              } else {
-                alert("Seleccione las personas a confinar");
-              }
-            }}
-          >
-            Desconfinar
-          </Button> */}
+          
         </Form>
       </div>
     </div>

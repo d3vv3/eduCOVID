@@ -3,12 +3,11 @@ package es.upm.dit.isst.educovid.rest;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import javax.ws.rs.FormParam;
 import javax.ws.rs.*;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import es.upm.dit.isst.educovid.dao.AlumnoDAO;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
@@ -85,7 +84,8 @@ public class ConfineResource {
 	public Response students() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
 		List<Alumno> alumnos = AlumnoDAOImpl.getInstance().readAllAlumnos();
-		return Response.status(Response.Status.OK).entity(alumnos).build();
+		System.out.print(alumnos);
+		return Response.ok(alumnos, MediaType.APPLICATION_JSON).build();
 		
 	}
 	@GET
@@ -97,7 +97,7 @@ public class ConfineResource {
 		
 	}
 	@GET
-	@Path("/bubblegoups")
+	@Path("/bubblegroups")
 	public Response bubblegroups() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
 		List<GrupoBurbuja> gruposBurbuja = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbuja();

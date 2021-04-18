@@ -10,6 +10,7 @@ import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
+import es.upm.dit.isst.educovid.model.Profesor;
 
 public class AlumnoDAOImpl implements AlumnoDAO {
 	private static AlumnoDAOImpl instance = null;
@@ -123,13 +124,13 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Alumno> readAllAlumnos() {
-		List<Alumno> alumnos = new ArrayList<Alumno>();
-		Session session = SessionFactoryService.get().openSession();
-		session.beginTransaction();
-		alumnos.addAll(session.createQuery("from alumnos").list());
-		session.getTransaction().commit();
-		session.close();
-		return alumnos;
+		List<Alumno> alumno = new ArrayList<Alumno> ();
+        Session session = SessionFactoryService.get().openSession();
+        session.beginTransaction();
+        alumno.addAll(session.createQuery("from Alumno").list());
+        session.getTransaction().commit();
+        session.close();
+        return alumno;
 	}
 
 	@SuppressWarnings("unchecked")
