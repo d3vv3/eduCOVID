@@ -285,7 +285,7 @@ function Register({ history }) {
                   onClick={() => {
                     download(
                       "plantilla_alumnos.csv",
-                      "Clase,Nombre,Apellidos,Numero de matricula"
+                      "Clase,Nombre y apellidos,Numero de matricula"
                     );
                   }}
                 >
@@ -302,7 +302,7 @@ function Register({ history }) {
                   onClick={() => {
                     download(
                       "plantilla_profesores.csv",
-                      "Clase,Nombre,Apellidos,NIF/NIE"
+                      "Clase,Nombre y apellidos,NIF/NIE"
                       // El centro se coge del estado
                     );
                   }}
