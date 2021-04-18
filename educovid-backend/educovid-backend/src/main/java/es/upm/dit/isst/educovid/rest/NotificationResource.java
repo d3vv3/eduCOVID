@@ -19,6 +19,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.json.JSONObject;
+
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,13 +46,19 @@ public class NotificationResource {
 	@Path("/subscription/alumno/{userId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createSubscription(@PathParam("userId") String userId,
-			Subscription subscription) {
+			String JSONBodyString) {
+		
+		System.out.println(JSONBodyString);
+		JSONObject body = new JSONObject(JSONBodyString);
+		String subscriptionEndpoint = body.getString("subscriptionEndpoint");
+		String auth = body.getString("auth");
+		String p256dh = body.getString("p256dh");
 		Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyId(userId);
-		alumno.setSubscriptionEndpoint(subscription.getEndpoint());
-		alumno.setAuth(subscription.getKeys().getAuth());
-		alumno.setP256dh(subscription.getKeys().getP256dh());
+		alumno.setSubscriptionEndpoint(subscriptionEndpoint);
+		alumno.setAuth(auth);
+		alumno.setP256dh(p256dh);
 		AlumnoDAOImpl.getInstance().updateAlumno(alumno);
-		System.out.println("Subscription endpoint: " + subscription.getEndpoint());
+		System.out.println("Subscription endpoint: " + subscriptionEndpoint);
 		return Response.status(Response.Status.OK).build();
 	}
 

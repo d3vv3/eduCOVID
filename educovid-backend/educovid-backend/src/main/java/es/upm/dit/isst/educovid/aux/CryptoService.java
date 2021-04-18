@@ -76,7 +76,8 @@ public class CryptoService {
   public ECPublicKey fromUncompressedECPublicKey(String encodedPublicKey)
       throws InvalidKeySpecException {
 
-    byte[] w = Base64.getUrlDecoder().decode(encodedPublicKey);
+    // byte[] w = Base64.getUrlDecoder().decode(encodedPublicKey);
+	byte[] w = Base64.getDecoder().decode(encodedPublicKey);
     byte[] encodedKey = new byte[P256_HEAD.length + w.length];
     System.arraycopy(P256_HEAD, 0, encodedKey, 0, P256_HEAD.length);
     System.arraycopy(w, 0, encodedKey, P256_HEAD.length, w.length);
