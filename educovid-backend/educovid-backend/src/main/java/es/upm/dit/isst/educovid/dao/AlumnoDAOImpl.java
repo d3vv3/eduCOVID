@@ -126,7 +126,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		List<Alumno> alumnos = new ArrayList<Alumno>();
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		alumnos.addAll(session.createQuery("from alumnos").list());
+		alumnos.addAll(session.createQuery("from Alumno").list());
 		session.getTransaction().commit();
 		session.close();
 		return alumnos;
@@ -138,7 +138,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		List<Alumno> alumnos = new ArrayList<Alumno>();
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		alumnos.addAll(session.createQuery("from alumnos a where alumnos.grupoBurbuja=" + grupoBurbuja).list());
+		alumnos.addAll(session.createQuery("from Alumno a where alumnos.grupoBurbuja=" + grupoBurbuja).list());
 		session.getTransaction().commit();
 		session.close();
 		return alumnos;
@@ -149,7 +149,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		List<Alumno> alumnos = new ArrayList<Alumno>();
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		alumnos.addAll(session.createQuery("from alumnos a where alumnos.estadoSanitario=" + estadoSanitario).list());
+		alumnos.addAll(session.createQuery("from Alumno a where alumnos.estadoSanitario=" + estadoSanitario).list());
 		session.getTransaction().commit();
 		session.close();
 		return alumnos;
@@ -161,7 +161,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
 		alumnos.addAll(
-				session.createQuery("from alumnos a where alumnos.fechaConfinamiento=" + fechaConfinamiento).list());
+				session.createQuery("from Alumno a where alumnos.fechaConfinamiento=" + fechaConfinamiento).list());
 		session.getTransaction().commit();
 		session.close();
 		return alumnos;

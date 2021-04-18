@@ -40,7 +40,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 	public GrupoBurbuja readGrupoBurbujabyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        GrupoBurbuja grupoBurbuja = session.get(GrupoBurbuja.class, id);
+        GrupoBurbuja grupoBurbuja = session.get(GrupoBurbuja.class, Integer.parseInt(id));
         session.getTransaction().commit();
         session.close();
         return grupoBurbuja;
