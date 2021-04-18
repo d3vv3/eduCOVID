@@ -64,15 +64,15 @@ function Notifications(props) {
             console.log("Error subscribing. Probably already subscribed");
             console.log(e);
           }
-          try {
-            const notificationRes = await fetch(
-              backUrl +
-              `/notification/subscription/${props.role}/` +
-              props.userId
-            );
-          } catch (e) {
-            console.log("Error pushing notification");
-          }
+          // try {
+          //   const notificationRes = await fetch(
+          //     backUrl +
+          //     `/notification/subscription/${props.role}/` +
+          //     props.userId
+          //   );
+          // } catch (e) {
+          //   console.log("Error pushing notification");
+          // }
         }
       }
     };
