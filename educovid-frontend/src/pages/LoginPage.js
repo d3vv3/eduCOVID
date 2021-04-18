@@ -103,7 +103,7 @@ function LoginPage(props) {
         if (alumnoRes.ok) {
           setErrors({});
           const alumnoData = await alumnoRes.json();
-          onLogIn({ ...alumnoData, role: "alumno" });
+          onLogIn({ ...alumnoData, role: "alumno", centro: centerField });
         } else {
           setErrors({ username: "", password: "Usuario o contraseña inválidos." });
         }
@@ -120,7 +120,7 @@ function LoginPage(props) {
           setErrors({});
           const profesorData = await profesorRes.json();
           console.log(profesorData);
-          onLogIn({ ...profesorData, role: "profesor" });
+          onLogIn({ ...profesorData, role: "profesor", centro: centerField });
         } else {
           setErrors({ username: "", password: "Usuario o contraseña inválidos." });
         }
@@ -136,7 +136,7 @@ function LoginPage(props) {
         if (responsableRes.ok) {
           setErrors({});
           const responsableData = await responsableRes.json();
-          onLogIn({ ...responsableData, role: "responsable" });
+          onLogIn({ ...responsableData, role: "responsable", centro: centerField });
         } else {
           setErrors({ username: "", password: "Usuario o contraseña inválidos." });
         }

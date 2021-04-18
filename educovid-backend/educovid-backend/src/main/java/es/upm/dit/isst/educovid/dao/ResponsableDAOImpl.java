@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import es.upm.dit.isst.educovid.dao.ResponsableDAO;
 import es.upm.dit.isst.educovid.model.CentroEducativo;
-import es.upm.dit.isst.educovid.model.Profesor;
 import es.upm.dit.isst.educovid.model.ResponsableCOVID;
 
 public class ResponsableDAOImpl implements ResponsableDAO{
