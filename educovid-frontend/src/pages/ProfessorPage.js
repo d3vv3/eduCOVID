@@ -8,7 +8,7 @@ import Card from "react-bootstrap/Card";
 // Constants
 import { backUrl } from "../constants/constants";
 
-//import { professor, students } from "../tests/prueba";
+import Notifications from "../components/Notifications";
 
 function ProfessorPage(props) {
   const { history, userData } = props;
@@ -76,6 +76,7 @@ function ProfessorPage(props) {
 
   return (
     <div className="professor-page-container">
+      <Notifications userId={professorId} role="profesor" />
       <div className="centered-div">
         <h4>Profesor/a</h4>
         <h1>{professorName}</h1>

@@ -3,9 +3,12 @@ package es.upm.dit.isst.educovid.rest;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
@@ -17,90 +20,170 @@ import es.upm.dit.isst.educovid.model.Profesor;
 
 @Path("/manage")
 public class ConfineResource {
-	
+
 	@POST
-	@Path("/confinestudents")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/confine/students")
 	public Response confineStudents(List<Alumno> alumnos) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (Alumno a: alumnos) {
-			a.setEstadoSanitario("Confinado");
+			a.setEstadoSanitario("confinado");
+			AlumnoDAOImpl.getInstance().updateAlumno(a);
 		}
 		return Response.status(Response.Status.OK).entity(alumnos).build();
 	}
-	
-	
+
+
 	@POST
-	@Path("/confinegroups")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/confine/bubbleGroups")
 	public Response confineGroups(List<GrupoBurbuja> grupos) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (GrupoBurbuja gb: grupos) {
-			gb.setEstadoSanitario("Confinado");
+			gb.setEstadoSanitario("confinado");
+			GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(gb);
+			for (Alumno a: gb.getAlumnos()) {
+				a.setEstadoSanitario("confinado");
+				AlumnoDAOImpl.getInstance().updateAlumno(a);
+			}
 		}
 		return Response.status(Response.Status.OK).entity(grupos).build();
 	}
-	
+
 	@POST
-	@Path("/confineteachers")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/confine/professors")
 	public Response confineTeachers(List<Profesor> profesores) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (Profesor p: profesores) {
-			p.setEstadoSanitario("Confinado");
+			p.setEstadoSanitario("confinado");
+			ProfesorDAOImpl.getInstance().updateProfesor(p);
+		}
+		return Response.status(Response.Status.OK).entity(profesores).build();
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/unconfine/students")
+	public Response unconfineStudents(List<Alumno> alumnos) throws URISyntaxException {
+		//TODO design an endpoint that changes the health status of the people or groups selected into confine
+		for (Alumno a: alumnos) {
+			a.setEstadoSanitario("no confinado");
+			AlumnoDAOImpl.getInstance().updateAlumno(a);
+		}
+		return Response.status(Response.Status.OK).entity(alumnos).build();
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/unconfine/bubbleGroups")
+	public Response unconfineGroups(List<GrupoBurbuja> grupos) throws URISyntaxException {
+		//TODO design an endpoint that changes the health status of the people or groups selected into confine
+		for (GrupoBurbuja gb: grupos) {
+			gb.setEstadoSanitario("no confinado");
+			GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(gb);
+			for (Alumno a: gb.getAlumnos()) {
+				a.setEstadoSanitario("no confinado");
+				AlumnoDAOImpl.getInstance().updateAlumno(a);
+			}
+		}
+		return Response.status(Response.Status.OK).entity(grupos).build();
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/unconfine/professors")
+	public Response unconfineTeachers(List<Profesor> profesores) throws URISyntaxException {
+		//TODO design an endpoint that changes the health status of the people or groups selected into confine
+		for (Profesor p: profesores) {
+			p.setEstadoSanitario("no confinado");
+			ProfesorDAOImpl.getInstance().updateProfesor(p);
 		}
 		return Response.status(Response.Status.OK).entity(profesores).build();
 	}
 	
 	@POST
-	@Path("/unconfinestudents")
-	public Response unconfineStudents(List<Alumno> alumnos) throws URISyntaxException {
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/switch/students")
+	public Response switchStudents(List<Alumno> alumnos) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (Alumno a: alumnos) {
-			a.setEstadoSanitario("No Confinado");
+			if (a.getEstadoSanitario().equals("confinado")) a.setEstadoSanitario("no confinado");
+			else a.setEstadoSanitario("confinado");
+			AlumnoDAOImpl.getInstance().updateAlumno(a);
 		}
 		return Response.status(Response.Status.OK).entity(alumnos).build();
 	}
 	
 	@POST
-	@Path("/unconfinegroups")
-	public Response unconfineGroups(List<GrupoBurbuja> grupos) throws URISyntaxException {
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/switch/bubbleGroups")
+	public Response switchGroups(List<GrupoBurbuja> grupos) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (GrupoBurbuja gb: grupos) {
-			gb.setEstadoSanitario("No Confinado");
+			if (gb.getEstadoSanitario().equals("confinado")) gb.setEstadoSanitario("no confinado");
+			else gb.setEstadoSanitario("confinado");
+			GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(gb);
+			for (Alumno a: gb.getAlumnos()) {
+				if (a.getEstadoSanitario().equals("confinado")) a.setEstadoSanitario("no confinado");
+				else a.setEstadoSanitario("confinado");
+				AlumnoDAOImpl.getInstance().updateAlumno(a);
+			}
 		}
 		return Response.status(Response.Status.OK).entity(grupos).build();
 	}
 	
 	@POST
-	@Path("/unconfineteachers")
-	public Response unconfineTeachers(List<Profesor> profesores) throws URISyntaxException {
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/switch/professors")
+	public Response switchTeachers(List<Profesor> profesores) throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into confine
 		for (Profesor p: profesores) {
-			p.setEstadoSanitario("No Confinado");
+			if (p.getEstadoSanitario().equals("confinado")) p.setEstadoSanitario("no confinado");
+			else p.setEstadoSanitario("confinado");
+			ProfesorDAOImpl.getInstance().updateProfesor(p);
 		}
 		return Response.status(Response.Status.OK).entity(profesores).build();
 	}
 
 	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/students")
 	public Response students() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
 		List<Alumno> alumnos = AlumnoDAOImpl.getInstance().readAllAlumnos();
-		return Response.status(Response.Status.OK).entity(alumnos).build();
-		
+		System.out.print(alumnos);
+		return Response.ok(alumnos, MediaType.APPLICATION_JSON).build();
+
 	}
+	
 	@GET
-	@Path("/teachers")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/professors")
 	public Response teachers() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
 		List<Profesor> profesores = ProfesorDAOImpl.getInstance().readAllProfesores();
 		return Response.status(Response.Status.OK).entity(profesores).build();
-		
 	}
+	
 	@GET
-	@Path("/bubblegoups")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/bubblegroups")
 	public Response bubblegroups() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
 		List<GrupoBurbuja> gruposBurbuja = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbuja();
-		return Response.status(Response.Status.OK).entity(gruposBurbuja).build();
-		
+		return Response.ok(gruposBurbuja, MediaType.APPLICATION_JSON).build();
 	}
 }

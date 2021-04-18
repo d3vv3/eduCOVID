@@ -130,7 +130,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from grupos_burbuja").list());
+        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja").list());
         session.getTransaction().commit();
         session.close();
         return grupoBurbuja;
@@ -141,7 +141,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from grupos_burbuja a where grupos_burbuja.estadoSanitario=" + estadoSanitario).list());
+        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.estadoSanitario=" + estadoSanitario).list());
         session.getTransaction().commit();
         session.close();
         return grupoBurbuja;
@@ -152,7 +152,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from grupos_burbuja a where grupos_burbuja.estadoDocencia=" + estadoDocencia).list());
+        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.estadoDocencia=" + estadoDocencia).list());
         session.getTransaction().commit();
         session.close();
         return grupoBurbuja;
@@ -163,7 +163,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from grupos_burbuja a where grupos_burbuja.clase=" + clase).list());
+        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.clase=" + clase).list());
         session.getTransaction().commit();
         session.close();
         return grupoBurbuja;
@@ -174,7 +174,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from grupos_burbuja a where grupos_burbuja.fechaConfinamiento=" + fechaConfinamiento).list());
+        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.fechaConfinamiento=" + fechaConfinamiento).list());
         session.getTransaction().commit();
         session.close();
         return grupoBurbuja;
@@ -185,7 +185,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from grupos_burbuja a where grupos_burbuja.fechaUltimaConmutacion=" + fechaUltConmutacion).list());
+        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.fechaUltimaConmutacion=" + fechaUltConmutacion).list());
         session.getTransaction().commit();
         session.close();
         return grupoBurbuja;
@@ -196,7 +196,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from grupos_burbuja a where grupos_burbuja.prioridad=" + prioridad).list());
+        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.prioridad=" + prioridad).list());
         session.getTransaction().commit();
         session.close();
         return grupoBurbuja;

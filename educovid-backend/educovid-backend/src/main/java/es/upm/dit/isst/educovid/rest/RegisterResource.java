@@ -15,6 +15,8 @@ import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -44,14 +46,15 @@ public class RegisterResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/responsible")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response registerResponsible(String JSONBodyString) throws URISyntaxException {
 
 		System.out.println(JSONBodyString);
 		JSONObject body = new JSONObject(JSONBodyString);
-		String name = body.getString("name");
-		String centerName = body.getString("center");
-		String nifNie = body.getString("nifNie");
-		String password = body.getString("password");
+		String name = body.getString("name").trim();
+		String centerName = body.getString("center").trim();
+		String nifNie = body.getString("nifNie").trim();
+		String password = body.getString("password").trim();
 		Boolean terms = body.getBoolean("terms");
 
 		// 3. Create responsible (class) (needs list of centers)
@@ -74,99 +77,112 @@ public class RegisterResource {
 
 	@POST
 	@Consumes("text/csv")
-	@Path("/students")
-	public Response registerStudents(String CSVString) throws URISyntaxException, IOException, CsvException {
-		
+	@Path("/students/{centerName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response registerStudents(@PathParam("centerName") String centerName, String CSVString)
+			throws URISyntaxException, IOException, CsvException {
+
 		Map<String, Set<Alumno>> configuration = new HashMap<String, Set<Alumno>>();
 
 		System.out.println(CSVString);
 		try (CSVReader reader = new CSVReader(new StringReader(CSVString))) {
 			List<String[]> r = reader.readAll();
 			r = r.subList(1, r.size());
-		    r.forEach(student -> {
-		    	System.out.println(configuration.keySet());
-		    	System.out.println(Arrays.toString(student));
-		    	String salt = Security.getSalt();
-		    	String hash = Security.getHash(student[2], salt);
-		    	Alumno newStudent = new Alumno(student[1], hash, salt, student[2], "no confinado", null);
-		    	AlumnoDAOImpl.getInstance().createAlumno(newStudent);
-		    	
-			    	try {
-			    		Set<Alumno> currentStudents = configuration.get(student[0]);
-			    		currentStudents.add(newStudent);
-			    		configuration.put(student[0], currentStudents);
-			    	} catch(Exception e) {
-			    		Set<Alumno> alumnos = new HashSet<Alumno>();
-			    		alumnos.add(newStudent);
-			    		configuration.put(student[0], alumnos);
-			    	};
-		    	// TODO: register each row somehow. For example: x = [11,  Jaime Conde Segovia,  mtAAAAA]
-		    	// [Clase, Nombre, Numero de matricula]
-		    });
-		    // Save classes with one BubbleGroup
-		    configuration.keySet().forEach(key -> {
-		    	// String name = NameGenerator.getName();
-		    	String name = RandomWordGenerator.getRandomWord();
-		    	System.out.println(name);
-		    	System.out.println(configuration.get(key));
-			    GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", "presencial", null, null, null, configuration.get(key));
-			    GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(newBubbleGroup);
-			    List <GrupoBurbuja> bubbleGroups = new ArrayList<>();
-			    bubbleGroups.add(newBubbleGroup);
-			    Clase newClass = new Clase(key, null, null, bubbleGroups);
-			    ClaseDAOImpl.getInstance().createClase(newClass);
-			    
-		    });
-		    
-		} catch(Exception e) {
+			r.forEach(student -> {
+				System.out.println(configuration.keySet());
+				System.out.println(Arrays.toString(student));
+				String salt = Security.getSalt();
+				String hash = Security.getHash(student[2].trim(), salt);
+				Alumno newStudent = new Alumno(student[1].trim(), hash, salt, student[2].trim(), "no confinado", null);
+				AlumnoDAOImpl.getInstance().createAlumno(newStudent);
+
+				try {
+					Set<Alumno> currentStudents = configuration.get(student[0]);
+					currentStudents.add(newStudent);
+					configuration.put(student[0].trim(), currentStudents);
+				} catch (Exception e) {
+					Set<Alumno> alumnos = new HashSet<Alumno>();
+					alumnos.add(newStudent);
+					configuration.put(student[0].trim(), alumnos);
+				}
+				;
+				// TODO: register each row somehow. For example: x = [11, Jaime Conde Segovia,
+				// mtAAAAA]
+				// [Clase, Nombre, Numero de matricula]
+			});
+			// Save classes with one BubbleGroup and classes to center
+			List<Clase> classes = new ArrayList<Clase>();
+			configuration.keySet().forEach(key -> {
+				String name = RandomWordGenerator.getRandomWord();
+				System.out.println(name);
+				System.out.println(configuration.get(key));
+				GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", "presencial", null, null, null,
+						configuration.get(key));
+				GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(newBubbleGroup);
+				List<GrupoBurbuja> bubbleGroups = new ArrayList<>();
+				bubbleGroups.add(newBubbleGroup);
+				Clase newClass = new Clase(key, null, null, bubbleGroups);
+				classes.add(newClass);
+				ClaseDAOImpl.getInstance().createClase(newClass);
+			});
+			CentroEducativo oldCenter = CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(centerName);
+			oldCenter.setClases(classes);
+			CentroEducativoDAOImpl.getInstance().updateCentroEducativo(oldCenter);
+
+		} catch (Exception e) {
 			System.out.println(e);
-		};
+		}
+		;
 
 		return Response.status(Response.Status.CREATED).build();
 	}
 
 	@POST
-	@Consumes("text/csv")
+	// @Consumes("text/csv")
 	@Path("/professors")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response registerProfessors(String CSVString) throws URISyntaxException {
 
 		Map<String, Set<Profesor>> configuration = new HashMap<String, Set<Profesor>>();
-		
+
 		System.out.println(CSVString);
 		try (CSVReader reader = new CSVReader(new StringReader(CSVString))) {
 			List<String[]> r = reader.readAll();
 			r = r.subList(1, r.size());
-		    r.forEach(professor -> {
-		    	System.out.println(Arrays.toString(professor));
-		    	String salt = Security.getSalt();
-		    	String hash = Security.getHash(professor[2], salt);
-		    	Profesor newProfessor = new Profesor(professor[1], hash, salt, professor[2], "no confinado", null, null);
-		    	ProfesorDAOImpl.getInstance().createProfesor(newProfessor);
-		    	// TODO: register each row somehow. For example: x = [11, Yod Samuel Martín García, 00000000A]
-		    	// [Clase, Nombre, NIF/NIE]
-		    	
-		    	try {
-		    		Set<Profesor> currentProfessors = configuration.get(professor[0]);
-		    		currentProfessors.add(newProfessor);
-		    		configuration.put(professor[0], currentProfessors);
-		    	} catch(Exception e) {
-		    		Set<Profesor> profesores= new HashSet<>();
-		    		profesores.add(newProfessor);
-		    		configuration.put(professor[0], profesores);
-		    	};
-		    });
-		    
-		 // Update classes with its teachers
-		    for (String key : configuration.keySet()) {
-		    	Clase oldClase = ClaseDAOImpl.getInstance().readClasebyName(key);
-		    	oldClase.setProfesores(configuration.get(key));
-		    	ClaseDAOImpl.getInstance().updateClase(oldClase);
-			    
-		    }
-		} catch(Exception e) {
-			System.out.println(e);
-		};
+			r.forEach(professor -> {
+				System.out.println(Arrays.toString(professor));
+				String salt = Security.getSalt();
+				String hash = Security.getHash(professor[2].trim(), salt);
+				Profesor newProfessor = new Profesor(professor[1].trim(), hash, salt, professor[2].trim(),
+						"no confinado", null, null);
+				ProfesorDAOImpl.getInstance().createProfesor(newProfessor);
+				// TODO: register each row somehow. For example: x = [11, Yod Samuel Martín
+				// García, 00000000A]
+				// [Clase, Nombre, NIF/NIE]
 
+				try {
+					Set<Profesor> currentProfessors = configuration.get(professor[0].trim());
+					currentProfessors.add(newProfessor);
+					configuration.put(professor[0].trim(), currentProfessors);
+				} catch (Exception e) {
+					Set<Profesor> profesores = new HashSet<>();
+					profesores.add(newProfessor);
+					configuration.put(professor[0].trim(), profesores);
+				}
+				;
+			});
+
+			// Update classes with its teachers
+			for (String key : configuration.keySet()) {
+				Clase oldClase = ClaseDAOImpl.getInstance().readClasebyName(key);
+				oldClase.setProfesores(configuration.get(key));
+				ClaseDAOImpl.getInstance().updateClase(oldClase);
+
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		;
 
 		// Return a 201 (created)
 		return Response.status(Response.Status.CREATED).build();

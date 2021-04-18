@@ -10,6 +10,7 @@ import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
+import es.upm.dit.isst.educovid.model.Profesor;
 
 public class AlumnoDAOImpl implements AlumnoDAO {
 	private static AlumnoDAOImpl instance = null;
@@ -63,6 +64,9 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		System.out.println("Centro received: " + centro.trim().toLowerCase());
 		for (Alumno alumno : alumnos) {
 			String centroAlumno = this.getNombreCentro(alumno);
+			System.out.println(centroAlumno);
+			System.out.println("A '" + alumno.getNumeroMatricula() + "'");
+			System.out.println("B '" + numeroMatricula + "'");
 			if (alumno.getNumeroMatricula().equals(numeroMatricula)
 					&& centroAlumno.trim().toLowerCase().equals(centro.trim().toLowerCase())) {
 				System.out.println("Alumno encontrado: " + alumno.getNombre());

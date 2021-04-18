@@ -2,29 +2,119 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
 // Temporary import during first sprint
-import { professor, students, bubbleGroups } from "../tests/prueba";
+//import { professor, students, bubbleGroups } from "../tests/prueba";
 
 // Bootstrap imports
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
+// Constants
+import { backUrl } from "../constants/constants";
+
 function Confine({ history }) {
-  const [data, setData] = useState({
-    professors: professor,
-    students: students,
-    bubbleGroups: bubbleGroups
-  });
+  const [professors, setProfessors] = useState([]);
+  const [students, setStudents] = useState([]);
+  const [bubbleGroups, setBubbleGroups] = useState([]);
   const [selectedType, setSelectedType] = useState("bubbleGroups");
   const [selected, setSelected] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("*");
 
-  useEffect(async () => {
-    // TODO: load list from API
-    const pushRes = await fetch({
-      method: "GET",
-      
-    });
+  const initComponent = async () => {
+    let response;
+    let responseData;
+    response = await fetch(backUrl + "/manage/bubblegroups");
+    responseData = await response.json();
+    setBubbleGroups(responseData);
+    response = await fetch(backUrl + "/manage/students");
+    responseData = await response.json();
+    setStudents(responseData);
+    response = await fetch(backUrl + "/manage/professors");
+    responseData = await response.json();
+    setProfessors(responseData);
+    console.log("UPDATED A");
+  };
+
+  const callMainSelector = async () => {
+    // const bubbleGroupsRes = await fetch(backUrl + "/manage/bubblegroups");
+    let response;
+    let responseData;
+    switch (selectedType) {
+      case "bubbleGroups":
+        response = await fetch(backUrl + "/manage/bubblegroups");
+        responseData = await response.json();
+        setBubbleGroups(responseData);
+        break;
+      case "students":
+        if (selectedFilter === "*") {
+          response = await fetch(backUrl + "/manage/students");
+          responseData = await response.json();
+          setStudents(responseData);
+        } else {
+          response = await fetch(backUrl + `/alumno/grupo/${selectedFilter}`);
+          responseData = await response.json();
+          console.log(responseData);
+          console.log();
+          setStudents(responseData);
+        }
+        break;
+      case "professors":
+        response = await fetch(backUrl + "/manage/professors");
+        responseData = await response.json();
+        setProfessors(responseData);
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    callMainSelector();
+  }, [selectedType, selectedFilter]);
+
+  useEffect(() => {
+    initComponent();
   }, []);
+
+  const getListOnSelectedType = () => {
+    switch (selectedType) {
+      case "bubbleGroups":
+        return bubbleGroups;
+      case "professors":
+        return professors;
+      case "students":
+        return students;
+      default:
+        return bubbleGroups;
+    }
+  };
+
+  const handleConfine = async () => {
+    selected.every(e => console.log(e.estadoSanitario.toLowerCase()));
+    if (selected.every(e => e.estadoSanitario.toLowerCase() === "confinado")) {
+      await fetch(backUrl + `/manage/unconfine/${selectedType}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(selected)
+      });
+      await callMainSelector();
+    } else if (
+      selected.every(e => e.estadoSanitario.toLowerCase() === "no confinado")
+    ) {
+      await fetch(backUrl + `/manage/confine/${selectedType}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(selected)
+      });
+      await callMainSelector();
+    } else {
+      await fetch(backUrl + `/manage/switch/${selectedType}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(selected)
+      });
+      await callMainSelector();
+    }
+  };
 
   return (
     <div className="confine-container">
@@ -39,6 +129,7 @@ function Confine({ history }) {
                   setSelectedType(e.target.value);
                   setSelectedFilter("*");
                   setSelected([]);
+                  callMainSelector();
                 }}
               >
                 <option key="1" value="bubbleGroups">
@@ -58,17 +149,19 @@ function Confine({ history }) {
               <Form.Group controlId="group">
                 <Form.Control
                   as="select"
-                  defaultValue="bubbleGroups"
+                  defaultValue="*"
                   onChange={e => {
+                    setSelected([]);
                     setSelectedFilter(e.target.value);
+                    callMainSelector();
                   }}
                 >
                   <option key="0" value="*">
                     Todos
                   </option>
-                  {(data["bubbleGroups"] || []).map((value, index) => (
-                    <option key={index} value={value.name}>
-                      {value.name}
+                  {(bubbleGroups || []).map((group, index) => (
+                    <option key={index} value={group.id}>
+                      {group.nombre}
                     </option>
                   ))}
                 </Form.Control>
@@ -80,33 +173,34 @@ function Confine({ history }) {
         </div>
 
         <div className="list-container">
-          {(data[selectedType] || []).map((person, index) =>
-            (person?.group?.name === selectedFilter) |
-            (selectedFilter === "*") ? (
-              <div
-                key={index}
-                onClick={e => {
-                  if (!selected.some(e => e.name === person.name)) {
-                    setSelected(selected.concat([person]));
-                  }
-                }}
-                className={
-                  "person-card" +
-                  (person.state === "Confinado" ? " red" : " green") +
-                  (data[selectedType].some(e => e === person) ? "" : "selected")
+          {(getListOnSelectedType() || []).map((item, index) => (
+            <div
+              key={index}
+              onClick={e => {
+                if (!selected.some(e => e.nombre === item.nombre)) {
+                  setSelected(selected.concat([item]));
                 }
-              >
-                {person.name.includes("Grupo") ? (
-                  <h5>{person.name} - 1ºB</h5>
-                ) : (
-                  <h5>{person.name}</h5>
-                )}
-                <h8>{person.state}</h8>
-              </div>
-            ) : (
-              <div />
-            )
-          )}
+              }}
+              className={
+                "person-card" +
+                (item.estadoSanitario === "confinado" ? " red" : " green") +
+                (getListOnSelectedType().some(e => e === item)
+                  ? ""
+                  : " selected")
+              }
+            >
+              {item?.nombre?.includes("Grupo") ? (
+                <h5>{item.nombre}</h5>
+              ) : (
+                <h5>{item.nombre}</h5>
+              )}
+              <h8>
+                {item.estadoSanitario === "no confinado"
+                  ? "No confinado"
+                  : "Confinado"}
+              </h8>
+            </div>
+          ))}
         </div>
       </div>
       <div className="right-options">
@@ -116,25 +210,31 @@ function Confine({ history }) {
             <div
               key={index}
               onClick={e => {
-                if (selected.some(e => e.name === person.name)) {
+                if (selected.some(e => e.nombre === person.nombre)) {
                   var filtered = selected.filter(function(value, index, arr) {
-                    return value.name !== person.name;
+                    return value.nombre !== person.nombre;
                   });
                   setSelected(filtered);
                 }
               }}
               className={
                 "person-card" +
-                (person.state === "Confinado" ? " red" : " green") +
-                (data[selectedType].some(e => e === person) ? " selected" : "")
+                (person.estadoSanitario === "confinado" ? " red" : " green") +
+                (getListOnSelectedType().some(e => e === person)
+                  ? " selected"
+                  : "")
               }
             >
-              {person.name.includes("Grupo") ? (
-                <h5>{person.name} - 1ºB</h5>
+              {person.nombre.includes("Grupo") ? (
+                <h5>{person.nombre}</h5>
               ) : (
-                <h5>{person.name}</h5>
+                <h5>{person.nombre}</h5>
               )}
-              <h8>{person.state}</h8>
+              <h8>
+                {person.estadoSanitario === "no confinado"
+                  ? "No confinado"
+                  : "Confinado"}
+              </h8>
             </div>
           ))}
         </div>
@@ -147,55 +247,30 @@ function Confine({ history }) {
               className="nord-button"
               onClick={e => {
                 if (selected != null) {
-                  let x = selected;
-                  let confined = x.forEach(e =>
-                    e.state === "Confinado"
-                      ? (e.state = "No Confinado")
-                      : (e.state = "Confinado")
-                  );
+                  // let x = selected;
+                  // let confined = x.forEach(e =>
+                  //   e.estadoSanitario === "confinado"
+                  //     ? (e.estadoSanitario = "no confinado")
+                  //     : (e.estadoSanitario = "confinado")
+                  // );
+                  handleConfine();
                   setSelected([]);
                 } else {
                   alert("Seleccione las personas a confinar");
                 }
               }}
             >
-              {selected.every(e => e.state.toLowerCase() === "confinado")
+              {selected.every(
+                e => e.estadoSanitario.toLowerCase() === "confinado"
+              )
                 ? "Desconfinar"
-                : selected.every(e => e.state.toLowerCase() === "no confinado")
+                : selected.every(
+                    e => e.estadoSanitario.toLowerCase() === "no confinado"
+                  )
                 ? "Confinar"
                 : "Cambiar estados"}
             </Button>
           ) : null}
-          {/* <Button
-            variant="primary"
-            className="nord-button"
-            onClick={e => {
-              if (selected != null) {
-                let x = selected;
-                let confined = x.forEach(e => (e.state = "No confinado"));
-                setSelected([]);
-              } else {
-                alert("Seleccione las personas a confinar");
-              }
-            }}
-          >
-            {selected.every(e => e.state === "Confinado") ? "Desconfinar" : (selected.every(e => e.state === "No Confinado") ? "Confinar" : "Cambiar estados")}
-          </Button> : null}
-          {/* <Button
-            variant="primary"
-            className="nord-button"
-            onClick={e => {
-              if (selected != null) {
-                let x = selected;
-                let confined = x.forEach(e => (e.state = "No confinado"));
-                setSelected([]);
-              } else {
-                alert("Seleccione las personas a confinar");
-              }
-            }}
-          >
-            Desconfinar
-          </Button> */}
         </Form>
       </div>
     </div>

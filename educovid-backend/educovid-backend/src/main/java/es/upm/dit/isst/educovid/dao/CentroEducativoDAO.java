@@ -16,5 +16,6 @@ public interface CentroEducativoDAO {
 	public CentroEducativo updateCentroEducativo (CentroEducativo CentroEducativo);
 	public CentroEducativo updateCentroEducativobyResponsable (ResponsableCOVID responsable);
 	public CentroEducativo deleteCentroEducativo (CentroEducativo CentroEducativo);
+	List<CentroEducativo> readAllCentroEducativobyResponsable(ResponsableCOVID responsable);
 	
 }
