@@ -39,33 +39,36 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO{
 	public CentroEducativo readCentroEducativobyName(String nombre) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        CentroEducativo centroEducativo = session.get(CentroEducativo.class, nombre);
+        CentroEducativo centro = null;
+        Object object = session.createQuery("from CentroEducativo c where c.nombre='" + nombre.replace("'", "''") + "'").uniqueResult();
+        if (object != null)
+        	centro = (CentroEducativo) object;
         session.getTransaction().commit();
         session.close();
-        return centroEducativo;
+        return centro;
 	}
 
 	@Override
 	public CentroEducativo readCentroEducativobyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        CentroEducativo centroEducativo = session.get(CentroEducativo.class, id);
+        CentroEducativo centroEducativo = session.get(CentroEducativo.class, Integer.parseInt(id));
         session.getTransaction().commit();
         session.close();
         return centroEducativo;
 	}
 	
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<CentroEducativo> readAllCentroEducativobyResponsable(ResponsableCOVID responsable) {
-		List<CentroEducativo> centros = new ArrayList<CentroEducativo> ();
-        Session session = SessionFactoryService.get().openSession();
-        session.beginTransaction();
-        centros.addAll(session.createQuery("from centros_educativos where centros_educativos.ResponsableCOVID="+ responsable).list());
-        session.getTransaction().commit();
-        session.close();
-        return centros;
-	}
+//	@SuppressWarnings("unchecked")
+//	@Override
+//	public List<CentroEducativo> readAllCentroEducativobyResponsable(ResponsableCOVID responsable) {
+//		List<CentroEducativo> centros = new ArrayList<CentroEducativo> ();
+//        Session session = SessionFactoryService.get().openSession();
+//        session.beginTransaction();
+//        centros.addAll(session.createQuery("from centros_educativos where centros_educativos.ResponsableCOVID="+ responsable).list());
+//        session.getTransaction().commit();
+//        session.close();
+//        return centros;
+//	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
