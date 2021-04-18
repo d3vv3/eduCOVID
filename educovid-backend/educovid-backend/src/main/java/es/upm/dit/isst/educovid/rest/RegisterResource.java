@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
@@ -77,7 +78,7 @@ public class RegisterResource {
 	@POST
 	@Consumes("text/csv")
 	@Path("/students")
-	public Response registerStudents(String CSVString) throws URISyntaxException, IOException, CsvException {
+	public Response registerStudents(@FormParam("centerName") String centerName, String CSVString) throws URISyntaxException, IOException, CsvException {
 		
 		Map<String, List<Alumno>> configuration = new HashMap<String, List<Alumno>>();
 
@@ -106,8 +107,10 @@ public class RegisterResource {
 		    	// [Clase, Nombre, Numero de matricula]
 		    });
 		    // Save classes with one BubbleGroup
+		    List<Clase> classes = new ArrayList<Clase>();
+			CentroEducativo newCenter = new CentroEducativo(centerName, classes);
+			CentroEducativoDAOImpl.getInstance().createCentroEducativo(newCenter);
 		    configuration.keySet().forEach(key -> {
-		    	// String name = NameGenerator.getName();
 		    	String name = RandomWordGenerator.getRandomWord();
 		    	System.out.println(name);
 		    	System.out.println(configuration.get(key));
@@ -116,9 +119,12 @@ public class RegisterResource {
 			    List <GrupoBurbuja> bubbleGroups = new ArrayList<>();
 			    bubbleGroups.add(newBubbleGroup);
 			    Clase newClass = new Clase(key, null, null, bubbleGroups);
+			    classes.add(newClass);
 			    ClaseDAOImpl.getInstance().createClase(newClass);
-			    
 		    });
+		    CentroEducativo oldCenter = CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(centerName);
+		    oldCenter.setClases(classes);
+		    CentroEducativoDAOImpl.getInstance().updateCentroEducativo(oldCenter);
 		    
 		} catch(Exception e) {
 			System.out.println(e);

@@ -101,7 +101,7 @@ public class ConfineResource {
 	public Response bubblegroups() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
 		List<GrupoBurbuja> gruposBurbuja = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbuja();
-		return Response.status(Response.Status.OK).entity(gruposBurbuja).build();
+		return Response.ok(gruposBurbuja, MediaType.APPLICATION_JSON).build();
 		
 	}
 }

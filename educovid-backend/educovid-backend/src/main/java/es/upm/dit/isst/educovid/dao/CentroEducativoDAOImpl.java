@@ -36,14 +36,18 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO{
 	}
 
 	@Override
-	public CentroEducativo readCentroEducativobyName(String nombre) {
-		Session session = SessionFactoryService.get().openSession();
+    public CentroEducativo readCentroEducativobyName(String nombre) {
+        Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        CentroEducativo centroEducativo = session.get(CentroEducativo.class, nombre);
+        CentroEducativo centro = null;
+        Object object = session.createQuery("from CentroEducativo c where c.nombre='" + nombre.replace("'", "''") + "'")
+                .uniqueResult();
+        if (object != null)
+            centro = (CentroEducativo) object;
         session.getTransaction().commit();
         session.close();
-        return centroEducativo;
-	}
+        return centro;
+    }
 
 	@Override
 	public CentroEducativo readCentroEducativobyId(String id) {
