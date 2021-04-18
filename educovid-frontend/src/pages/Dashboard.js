@@ -21,7 +21,7 @@ function Dashboard(props){
       <div className="dashboard-page-container">
         <div className="centered-div">
           <h1>¡Bienvenido {responsibleName}!</h1>
-          <h3>Aquí podrás gestionar el centro:</h3>
+          <h3>Responsable COVID de:</h3>
           <h2>{responsibleCenter}</h2>
         </div>
         <div className="cards-container">
