@@ -62,15 +62,18 @@ public class MockDataFiller {
 
 		GrupoBurbuja burbuja1 = new GrupoBurbuja("Grupo 1", "no confinado", "presencial", null, null, null, alumnos1);
 		GrupoBurbuja burbuja2 = new GrupoBurbuja("Grupo 2", "no confinado", "online", null, null, null, alumnos2);
-		GrupoBurbuja burbuja3 = new GrupoBurbuja("Grupo 1", "confinado", "online", null, null, null, alumnos3);
+		GrupoBurbuja burbuja3 = new GrupoBurbuja("Grupo 3", "no confinado", "presencial", null, null, null, alumnos3);
+		GrupoBurbuja burbuja4 = new GrupoBurbuja("Grupo 1", "confinado", "online", null, null, null, alumnos3);
 		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(burbuja1);
 		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(burbuja2);
 		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(burbuja3);
+		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(burbuja4);
 		List <GrupoBurbuja> grupos1 = new ArrayList<>();
 		List <GrupoBurbuja> grupos2 = new ArrayList<>();
 		grupos1.add(burbuja1);
 		grupos1.add(burbuja2);
-		grupos2.add(burbuja3);
+		grupos1.add(burbuja3);
+		grupos2.add(burbuja4);
 
 		Clase clase1 = new Clase("1ºD", null, profesores1, grupos1);
 		Clase clase2 = new Clase("6ºA", null, profesores2, grupos2);

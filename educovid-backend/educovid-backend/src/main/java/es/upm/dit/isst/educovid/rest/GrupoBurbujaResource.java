@@ -9,10 +9,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
 import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;
+import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 import es.upm.dit.isst.educovid.model.Profesor;
@@ -21,41 +23,42 @@ import es.upm.dit.isst.educovid.model.Profesor;
 public class GrupoBurbujaResource {
 
 	@GET
-	@Path("/{profesorId}")
+	@Path("/{profesorId}/{nombreCentro}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response readGroupsByProfesor(@PathParam("profesorId") String profesorId) {
+	public Response readGroupsByProfesorAndCenter(@PathParam("profesorId") String profesorId, @PathParam("nombreCentro") String nombreCentro) {
 		Profesor p = ProfesorDAOImpl.getInstance().readProfesorbyId(profesorId);
-		if (p == null) {
+		CentroEducativo c = CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(nombreCentro);
+		if (p == null || c == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		} else {
 			List<Clase> clasesProfesor = new ArrayList<Clase> ();
-			for (Clase c: ClaseDAOImpl.getInstance().readAllClases()) {
-				for (Profesor profesor: c.getProfesores()) {
+			for (Clase clase: c.getClases()) {
+				for (Profesor profesor: clase.getProfesores()) {
 					if(profesor.getNifNie().equals(p.getNifNie())) {
-						clasesProfesor.add(c);
+						clasesProfesor.add(clase);
 					}
 				}
 			}
-			List<GrupoBurbuja> grupos = new ArrayList<GrupoBurbuja> ();
 			List<GrupoBurbuja> gruposFront = new ArrayList<GrupoBurbuja> ();
-			for (Clase c: clasesProfesor) {
-				for (GrupoBurbuja grupo: c.getGruposBurbuja()) {
-					grupos.add(grupo);
-				}
-			}
-			for (GrupoBurbuja g: grupos) {
-				for (Alumno a: g.getAlumnos()) {
-					if (a.getEstadoSanitario().equals("confinado")) {
-						gruposFront.add(new GrupoBurbuja(g.getNombre(), "alumnosconfinados", g.getEstadoDocencia(), null, null, null, null));
+			for (Clase clase: clasesProfesor) {
+				for (GrupoBurbuja grupo: clase.getGruposBurbuja()) {
+					boolean confinados = false;
+					for (Alumno a: grupo.getAlumnos()) {
+						if (a.getEstadoSanitario().equals("confinado")) {
+							confinados = true;
+						}
+					}
+					if(confinados) {
+						gruposFront.add(new GrupoBurbuja(clase.getNombre() + " - " + grupo.getNombre(), "alumnosconfinados", grupo.getEstadoDocencia(), null, null, null, null));
 					} else {
-						gruposFront.add(new GrupoBurbuja(g.getNombre(), "alumnosnoconfinados", g.getEstadoDocencia(), null, null, null, null));
+						gruposFront.add(new GrupoBurbuja(clase.getNombre() + " - " + grupo.getNombre(), "alumnosnoconfinados", grupo.getEstadoDocencia(), null, null, null, null));
 					}
 				}
 			}
 			return Response.ok(gruposFront, MediaType.APPLICATION_JSON).build();
 		}
 	}
-
+	
 	@GET
 	@Path("alumno/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
