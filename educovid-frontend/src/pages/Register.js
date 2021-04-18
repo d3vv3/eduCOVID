@@ -156,7 +156,7 @@ function Register({ history }) {
         headers: { "Content-Type": "application/json" }
       });
       // setResponsibleResponse(await response.json());
-      response = await fetch(`${backUrl}/register/students`, {
+      response = await fetch(`${backUrl}/register/students/${centerName}`, {
         method: "post",
         body: studentCSV,
         headers: { "Content-Type": "text/csv" }

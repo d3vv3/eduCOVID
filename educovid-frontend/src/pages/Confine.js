@@ -44,7 +44,7 @@ function Confine({ history }) {
           } else {
             response = await fetch(backUrl + `/alumno/grupo/${selectedFilter}`);
             responseData = await response.json();
-            x["bubbleGroups"] = responseData;
+            x["students"] = responseData;
           }
           break;
         case "professors":
@@ -121,8 +121,7 @@ function Confine({ history }) {
 
         <div className="list-container">
           {(data[selectedType] || []).map((item, index) =>
-            (item?.nombre?.name === selectedFilter) |
-            (selectedFilter === "*") ? (
+            (item?.nombre === selectedFilter) | (selectedFilter === "*") ? (
               <div
                 key={index}
                 onClick={e => {
@@ -136,7 +135,7 @@ function Confine({ history }) {
                   (data[selectedType].some(e => e === item) ? "" : "selected")
                 }
               >
-                {item.name.includes("Grupo") ? (
+                {item?.name?.includes("Grupo") ? (
                   <h5>{item.name} - 1ºB</h5>
                 ) : (
                   <h5>{item.name}</h5>

@@ -16,6 +16,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -45,6 +47,7 @@ public class RegisterResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/responsible")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response registerResponsible(String JSONBodyString) throws URISyntaxException {
 
 		System.out.println(JSONBodyString);
@@ -75,8 +78,9 @@ public class RegisterResource {
 
 	@POST
 	@Consumes("text/csv")
-	@Path("/students")
-	public Response registerStudents(@FormParam("centerName") String centerName, String CSVString) throws URISyntaxException, IOException, CsvException {
+	@Path("/students/{centerName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response registerStudents(@PathParam("centerName") String centerName, String CSVString) throws URISyntaxException, IOException, CsvException {
 		
 		Map<String, Set<Alumno>> configuration = new HashMap<String, Set<Alumno>>();
 
@@ -104,7 +108,7 @@ public class RegisterResource {
 		    	// TODO: register each row somehow. For example: x = [11,  Jaime Conde Segovia,  mtAAAAA]
 		    	// [Clase, Nombre, Numero de matricula]
 		    });
-		    // Save classes with one BubbleGroup
+		    // Save classes with one BubbleGroup and classes to center
 		    List<Clase> classes = new ArrayList<Clase>();
 			CentroEducativo newCenter = new CentroEducativo(centerName, classes);
 			CentroEducativoDAOImpl.getInstance().createCentroEducativo(newCenter);
@@ -132,8 +136,9 @@ public class RegisterResource {
 	}
 
 	@POST
-	@Consumes("text/csv")
+	// @Consumes("text/csv")
 	@Path("/professors")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response registerProfessors(String CSVString) throws URISyntaxException {
 
 		Map<String, Set<Profesor>> configuration = new HashMap<String, Set<Profesor>>();
