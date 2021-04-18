@@ -28,7 +28,7 @@ public class MockDataFiller {
 		profesores1.add(profesor);
 		profesores2.add(profesor2);
 		profesores1.add(profesor3);
-		
+
 		Alumno alumno1 = new Alumno("Pepe", Security.getHash("S01546", salt), salt, "S01546", "no confinado", null);
 		Alumno alumno2 = new Alumno("Bob Esponja", Security.getHash("S01547", salt), salt, "S01547", "confinado", null);
 		Alumno alumno3 = new Alumno("Urdangarín", Security.getHash("S01548", salt), salt, "S01548", "no confinado", null);
@@ -59,7 +59,7 @@ public class MockDataFiller {
 		alumnos1.add(alumno7);
 		alumnos2.add(alumno8);
 		alumnos3.add(alumno9);
-		
+
 		GrupoBurbuja burbuja1 = new GrupoBurbuja("Grupo 1", "no confinado", "presencial", null, null, null, alumnos1);
 		GrupoBurbuja burbuja2 = new GrupoBurbuja("Grupo 2", "no confinado", "online", null, null, null, alumnos2);
 		GrupoBurbuja burbuja3 = new GrupoBurbuja("Grupo 1", "confinado", "online", null, null, null, alumnos3);
@@ -71,7 +71,7 @@ public class MockDataFiller {
 		grupos1.add(burbuja1);
 		grupos1.add(burbuja2);
 		grupos2.add(burbuja3);
-		
+
 		Clase clase1 = new Clase("1ºD", null, profesores1, grupos1);
 		Clase clase2 = new Clase("6ºA", null, profesores2, grupos2);
 		ClaseDAOImpl.getInstance().createClase(clase1);
@@ -79,12 +79,12 @@ public class MockDataFiller {
 		List<Clase> clases = new ArrayList<>();
 		clases.add(clase1);
 		clases.add(clase2);
-		
+
 		CentroEducativo centro = new CentroEducativo("Xavier's School for Gifted Youngsters", clases);
 		CentroEducativoDAOImpl.getInstance().createCentroEducativo(centro);
 		List<CentroEducativo> centros = new ArrayList<>();
 		centros.add(centro);
-		
+
 		ResponsableCOVID responsable = new ResponsableCOVID("Magneto", Security.getHash("00000002C", salt), salt, "00000002C", false, centros);
 		ResponsableDAOImpl.getInstance().createResponsable(responsable);
 	}
