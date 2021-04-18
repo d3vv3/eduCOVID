@@ -9,7 +9,7 @@ import {
   Redirect,
   Route,
   Switch,
-  useHistory,
+  useHistory
 } from "react-router-dom";
 
 // Local imports
@@ -24,7 +24,6 @@ import Dashboard from "../pages/Dashboard";
 import Teaching from "../pages/Teaching";
 import Center from "../pages/Center";
 
-
 function Routes(props) {
   // Create the history of the user (to go back and forth from the browser or
   // from the app itself by pushing routes)
@@ -34,13 +33,8 @@ function Routes(props) {
   const routesMapper = {
     alumno: "student",
     profesor: "professor",
-    responsable: "dashboard",
+    responsable: "dashboard"
   };
-
-  ///////////////////////////////
-  //ELIMINAR
-  ///////////////////////////////////
-  const prueba={ nombre: "Javier Rodríguez", id: 0, centro: "Universidad Politécnica de Madrid"};
 
   return (
     <BrowserRouter>
@@ -66,7 +60,7 @@ function Routes(props) {
             <Redirect to={`/${routesMapper[userData.role]}`} />
           ) : null}
           <LoginPage
-            onLogIn={(userData) => {
+            onLogIn={userData => {
               props.dispatch(logIn(userData));
             }}
           />
@@ -87,7 +81,7 @@ function Routes(props) {
         </Route>
         <Route exact path="/dashboard">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <Dashboard userData={prueba}/>
+          <Dashboard userData={userData} />
         </Route>
         <Route exact path="/teaching">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
