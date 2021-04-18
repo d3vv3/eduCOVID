@@ -20,6 +20,10 @@ import ProfessorPage from "../pages/ProfessorPage";
 import LoginPage from "../pages/LoginPage";
 import Terms from "../pages/Terms";
 import Confine from "../pages/Confine";
+import Dashboard from "../pages/Dashboard";
+import Teaching from "../pages/Teaching";
+import Center from "../pages/Center";
+
 
 function Routes(props) {
   // Create the history of the user (to go back and forth from the browser or
@@ -30,8 +34,13 @@ function Routes(props) {
   const routesMapper = {
     alumno: "student",
     profesor: "professor",
-    responsable: "confine",
+    responsable: "dashboard",
   };
+
+  ///////////////////////////////
+  //ELIMINAR
+  ///////////////////////////////////
+  const prueba={ nombre: "Javier Rodríguez", id: 0, centro: "Universidad Politécnica de Madrid"};
 
   return (
     <BrowserRouter>
@@ -75,6 +84,18 @@ function Routes(props) {
             <Redirect to={`/${routesMapper[userData.role]}`} />
           ) : null}
           <MainPage loggedIn={loggedIn} />
+        </Route>
+        <Route exact path="/dashboard">
+          {!loggedIn ? <Redirect to={`/login`} /> : null}
+          <Dashboard userData={prueba}/>
+        </Route>
+        <Route exact path="/teaching">
+          {!loggedIn ? <Redirect to={`/login`} /> : null}
+          <Teaching />
+        </Route>
+        <Route exact path="/center">
+          {!loggedIn ? <Redirect to={`/login`} /> : null}
+          <Center />
         </Route>
       </Switch>
     </BrowserRouter>
