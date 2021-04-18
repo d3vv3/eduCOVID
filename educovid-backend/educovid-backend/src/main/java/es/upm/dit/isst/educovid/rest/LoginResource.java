@@ -20,7 +20,6 @@ import es.upm.dit.isst.educovid.dao.ResponsableDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.Clase;
-import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 import es.upm.dit.isst.educovid.model.Profesor;
 import es.upm.dit.isst.educovid.model.ResponsableCOVID;
 import io.jsonwebtoken.Jwts;

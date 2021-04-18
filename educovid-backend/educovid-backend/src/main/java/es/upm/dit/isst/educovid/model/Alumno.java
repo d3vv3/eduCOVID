@@ -51,5 +51,4 @@ public class Alumno extends Usuario implements Serializable {
 		return serialVersionUID;
 	}
 	
-	
 }

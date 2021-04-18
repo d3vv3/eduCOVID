@@ -126,45 +126,45 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		List<Alumno> alumnos = new ArrayList<Alumno>();
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		alumnos.addAll(session.createQuery("from alumnos").list());
+		alumnos.addAll(session.createQuery("from Alumno").list());
 		session.getTransaction().commit();
 		session.close();
 		return alumnos;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Alumno> readAllAlumnosbyGroup(String grupoBurbuja) {
-		List<Alumno> alumnos = new ArrayList<Alumno>();
-		Session session = SessionFactoryService.get().openSession();
-		session.beginTransaction();
-		alumnos.addAll(session.createQuery("from alumnos a where alumnos.grupoBurbuja=" + grupoBurbuja).list());
-		session.getTransaction().commit();
-		session.close();
-		return alumnos;
-	}
+//	@SuppressWarnings("unchecked")
+//	@Override
+//	public List<Alumno> readAllAlumnosbyGroup(String grupoBurbuja) {
+//		List<Alumno> alumnos = new ArrayList<Alumno>();
+//		Session session = SessionFactoryService.get().openSession();
+//		session.beginTransaction();
+//		alumnos.addAll(session.createQuery("from alumnos a where alumnos.grupoBurbuja=" + grupoBurbuja).list());
+//		session.getTransaction().commit();
+//		session.close();
+//		return alumnos;
+//	}
 
-	@Override
-	public List<Alumno> readAllAlumnosbyEstadoSanitario(String estadoSanitario) {
-		List<Alumno> alumnos = new ArrayList<Alumno>();
-		Session session = SessionFactoryService.get().openSession();
-		session.beginTransaction();
-		alumnos.addAll(session.createQuery("from alumnos a where alumnos.estadoSanitario=" + estadoSanitario).list());
-		session.getTransaction().commit();
-		session.close();
-		return alumnos;
-	}
+//	@Override
+//	public List<Alumno> readAllAlumnosbyEstadoSanitario(String estadoSanitario) {
+//		List<Alumno> alumnos = new ArrayList<Alumno>();
+//		Session session = SessionFactoryService.get().openSession();
+//		session.beginTransaction();
+//		alumnos.addAll(session.createQuery("from alumnos a where alumnos.estadoSanitario=" + estadoSanitario).list());
+//		session.getTransaction().commit();
+//		session.close();
+//		return alumnos;
+//	}
 
-	@Override
-	public List<Alumno> readAllAlumnosbyFechaConfinamiento(Date fechaConfinamiento) {
-		List<Alumno> alumnos = new ArrayList<Alumno>();
-		Session session = SessionFactoryService.get().openSession();
-		session.beginTransaction();
-		alumnos.addAll(
-				session.createQuery("from alumnos a where alumnos.fechaConfinamiento=" + fechaConfinamiento).list());
-		session.getTransaction().commit();
-		session.close();
-		return alumnos;
-	}
+//	@Override
+//	public List<Alumno> readAllAlumnosbyFechaConfinamiento(Date fechaConfinamiento) {
+//		List<Alumno> alumnos = new ArrayList<Alumno>();
+//		Session session = SessionFactoryService.get().openSession();
+//		session.beginTransaction();
+//		alumnos.addAll(
+//				session.createQuery("from alumnos a where alumnos.fechaConfinamiento=" + fechaConfinamiento).list());
+//		session.getTransaction().commit();
+//		session.close();
+//		return alumnos;
+//	}
 
 }
