@@ -44,6 +44,10 @@ public class ConfineResource {
 		for (GrupoBurbuja gb: grupos) {
 			gb.setEstadoSanitario("confinado");
 			GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(gb);
+			for (Alumno a: gb.getAlumnos()) {
+				a.setEstadoSanitario("confinado");
+				AlumnoDAOImpl.getInstance().updateAlumno(a);
+			}
 		}
 		return Response.status(Response.Status.OK).entity(grupos).build();
 	}
@@ -83,6 +87,10 @@ public class ConfineResource {
 		for (GrupoBurbuja gb: grupos) {
 			gb.setEstadoSanitario("no confinado");
 			GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(gb);
+			for (Alumno a: gb.getAlumnos()) {
+				a.setEstadoSanitario("no confinado");
+				AlumnoDAOImpl.getInstance().updateAlumno(a);
+			}
 		}
 		return Response.status(Response.Status.OK).entity(grupos).build();
 	}
@@ -124,6 +132,11 @@ public class ConfineResource {
 			if (gb.getEstadoSanitario().equals("confinado")) gb.setEstadoSanitario("no confinado");
 			else gb.setEstadoSanitario("confinado");
 			GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(gb);
+			for (Alumno a: gb.getAlumnos()) {
+				if (a.getEstadoSanitario().equals("confinado")) a.setEstadoSanitario("no confinado");
+				else a.setEstadoSanitario("confinado");
+				AlumnoDAOImpl.getInstance().updateAlumno(a);
+			}
 		}
 		return Response.status(Response.Status.OK).entity(grupos).build();
 	}
@@ -143,6 +156,8 @@ public class ConfineResource {
 	}
 
 	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/students")
 	public Response students() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
@@ -151,20 +166,24 @@ public class ConfineResource {
 		return Response.ok(alumnos, MediaType.APPLICATION_JSON).build();
 
 	}
+	
 	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/professors")
 	public Response teachers() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
 		List<Profesor> profesores = ProfesorDAOImpl.getInstance().readAllProfesores();
 		return Response.status(Response.Status.OK).entity(profesores).build();
-
 	}
+	
 	@GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/bubblegroups")
 	public Response bubblegroups() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
 		List<GrupoBurbuja> gruposBurbuja = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbuja();
 		return Response.ok(gruposBurbuja, MediaType.APPLICATION_JSON).build();
-
 	}
 }

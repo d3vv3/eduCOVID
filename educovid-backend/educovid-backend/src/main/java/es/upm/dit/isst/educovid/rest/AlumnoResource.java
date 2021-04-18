@@ -85,7 +85,7 @@ public class AlumnoResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("grupo/{grupoBurbujaId}")
-	public Response readAllAlumnosbyGroup(@PathParam("grupoBurbuja") String grupoBurbujaId) {
+	public Response readAllAlumnosbyGroup(@PathParam("grupoBurbujaId") String grupoBurbujaId) {
 		GrupoBurbuja grupo = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(grupoBurbujaId);
 		return Response.status(Response.Status.OK).entity(grupo.getAlumnos()).build();
 	}
