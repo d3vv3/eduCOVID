@@ -1,11 +1,7 @@
 package es.upm.dit.isst.educovid.rest;
 
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
 import java.util.List;
-
->>>>>>> feat/professor-page
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
