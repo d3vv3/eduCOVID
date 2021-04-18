@@ -22,40 +22,49 @@ function Confine({ history }) {
   const [selectedFilter, setSelectedFilter] = useState("*");
 
   useEffect(() => {
-    const callUsers = async () => {
-      // Get all centers (not secure, everyone can read all centers)
-
-      let method = "";
+    const callMainSelector = async () => {
+      // const bubbleGroupsRes = await fetch(backUrl + "/manage/bubblegroups");
+      let x = data;
+      let response;
+      let responseData;
       switch (selectedType) {
-        case 'bubbleGroups':
-          method = "/manage/bubblegroups";
+        case "bubbleGroups":
+          response = await fetch(backUrl + "/manage/bubblegroups");
+          responseData = await response.json();
+          x[selectedType] = responseData;
           break;
-        case 'students':
-          method = "/manage/students";
+        case "students":
+          response = await fetch(backUrl + "/manage/students");
+          responseData = await response.json();
+          x[selectedType] = responseData;
+          if (selectedFilter === "*") {
+            response = await fetch(backUrl + "/manage/bubblegroups");
+            responseData = await response.json();
+            x["bubbleGroups"] = responseData;
+          } else {
+            response = await fetch(backUrl + `/alumno/grupo/${selectedFilter}`);
+            responseData = await response.json();
+            x["bubbleGroups"] = responseData;
+          }
           break;
-        case 'professors':
-          method = "/manage/teachers";
+        case "professors":
+          response = await fetch(backUrl + "/manage/teachers");
+          responseData = await response.json();
+          x[selectedType] = responseData;
           break;
         default:
-          method = "/manage/bubblegroups";
+          break;
       }
       try {
-        const usersRes = await fetch(backUrl + 
-          method
-          );
-        let usersData = await usersRes.json();
-        console.log(usersData);
-        setData(data[selectedType] = usersData)
+        setData(x);
       } catch (e) {
         // Nothing to do
       }
     };
-    callUsers();
-  }, [selectedType]);
+    callMainSelector();
+  }, [selectedType, selectedFilter]);
 
-  const handleConfine = async () => {
-
-  }
+  const handleConfine = async () => {};
 
   return (
     <div className="confine-container">
@@ -97,9 +106,9 @@ function Confine({ history }) {
                   <option key="0" value="*">
                     Todos
                   </option>
-                  {(data["bubbleGroups"] || []).map((value, index) => (
-                    <option key={index} value={value.name}>
-                      {value.name}
+                  {(data["bubbleGroups"] || []).map((group, index) => (
+                    <option key={index} value={group.nombre}>
+                      {group.name}
                     </option>
                   ))}
                 </Form.Control>
@@ -111,28 +120,28 @@ function Confine({ history }) {
         </div>
 
         <div className="list-container">
-          {(data[selectedType] || []).map((person, index) =>
-            (person?.group?.name === selectedFilter) |
+          {(data[selectedType] || []).map((item, index) =>
+            (item?.nombre?.name === selectedFilter) |
             (selectedFilter === "*") ? (
               <div
                 key={index}
                 onClick={e => {
-                  if (!selected.some(e => e.name === person.name)) {
-                    setSelected(selected.concat([person]));
+                  if (!selected.some(e => e.name === item.name)) {
+                    setSelected(selected.concat([item]));
                   }
                 }}
                 className={
                   "person-card" +
-                  (person.state === "Confinado" ? " red" : " green") +
-                  (data[selectedType].some(e => e === person) ? "" : "selected")
+                  (item.state === "Confinado" ? " red" : " green") +
+                  (data[selectedType].some(e => e === item) ? "" : "selected")
                 }
               >
-                {person.name.includes("Grupo") ? (
-                  <h5>{person.name} - 1ºB</h5>
+                {item.name.includes("Grupo") ? (
+                  <h5>{item.name} - 1ºB</h5>
                 ) : (
-                  <h5>{person.name}</h5>
+                  <h5>{item.name}</h5>
                 )}
-                <h8>{person.state}</h8>
+                <h8>{item.state}</h8>
               </div>
             ) : (
               <div />
@@ -198,7 +207,6 @@ function Confine({ history }) {
                 : "Cambiar estados"}
             </Button>
           ) : null}
-          
         </Form>
       </div>
     </div>
