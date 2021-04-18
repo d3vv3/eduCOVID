@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom"; 
+import { withRouter } from "react-router-dom";
 
 // Bootstrap imports
 import Accordion from "react-bootstrap/Accordion";
@@ -16,6 +16,7 @@ function ProfessorPage(props) {
   const [professorId] = useState(userData.id);
   const [professorName, setProfessorName] = useState(userData.nombre);
   const [professorState, setProfessorState] = useState(userData.estadoSanitario);
+  const [professorCenter, setProfessorCenter] = useState(userData.centro);
   // const [professorClasses, setProfessorClasses] = useState([]);
   const [professorGroups, setProfessorGroups] = useState([]);
   // const [professorGroupsState, setProfessorGroupsState] = useState([]);
@@ -59,7 +60,7 @@ function ProfessorPage(props) {
     let isMounted = true;
     const callGroups = async () => {
       try {
-        const groupsRes = await fetch(backUrl + "/grupo/" + professorId);
+        const groupsRes = await fetch(backUrl + "/grupo/" + professorId + "/" + professorCenter);
         let groupsData = await groupsRes.json();
         console.log(groupsData)
         if(isMounted){
@@ -78,9 +79,11 @@ function ProfessorPage(props) {
       <div className="centered-div">
         <h4>Profesor/a</h4>
         <h1>{professorName}</h1>
+        <h1>Centro: {professorCenter}</h1>
         <h2 className={professorState.toLowerCase() === "confinado" ? "bad" : "good"}>
-          {professorState}
+          {professorState.toLowerCase() === "confinado" ? "Confinado" : "No Confinado"}
         </h2>
+
         <p className="description">
           {professorState.toLowerCase() === "confinado"
             ? "Debe impartir clase de manera online"
@@ -99,7 +102,7 @@ function ProfessorPage(props) {
                 as={Card.Header}
                 eventKey={index + 1}
               >
-                {group.nombre}
+                {group.nombre} - {group.estadoDocencia.toLowerCase() === "online" ? "Online" : "Presencial"}
               </Accordion.Toggle>
               {group.estadoDocencia.toLowerCase() === "presencial" ? (
                 <Accordion.Collapse
@@ -110,7 +113,7 @@ function ProfessorPage(props) {
                     <Card.Body key={index}>
                         <div key={index} className="accordion-item">
                           <p
-                            className="p-good"
+                            className={group.estadoSanitario === "alumnosconfinados" ? "p-bad" : "p-good"}
                             key={index}
                           >
                             {group.estadoSanitario === "alumnosconfinados" ? "Hay alumnos confinados" : "No hay alumnos confinados"}
