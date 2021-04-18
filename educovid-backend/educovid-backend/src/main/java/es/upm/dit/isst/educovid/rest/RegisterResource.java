@@ -113,9 +113,9 @@ public class RegisterResource {
 			// Save classes with one BubbleGroup and classes to center
 			List<Clase> classes = new ArrayList<Clase>();
 			configuration.keySet().forEach(key -> {
-				String name = RandomWordGenerator.getRandomWord();
-				System.out.println(name);
-				System.out.println(configuration.get(key));
+				String randomWord1 = RandomWordGenerator.getRandomWord().split(" ")[0];
+				String randomWord2 = RandomWordGenerator.getRandomWord().split(" ")[0];
+				String name = "GRUPO " + randomWord1 + "_" + randomWord2;
 				GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", "presencial", null, null, null,
 						configuration.get(key));
 				GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(newBubbleGroup);

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
-// Temporary import during first sprint
-//import { professor, students, bubbleGroups } from "../tests/prueba";
+import ActionBar from "../components/ActionBar";
 
 // Bootstrap imports
 import Form from "react-bootstrap/Form";
@@ -117,161 +116,164 @@ function Confine({ history }) {
   };
 
   return (
-    <div className="confine-container">
-      <div className="left-menu">
-        <div className="selector">
-          <Form>
-            <Form.Group controlId="group">
-              <Form.Control
-                as="select"
-                defaultValue="bubbleGroups"
-                onChange={e => {
-                  setSelectedType(e.target.value);
-                  setSelectedFilter("*");
-                  setSelected([]);
-                  callMainSelector();
-                }}
-              >
-                <option key="1" value="bubbleGroups">
-                  Grupos burbuja
-                </option>
-                <option key="2" value="students">
-                  Alumnos
-                </option>
-                <option key="3" value="professors">
-                  Profesores
-                </option>
-              </Form.Control>
-            </Form.Group>
-          </Form>
-          {selectedType === "students" ? (
+    <div>
+      <ActionBar />
+      <div className="confine-container">
+        <div className="left-menu">
+          <div className="selector">
             <Form>
               <Form.Group controlId="group">
                 <Form.Control
                   as="select"
-                  defaultValue="*"
+                  defaultValue="bubbleGroups"
                   onChange={e => {
+                    setSelectedType(e.target.value);
+                    setSelectedFilter("*");
                     setSelected([]);
-                    setSelectedFilter(e.target.value);
                     callMainSelector();
                   }}
                 >
-                  <option key="0" value="*">
-                    Todos
+                  <option key="1" value="bubbleGroups">
+                    Grupos burbuja
                   </option>
-                  {(bubbleGroups || []).map((group, index) => (
-                    <option key={index} value={group.id}>
-                      {group.nombre}
-                    </option>
-                  ))}
+                  <option key="2" value="students">
+                    Alumnos
+                  </option>
+                  <option key="3" value="professors">
+                    Profesores
+                  </option>
                 </Form.Control>
               </Form.Group>
             </Form>
-          ) : (
-            <div />
-          )}
-        </div>
+            {selectedType === "students" ? (
+              <Form>
+                <Form.Group controlId="group">
+                  <Form.Control
+                    as="select"
+                    defaultValue="*"
+                    onChange={e => {
+                      setSelected([]);
+                      setSelectedFilter(e.target.value);
+                      callMainSelector();
+                    }}
+                  >
+                    <option key="0" value="*">
+                      Todos
+                    </option>
+                    {(bubbleGroups || []).map((group, index) => (
+                      <option key={index} value={group.id}>
+                        {group.nombre}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+              </Form>
+            ) : (
+              <div />
+            )}
+          </div>
 
-        <div className="list-container">
-          {(getListOnSelectedType() || []).map((item, index) => (
-            <div
-              key={index}
-              onClick={e => {
-                if (!selected.some(e => e.nombre === item.nombre)) {
-                  setSelected(selected.concat([item]));
+          <div className="list-container">
+            {(getListOnSelectedType() || []).map((item, index) => (
+              <div
+                key={index}
+                onClick={e => {
+                  if (!selected.some(e => e.nombre === item.nombre)) {
+                    setSelected(selected.concat([item]));
+                  }
+                }}
+                className={
+                  "person-card" +
+                  (item.estadoSanitario === "confinado" ? " red" : " green") +
+                  (getListOnSelectedType().some(e => e === item)
+                    ? ""
+                    : " selected")
                 }
-              }}
-              className={
-                "person-card" +
-                (item.estadoSanitario === "confinado" ? " red" : " green") +
-                (getListOnSelectedType().some(e => e === item)
-                  ? ""
-                  : " selected")
-              }
-            >
-              {item?.nombre?.includes("Grupo") ? (
-                <h5>{item.nombre}</h5>
-              ) : (
-                <h5>{item.nombre}</h5>
-              )}
-              <h8>
-                {item.estadoSanitario === "no confinado"
-                  ? "No confinado"
-                  : "Confinado"}
-              </h8>
-            </div>
-          ))}
+              >
+                {item?.nombre?.includes("Grupo") ? (
+                  <h5>{item.nombre}</h5>
+                ) : (
+                  <h5>{item.nombre}</h5>
+                )}
+                <h8>
+                  {item.estadoSanitario === "no confinado"
+                    ? "No confinado"
+                    : "Confinado"}
+                </h8>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="right-options">
-        <h2>Seleccionados</h2>
-        <div className="seleccionados">
-          {(selected || []).map((person, index) => (
-            <div
-              key={index}
-              onClick={e => {
-                if (selected.some(e => e.nombre === person.nombre)) {
-                  var filtered = selected.filter(function(value, index, arr) {
-                    return value.nombre !== person.nombre;
-                  });
-                  setSelected(filtered);
+        <div className="right-options">
+          <h2>Seleccionados</h2>
+          <div className="seleccionados">
+            {(selected || []).map((person, index) => (
+              <div
+                key={index}
+                onClick={e => {
+                  if (selected.some(e => e.nombre === person.nombre)) {
+                    var filtered = selected.filter(function(value, index, arr) {
+                      return value.nombre !== person.nombre;
+                    });
+                    setSelected(filtered);
+                  }
+                }}
+                className={
+                  "person-card" +
+                  (person.estadoSanitario === "confinado" ? " red" : " green") +
+                  (getListOnSelectedType().some(e => e === person)
+                    ? " selected"
+                    : "")
                 }
-              }}
-              className={
-                "person-card" +
-                (person.estadoSanitario === "confinado" ? " red" : " green") +
-                (getListOnSelectedType().some(e => e === person)
-                  ? " selected"
-                  : "")
-              }
-            >
-              {person.nombre.includes("Grupo") ? (
-                <h5>{person.nombre}</h5>
-              ) : (
-                <h5>{person.nombre}</h5>
-              )}
-              <h8>
-                {person.estadoSanitario === "no confinado"
-                  ? "No confinado"
-                  : "Confinado"}
-              </h8>
-            </div>
-          ))}
+              >
+                {person.nombre.includes("Grupo") ? (
+                  <h5>{person.nombre}</h5>
+                ) : (
+                  <h5>{person.nombre}</h5>
+                )}
+                <h8>
+                  {person.estadoSanitario === "no confinado"
+                    ? "No confinado"
+                    : "Confinado"}
+                </h8>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="buttons-container">
-        <Form>
-          {selected.length > 0 ? (
-            <Button
-              variant="primary"
-              className="nord-button"
-              onClick={e => {
-                if (selected != null) {
-                  // let x = selected;
-                  // let confined = x.forEach(e =>
-                  //   e.estadoSanitario === "confinado"
-                  //     ? (e.estadoSanitario = "no confinado")
-                  //     : (e.estadoSanitario = "confinado")
-                  // );
-                  handleConfine();
-                  setSelected([]);
-                } else {
-                  alert("Seleccione las personas a confinar");
-                }
-              }}
-            >
-              {selected.every(
-                e => e.estadoSanitario.toLowerCase() === "confinado"
-              )
-                ? "Desconfinar"
-                : selected.every(
-                    e => e.estadoSanitario.toLowerCase() === "no confinado"
-                  )
-                ? "Confinar"
-                : "Cambiar estados"}
-            </Button>
-          ) : null}
-        </Form>
+        <div className="buttons-container">
+          <Form>
+            {selected.length > 0 ? (
+              <Button
+                variant="primary"
+                className="nord-button"
+                onClick={e => {
+                  if (selected != null) {
+                    // let x = selected;
+                    // let confined = x.forEach(e =>
+                    //   e.estadoSanitario === "confinado"
+                    //     ? (e.estadoSanitario = "no confinado")
+                    //     : (e.estadoSanitario = "confinado")
+                    // );
+                    handleConfine();
+                    setSelected([]);
+                  } else {
+                    alert("Seleccione las personas a confinar");
+                  }
+                }}
+              >
+                {selected.every(
+                  e => e.estadoSanitario.toLowerCase() === "confinado"
+                )
+                  ? "Desconfinar"
+                  : selected.every(
+                      e => e.estadoSanitario.toLowerCase() === "no confinado"
+                    )
+                  ? "Confinar"
+                  : "Cambiar estados"}
+              </Button>
+            ) : null}
+          </Form>
+        </div>
       </div>
     </div>
   );
