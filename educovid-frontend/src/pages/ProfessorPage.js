@@ -90,42 +90,23 @@ function ProfessorPage(props) {
             ? "Debe impartir clase de manera online"
             : "Puede impartir clase de manera presencial"}
         </p>
-        <Accordion className="accordion">
-        {professorGroups.map((group, index) => (
-            <Card key={index}>
-              <Accordion.Toggle
-                key={index}
-                className={
-                  group.estadoDocencia.toLowerCase() === "online"
-                    ? "card-header-bad"
-                    : "card-header-good"
-                }
-                as={Card.Header}
-                eventKey={index + 1}
-              >
-                {group.nombre} - {group.estadoDocencia.toLowerCase() === "online" ? "Online" : "Presencial"}
-              </Accordion.Toggle>
-              {group.estadoDocencia.toLowerCase() === "presencial" ? (
-                <Accordion.Collapse
-                    className="card-body"
-                    key={index + professorGroups.length}
-                    eventKey={index + 1}
-                  >
-                    <Card.Body key={index}>
-                        <div key={index} className="accordion-item">
-                          <p
-                            className={group.estadoSanitario === "alumnosconfinados" ? "p-bad" : "p-good"}
-                            key={index}
-                          >
-                            {group.estadoSanitario === "alumnosconfinados" ? "Hay alumnos confinados" : "No hay alumnos confinados"}
-                          </p>
-                        </div>
-                    </Card.Body>
-                  </Accordion.Collapse>
-              ) : null}
-            </Card>
-          ))}
-        </Accordion>
+        {console.log(professorGroups)}
+        {professorGroups.map((group, index) =>
+          <Card>
+            <Card.Header className={group.estadoDocencia.toLowerCase() === "online" ? "card-header-bad" : "card-header-good"}>
+              {group.nombre} - {group.estadoDocencia.toLowerCase() === "online" ? "Online" : "Presencial"}
+            </Card.Header>
+            {group.estadoDocencia.toLowerCase() === "presencial" ? (
+              <Card.Body>
+                <blockquote className="blockquote mb-0">
+                  <p className={group.estadoSanitario === "alumnosconfinados" ? "p-bad" : "p-good"}>
+                    {group.estadoSanitario === "alumnosconfinados" ? "Hay alumnos confinados" : "No hay alumnos confinados"}
+                  </p>
+                </blockquote>
+              </Card.Body>
+            ) : null}
+          </Card>
+        )}
       </div>
     </div>
   );

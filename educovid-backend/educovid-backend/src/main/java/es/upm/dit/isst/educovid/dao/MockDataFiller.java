@@ -17,9 +17,9 @@ public class MockDataFiller {
 
 	public static void main(String[] args) {
 		String salt = Security.getSalt();
-		Profesor profesor = new Profesor("Xavier", Security.getHash("00000000A", salt), salt, "00000000A", "no confinado", null, null);
-		Profesor profesor2 = new Profesor("Logan", Security.getHash("00000001B", salt), salt, "00000001B", "no confinado", null, null);
-		Profesor profesor3 = new Profesor("Mr. Potato", Security.getHash("00000002C", salt), salt, "00000002C", "confinado", null, null);
+		Profesor profesor = new Profesor("Xavier", Security.getHash("00000000A", salt), salt, "00000000A", "no confinado", null);
+		Profesor profesor2 = new Profesor("Logan", Security.getHash("00000001B", salt), salt, "00000001B", "no confinado", null);
+		Profesor profesor3 = new Profesor("Mr. Potato", Security.getHash("00000002C", salt), salt, "00000002C", "confinado", null);
 		ProfesorDAOImpl.getInstance().createProfesor(profesor);
 		ProfesorDAOImpl.getInstance().createProfesor(profesor2);
 		ProfesorDAOImpl.getInstance().createProfesor(profesor3);
