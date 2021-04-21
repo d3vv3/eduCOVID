@@ -19,13 +19,13 @@ function ActionBar(props) {
       </LinkContainer>
       <Nav className="mr-auto">
         <LinkContainer to="/confine">
-          <Nav.Link>Gestionar confinamientos</Nav.Link>
+          <Nav.Link>Confinamientos</Nav.Link>
         </LinkContainer>
         <LinkContainer to="/teaching">
-          <Nav.Link>Gestionar docencia</Nav.Link>
+          <Nav.Link>Docencia</Nav.Link>
         </LinkContainer>
         <LinkContainer to="/center">
-          <Nav.Link>Gestionar centro</Nav.Link>
+          <Nav.Link>Centro</Nav.Link>
         </LinkContainer>
       </Nav>
     </Navbar>
