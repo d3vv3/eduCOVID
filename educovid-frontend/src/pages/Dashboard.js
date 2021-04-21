@@ -35,7 +35,7 @@ function Dashboard(props) {
               </Card.Body>
               <LinkContainer className="container-dashboard" to="/confine">
                 <Button type="submit" variant="primary" className="nord-button">
-                  Ir a gestión de confinamientos
+                  Ir a confinamientos
                 </Button>
               </LinkContainer>
             </Card>
@@ -50,7 +50,7 @@ function Dashboard(props) {
               </Card.Body>
               <LinkContainer className="container-dashboard" to="/teaching">
                 <Button type="submit" variant="primary" className="nord-button">
-                  Ir a gestión de docencia
+                  Ir a docencia
                 </Button>
               </LinkContainer>
             </Card>
@@ -65,7 +65,7 @@ function Dashboard(props) {
               </Card.Body>
               <LinkContainer className="container-dashboard" to="/center">
                 <Button type="submit" variant="primary" className="nord-button">
-                  Ir a gestión del centro
+                  Ir a centro
                 </Button>
               </LinkContainer>
             </Card>
