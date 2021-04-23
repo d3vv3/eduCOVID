@@ -60,7 +60,11 @@ function ProfessorPage(props) {
     let isMounted = true;
     const callGroups = async () => {
       try {
-        const groupsRes = await fetch(backUrl + "/grupo/" + professorId + "/" + professorCenter);
+        const groupsRes = await fetch(backUrl + "/grupo/" + professorId + "/" + professorCenter, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
         let groupsData = await groupsRes.json();
         console.log(groupsData)
         if(isMounted){

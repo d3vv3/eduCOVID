@@ -119,7 +119,9 @@ function LoginPage(props) {
         if (profesorRes.ok) {
           setErrors({});
           const profesorData = await profesorRes.json();
-          console.log(profesorData);
+          //console.log(profesorData);
+          //console.log(profesorData.hash);
+          localStorage.setItem('token', profesorData.hash);
           onLogIn({ ...profesorData, role: "profesor", centro: centerField });
         } else {
           setErrors({ username: "", password: "Usuario o contraseña inválidos." });

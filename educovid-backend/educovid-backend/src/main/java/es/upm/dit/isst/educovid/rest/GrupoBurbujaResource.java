@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import es.upm.dit.isst.educovid.anotation.Secured;
 import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
 import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
@@ -23,6 +24,7 @@ import es.upm.dit.isst.educovid.model.Profesor;
 public class GrupoBurbujaResource {
 
 	@GET
+	@Secured
 	@Path("/{profesorId}/{nombreCentro}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readGroupsByProfesorAndCenter(@PathParam("profesorId") String profesorId, @PathParam("nombreCentro") String nombreCentro) {

@@ -36,9 +36,10 @@ public class LoginResource {
 		if (authenticate(username, password, center, "profesor")) {
 			Profesor profesor = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(username);
 			String token = this.issueToken(profesor.getId().toString());
-			System.out.print(token);
-			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-					.entity(profesor).build();
+			//System.out.print(token);
+			profesor.setHash(token);
+			profesor.setSalt("");
+			return Response.status(Response.Status.OK).entity(profesor).build();
 		}
 		System.out.print("Not valid profesor");
 		return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -52,7 +53,9 @@ public class LoginResource {
 		if (authenticate(username, password, center, "alumno")) {
 			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyMatNumCenter(username, center);
 			String token = this.issueToken(alumno.getId().toString());
-			System.out.print(token);
+			//System.out.print(token);
+			alumno.setHash(token);
+			alumno.setSalt("");
 			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
 					.entity(alumno).build();
 		}
@@ -68,6 +71,8 @@ public class LoginResource {
 		if (authenticate(username, password, center, "responsable")) {
 			ResponsableCOVID responsable = ResponsableDAOImpl.getInstance().readResponsablebyNIFNIE(username);
 			String token = this.issueToken(responsable.getId().toString());
+			responsable.setHash(token);
+			responsable.setSalt("");
 			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
 					.entity(responsable).build();
 		}
