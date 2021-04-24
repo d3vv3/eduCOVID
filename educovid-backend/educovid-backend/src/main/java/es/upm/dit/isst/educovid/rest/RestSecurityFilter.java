@@ -46,10 +46,11 @@ public class RestSecurityFilter implements ContainerRequestFilter {
 
 			// Valida el token utilizando la cadena secreta
 			Jws<Claims> jwt = Jwts.parser().setSigningKey(KEY).parseClaimsJws(token);
-			//System.out.println(jwt);
-			//System.out.println(jwt.getBody().getSubject());
+			// System.out.println(jwt);
+			// System.out.println(jwt.getBody().getSubject());
 			String userId = jwt.getBody().getSubject();
-			
+			String center = (String) jwt.getBody().get("center");
+
 			// Get the role
 			String role = "";
 			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyId(userId);
@@ -62,69 +63,81 @@ public class RestSecurityFilter implements ContainerRequestFilter {
 			} else if (responsable != null) {
 				role = "responsable";
 			}
-			
+
 			SecurityContext originalContext = requestContext.getSecurityContext();
-	        Set<String> roles = new HashSet<>();
-	        roles.add(role);
-	        Authorizer authorizer = new Authorizer(roles, Integer.parseInt(userId), "admin", 
-	                                               originalContext.isSecure());
-	        requestContext.setSecurityContext(authorizer);
+			Set<String> roles = new HashSet<>();
+			roles.add(role);
+			Authorizer authorizer = new Authorizer(roles, Integer.parseInt(userId), "admin", center,
+					originalContext.isSecure());
+			requestContext.setSecurityContext(authorizer);
 
 		} catch (Exception e) {
+			//e.printStackTrace();
 			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 		}
 	}
-	
-    public static class Authorizer implements SecurityContext {
 
-        Set<String> roles;
-        Integer id;
-        String username;
-        boolean isSecure;
-        public Authorizer(Set<String> roles, final Integer id, final String username, 
-                                             boolean isSecure) {
-            this.id = id;
-        	this.roles = roles;
-            this.username = username;
-            this.isSecure = isSecure;
-        }
+	public static class Authorizer implements SecurityContext {
 
-        @Override
-        public Principal getUserPrincipal() {
-            return new SecurityUser(id, username);
-        }
+		Set<String> roles;
+		Integer id;
+		String username;
+		String center;
+		boolean isSecure;
 
-        @Override
-        public boolean isUserInRole(String role) {
-            return roles.contains(role);
-        }
-
-        @Override
-        public boolean isSecure() {
-            return isSecure;
-        }
-
-        @Override
-        public String getAuthenticationScheme() {
-            return "Credentials";
-        } 
-    } 
-
-    public static class SecurityUser implements Principal {
-        Integer id;
-    	String name;
-
-        public SecurityUser(Integer id, String name) {
-            this.id = id;
-        	this.name = name;
-        }
-        
-        public Integer getId() {
-			return id;
+		public Authorizer(Set<String> roles, final Integer id, final String username, final String center,
+				boolean isSecure) {
+			this.id = id;
+			this.roles = roles;
+			this.username = username;
+			this.center = center;
+			this.isSecure = isSecure;
 		}
 
 		@Override
-        public String getName() { return name; }   
-    }
+		public Principal getUserPrincipal() {
+			return new SecurityUser(id, username, center);
+		}
+
+		@Override
+		public boolean isUserInRole(String role) {
+			return roles.contains(role);
+		}
+
+		@Override
+		public boolean isSecure() {
+			return isSecure;
+		}
+
+		@Override
+		public String getAuthenticationScheme() {
+			return "Credentials";
+		}
+	}
+
+	public static class SecurityUser implements Principal {
+		Integer id;
+		String name;
+		String center;
+
+		public SecurityUser(Integer id, String name, String center) {
+			this.id = id;
+			this.name = name;
+			this.center = center;
+		}
+
+		public Integer getId() {
+			return id;
+		}
+
+		public String getCenter() {
+			return center;
+		}
+
+		@Override
+		public String getName() {
+			return name;
+		}
+	}
 
 }

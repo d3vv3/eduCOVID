@@ -2,6 +2,7 @@ package es.upm.dit.isst.educovid.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -11,7 +12,6 @@ import javax.ws.rs.core.Response;
 
 import es.upm.dit.isst.educovid.anotation.Secured;
 import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
-import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;

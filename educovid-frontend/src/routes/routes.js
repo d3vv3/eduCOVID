@@ -48,14 +48,22 @@ function Routes(props) {
         'Authorization': `Bearer ${token}`
       }
     });
-    if (sessionRes.ok) {
+    const sessionCenterRes = await fetch(backUrl + "/login/session/center", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (sessionRes.ok && sessionCenterRes.ok) {
       const sessionData = await sessionRes.json();
+      const sessionCenterData = await sessionCenterRes.text();
       console.log("JWT token: " + sessionData.hash);
+      console.log("Center: " + sessionCenterData);
       localStorage.setItem('token', sessionData.hash);
       const role = sessionData.salt;
       sessionData.salt = "";
       sessionData.hash = "";
-      props.dispatch(logIn({ ...sessionData, role, centro: "" })); // TODO: Get center from endpoint with JWT
+      props.dispatch(logIn({ ...sessionData, role, centro: sessionCenterData }));
     }
   };
 
