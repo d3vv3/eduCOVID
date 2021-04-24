@@ -5,13 +5,17 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
+import es.upm.dit.isst.educovid.anotation.Secured;
 import es.upm.dit.isst.educovid.aux.Security;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
@@ -22,11 +26,47 @@ import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.Profesor;
 import es.upm.dit.isst.educovid.model.ResponsableCOVID;
+import es.upm.dit.isst.educovid.rest.RestSecurityFilter.SecurityUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Path("/login")
 public class LoginResource {
+
+	@GET
+	@Secured
+	@Path("/session")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response loginRetrieveSession(@Context SecurityContext securityContext) {
+		SecurityUser user = (SecurityUser) securityContext.getUserPrincipal();
+		if (securityContext.isUserInRole("alumno")) {
+			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyId(user.getId().toString());
+			if (alumno == null)
+				return Response.status(Response.Status.UNAUTHORIZED).build();
+			String token = this.issueToken(alumno.getId().toString());
+			alumno.setHash(token);
+			alumno.setSalt("alumno");
+			return Response.status(Response.Status.OK).entity(alumno).build();
+		} else if (securityContext.isUserInRole("profesor")) {
+			Profesor profesor = ProfesorDAOImpl.getInstance().readProfesorbyId(user.getId().toString());
+			if (profesor == null)
+				return Response.status(Response.Status.UNAUTHORIZED).build();
+			String token = this.issueToken(profesor.getId().toString());
+			profesor.setHash(token);
+			profesor.setSalt("profesor");
+			return Response.status(Response.Status.OK).entity(profesor).build();
+		} else if (securityContext.isUserInRole("responsable")) {
+			ResponsableCOVID responsable = ResponsableDAOImpl.getInstance().readResponsablebyId(user.getId().toString());
+			if (responsable == null)
+				return Response.status(Response.Status.UNAUTHORIZED).build();
+			String token = this.issueToken(responsable.getId().toString());
+			responsable.setHash(token);
+			responsable.setSalt("responsable");
+			return Response.status(Response.Status.OK).entity(responsable).build();
+		} else {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
+	}
 
 	@POST
 	@Path("/profesor")
@@ -36,7 +76,7 @@ public class LoginResource {
 		if (authenticate(username, password, center, "profesor")) {
 			Profesor profesor = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(username);
 			String token = this.issueToken(profesor.getId().toString());
-			//System.out.print(token);
+			// System.out.print(token);
 			profesor.setHash(token);
 			profesor.setSalt("");
 			return Response.status(Response.Status.OK).entity(profesor).build();
@@ -53,11 +93,10 @@ public class LoginResource {
 		if (authenticate(username, password, center, "alumno")) {
 			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyMatNumCenter(username, center);
 			String token = this.issueToken(alumno.getId().toString());
-			//System.out.print(token);
+			// System.out.print(token);
 			alumno.setHash(token);
 			alumno.setSalt("");
-			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-					.entity(alumno).build();
+			return Response.status(Response.Status.OK).entity(alumno).build();
 		}
 		System.out.print("Not valid alumno");
 		return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -73,8 +112,7 @@ public class LoginResource {
 			String token = this.issueToken(responsable.getId().toString());
 			responsable.setHash(token);
 			responsable.setSalt("");
-			return Response.status(Response.Status.OK).header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-					.entity(responsable).build();
+			return Response.status(Response.Status.OK).entity(responsable).build();
 		}
 
 		return Response.status(Response.Status.UNAUTHORIZED).build();

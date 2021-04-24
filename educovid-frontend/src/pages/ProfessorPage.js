@@ -60,9 +60,10 @@ function ProfessorPage(props) {
     let isMounted = true;
     const callGroups = async () => {
       try {
+        const token = localStorage.getItem('token') || "";
         const groupsRes = await fetch(backUrl + "/grupo/" + professorId + "/" + professorCenter, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${token}`
           }
         });
         let groupsData = await groupsRes.json();

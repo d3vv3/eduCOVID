@@ -103,6 +103,9 @@ function LoginPage(props) {
         if (alumnoRes.ok) {
           setErrors({});
           const alumnoData = await alumnoRes.json();
+          console.log("JWT token: " + alumnoData.hash);
+          localStorage.setItem('token', alumnoData.hash);
+          alumnoData.hash = "";
           onLogIn({ ...alumnoData, role: "alumno", centro: centerField });
         } else {
           setErrors({ username: "", password: "Usuario o contraseña inválidos." });
@@ -122,6 +125,7 @@ function LoginPage(props) {
           //console.log(profesorData);
           //console.log(profesorData.hash);
           localStorage.setItem('token', profesorData.hash);
+          profesorData.hash = "";
           onLogIn({ ...profesorData, role: "profesor", centro: centerField });
         } else {
           setErrors({ username: "", password: "Usuario o contraseña inválidos." });
@@ -138,6 +142,9 @@ function LoginPage(props) {
         if (responsableRes.ok) {
           setErrors({});
           const responsableData = await responsableRes.json();
+          console.log("JWT token: " + responsableData.hash);
+          localStorage.setItem('token', responsableData.hash);
+          responsableData.hash = "";
           onLogIn({ ...responsableData, role: "responsable", centro: centerField });
         } else {
           setErrors({ username: "", password: "Usuario o contraseña inválidos." });

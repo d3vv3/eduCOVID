@@ -91,7 +91,7 @@ public class RestSecurityFilter implements ContainerRequestFilter {
 
         @Override
         public Principal getUserPrincipal() {
-            return new User(id, username);
+            return new SecurityUser(id, username);
         }
 
         @Override
@@ -106,15 +106,15 @@ public class RestSecurityFilter implements ContainerRequestFilter {
 
         @Override
         public String getAuthenticationScheme() {
-            return "Your Scheme";
+            return "Credentials";
         } 
     } 
 
-    public static class User implements Principal {
+    public static class SecurityUser implements Principal {
         Integer id;
     	String name;
 
-        public User(Integer id, String name) {
+        public SecurityUser(Integer id, String name) {
             this.id = id;
         	this.name = name;
         }
