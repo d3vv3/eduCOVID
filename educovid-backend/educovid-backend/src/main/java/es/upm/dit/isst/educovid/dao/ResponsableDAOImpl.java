@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.ResponsableCOVID;
 
@@ -91,6 +92,16 @@ public class ResponsableDAOImpl implements ResponsableDAO{
         session.getTransaction().commit();
         session.close();
         return responsableCOVID;
+	}
+
+	@Override
+	public ResponsableCOVID readResponsablebyId(String id) {
+		Session session = SessionFactoryService.get().openSession();
+		session.beginTransaction();
+		ResponsableCOVID responsable = session.get(ResponsableCOVID.class, Integer.parseInt(id));
+		session.getTransaction().commit();
+		session.close();
+		return responsable;
 	}
 
 }

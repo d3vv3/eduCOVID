@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // Redux related
 import { connect } from "react-redux";
 import { logIn } from "../redux/actions";
+
+// Constants
+import { backUrl } from "../constants/constants";
 
 import {
   BrowserRouter,
@@ -35,6 +38,38 @@ function Routes(props) {
     profesor: "professor",
     responsable: "dashboard"
   };
+
+  const getUserSession = async () => {
+    const token = localStorage.getItem('token') || "";
+    console.log("Retrieving session from JWT " + token);
+    const sessionRes = await fetch(backUrl + "/login/session", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const sessionCenterRes = await fetch(backUrl + "/login/session/center", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (sessionRes.ok && sessionCenterRes.ok) {
+      const sessionData = await sessionRes.json();
+      const sessionCenterData = await sessionCenterRes.text();
+      console.log("JWT token: " + sessionData.hash);
+      console.log("Center: " + sessionCenterData);
+      localStorage.setItem('token', sessionData.hash);
+      const role = sessionData.salt;
+      sessionData.salt = "";
+      sessionData.hash = "";
+      props.dispatch(logIn({ ...sessionData, role, centro: sessionCenterData }));
+    }
+  };
+
+  useEffect(async () => {
+    await getUserSession();
+  }, []);
 
   return (
     <BrowserRouter>
