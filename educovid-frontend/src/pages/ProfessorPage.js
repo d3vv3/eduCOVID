@@ -22,10 +22,12 @@ function ProfessorPage(props) {
   // const [professorGroupsState, setProfessorGroupsState] = useState([]);
 
   useEffect(() => {
-    setProfessorId(userData.id);
-    setProfessorName(userData.nombre);
-    setProfessorState(userData.estadoSanitario);
-    setProfessorCenter(userData.centro);
+    if(userData){
+      setProfessorId(userData.id);
+      setProfessorName(userData.nombre);
+      setProfessorState(userData.estadoSanitario);
+      setProfessorCenter(userData.centro);
+    }
   }, [userData]);
 
   useEffect(async () => {
