@@ -13,71 +13,61 @@ import Notifications from "../components/Notifications";
 function ProfessorPage(props) {
   const { history, userData } = props;
 
-  const [professorId] = useState(userData.id);
-  const [professorName, setProfessorName] = useState(userData.nombre);
-  const [professorState, setProfessorState] = useState(userData.estadoSanitario);
-  const [professorCenter, setProfessorCenter] = useState(userData.centro);
+  const [professorId, setProfessorId] = useState(-1);
+  const [professorName, setProfessorName] = useState("");
+  const [professorState, setProfessorState] = useState("");
+  const [professorCenter, setProfessorCenter] = useState("");
   // const [professorClasses, setProfessorClasses] = useState([]);
   const [professorGroups, setProfessorGroups] = useState([]);
   // const [professorGroupsState, setProfessorGroupsState] = useState([]);
 
+  useEffect(() => {
+    if(userData){
+      setProfessorId(userData.id);
+      setProfessorName(userData.nombre);
+      setProfessorState(userData.estadoSanitario);
+      setProfessorCenter(userData.centro);
+    }
+  }, [userData]);
+
+  useEffect(async () => {
+    try {
+      const token = localStorage.getItem('token') || "";
+      const groupsRes = await fetch(backUrl + "/grupo/" + professorId + "/" + professorCenter, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      let groupsData = await groupsRes.json();
+      console.log(groupsData)
+        setProfessorGroups(groupsData)
+    } catch (e) {
+      // Nothing to do
+    }
+  }, [professorId]);
+
   // useEffect(() => {
   //   let isMounted = true;
-  //   const callClasses = async () => {
+  //   const callGroups = async () => {
   //     try {
-  //       let groups = [];
-  //       let groupsState = [];
-  //       const classesRes = await fetch(backUrl + "/clase/" + professorId);
-  //       let classesData = await classesRes.json();
-  //       //Getting groups
-  //       classesData.forEach((clase, index) => {
-  //         clase.gruposBurbuja.forEach((group, i) => {
-  //           groups.push(group);
-  //         });
+  //       const token = localStorage.getItem('token') || "";
+  //       const groupsRes = await fetch(backUrl + "/grupo/" + professorId + "/" + professorCenter, {
+  //         headers: {
+  //           'Authorization': `Bearer ${token}`
+  //         }
   //       });
-  //       //Getting groups state
-  //       groups.forEach(async (item, i) => {
-  //         const stateRes = await fetch(backUrl + "/grupoburbuja/" + item.id);
-  //         let stateData = await stateRes.json();
-  //         groupsState.push(stateData);
-  //       });
+  //       let groupsData = await groupsRes.json();
+  //       console.log(groupsData)
   //       if(isMounted){
-  //         setProfessorClasses(classesData);
-  //         setProfessorGroups(groups)
-  //         setProfessorGroupsState(groupsState);
-  //         console.log(professorGroupsState)
-  //         console.log(professorGroups)
+  //         setProfessorGroups(groupsData)
   //       }
   //     } catch (e) {
   //       // Nothing to do
   //     }
   //   };
-  //   callClasses();
+  //   callGroups();
   //   return () => { isMounted = false };
   // }, []);
-
-  useEffect(() => {
-    let isMounted = true;
-    const callGroups = async () => {
-      try {
-        const token = localStorage.getItem('token') || "";
-        const groupsRes = await fetch(backUrl + "/grupo/" + professorId + "/" + professorCenter, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        let groupsData = await groupsRes.json();
-        console.log(groupsData)
-        if(isMounted){
-          setProfessorGroups(groupsData)
-        }
-      } catch (e) {
-        // Nothing to do
-      }
-    };
-    callGroups();
-    return () => { isMounted = false };
-  }, []);
 
   return (
     <div className="professor-page-container">
