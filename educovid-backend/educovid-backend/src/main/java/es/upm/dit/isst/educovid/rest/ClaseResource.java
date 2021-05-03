@@ -1,27 +1,34 @@
 package es.upm.dit.isst.educovid.rest;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import es.upm.dit.isst.educovid.anotation.Secured;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
-import es.upm.dit.isst.educovid.model.Profesor;
 import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
+import es.upm.dit.isst.educovid.model.Profesor;
 
 @Path("/clase")
 public class ClaseResource {
 
 	@GET
+	@Secured
 	@Path("/profesor/{profesorId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readClaseByProfesor(@PathParam("profesorId") String profesorId) {
@@ -46,6 +53,7 @@ public class ClaseResource {
 	}
 	
 	@GET
+	@Secured
 	@Path("/alumno/{alumnoId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readClaseByAlumno(@PathParam("alumnoId") String alumnoId) {
@@ -71,5 +79,54 @@ public class ClaseResource {
 			}
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
+	}
+	
+	@POST
+	@Secured
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createClase(Clase claseNueva) throws URISyntaxException {
+		Clase c = ClaseDAOImpl.getInstance().createClase(claseNueva);
+	    if (c != null) {
+	            URI uri = new URI("/educovid-backend/rest/clase/" + c.getId());
+	            return Response.created(uri).build();
+	    }
+	    return Response.status(Response.Status.NOT_FOUND).build();
+	}
+	
+	@GET
+	@Secured
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response readClasebyId(@PathParam("id") String id) {
+		Clase c = ClaseDAOImpl.getInstance().readClasebyId(id);
+		if (c == null)
+			return Response.status(Response.Status.NOT_FOUND).build();
+		return Response.ok(c, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@POST
+	@Secured
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response updateClase(@PathParam("id") String id, Clase clase) {
+		//System.out.println("Update request for " + id + " " + alumno.toString());
+		Clase antiguo = ClaseDAOImpl.getInstance().readClasebyId(id);
+	    if ((antiguo == null) || (!antiguo.getId().equals(clase.getId()))) 
+	    	return Response.notModified().build();
+	    ClaseDAOImpl.getInstance().updateClase(clase);
+	    return Response.ok(clase, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@DELETE
+	@Secured
+	@Path("/{id}")
+	public Response deleteClase(@PathParam("id") String id) {
+		Clase c = ClaseDAOImpl.getInstance().readClasebyId(id);
+		if (c == null)
+			return Response.notModified().build();
+		ClaseDAOImpl.getInstance().deleteClase(c);
+		return Response.ok(c, MediaType.APPLICATION_JSON).build();
 	}
 }

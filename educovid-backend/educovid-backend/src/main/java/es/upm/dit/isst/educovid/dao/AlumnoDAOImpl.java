@@ -10,7 +10,6 @@ import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
-import es.upm.dit.isst.educovid.model.Profesor;
 
 public class AlumnoDAOImpl implements AlumnoDAO {
 	private static AlumnoDAOImpl instance = null;
