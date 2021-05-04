@@ -92,7 +92,11 @@ function Routes(props) {
         </Route>
         <Route exact path="/confine">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <Confine />
+          <Confine
+            onLogOut={() => {
+              props.dispatch(logOut())
+            }}
+          />
         </Route>
         <Route exact path="/login">
           {loggedIn ? (
