@@ -90,5 +90,6 @@ public class MockDataFiller {
 
 		ResponsableCOVID responsable = new ResponsableCOVID("Magneto", Security.getHash("00000002C", salt), salt, "00000002C", false, centros);
 		ResponsableDAOImpl.getInstance().createResponsable(responsable);
+
 	}
 }
