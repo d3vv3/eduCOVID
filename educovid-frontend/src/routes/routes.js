@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 // Redux related
 import { connect } from "react-redux";
-import { logIn } from "../redux/actions";
+import { logIn, logOut } from "../redux/actions";
 
 // Constants
 import { backUrl } from "../constants/constants";
@@ -106,11 +106,23 @@ function Routes(props) {
         </Route>
         <Route path="/student">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <StudentPage history={history} userData={userData} />
+          <StudentPage
+            history={history}
+            userData={userData}
+            onLogOut={() => {
+              props.dispatch(logOut())
+            }}
+          />
         </Route>
         <Route path="/professor">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <ProfessorPage history={history} userData={userData} />
+          <ProfessorPage
+            history={history}
+            userData={userData}
+            onLogOut={() => {
+              props.dispatch(logOut())
+            }}
+          />
         </Route>
         <Route path="/" exact>
           {loggedIn ? (
@@ -120,7 +132,12 @@ function Routes(props) {
         </Route>
         <Route exact path="/dashboard">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <Dashboard userData={userData} />
+          <Dashboard
+            userData={userData}
+            onLogOut={() => {
+              props.dispatch(logOut())
+            }}
+          />
         </Route>
         <Route exact path="/teaching">
           {!loggedIn ? <Redirect to={`/login`} /> : null}

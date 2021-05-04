@@ -22,6 +22,23 @@
   flex-wrap: nowrap;
 }
 
+@mixin flexRight($direction) {
+  // Mixin to center something inside its parent and provide a flex direction
+  display: flex;
+
+  // Make the items evenly spaced without reaching the borders
+  justify-content: space-around;
+
+  // Center items inside the container in the given direction
+  align-items: flex-end;
+
+  // Follow the direction provided (row or column)
+  flex-direction: $direction;
+
+  // Do not wrap extra items in another column or row
+  flex-wrap: nowrap;
+}
+
 @mixin nordButton() {
     // Mixin to customize buttons with our theme palette
 
