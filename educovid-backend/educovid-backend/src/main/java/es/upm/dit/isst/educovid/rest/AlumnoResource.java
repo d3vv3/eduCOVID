@@ -59,7 +59,7 @@ public class AlumnoResource {
 	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")
+	@Path("/{id}")
 	public Response updateAlumno(@PathParam("id") String id, Alumno alumno) {
 		//System.out.println("Update request for " + id + " " + alumno.toString());
 		Alumno antiguo = AlumnoDAOImpl.getInstance().readAlumnobyId(id);
@@ -90,7 +90,7 @@ public class AlumnoResource {
 	@GET
 	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("grupo/{grupoBurbujaId}")
+	@Path("/grupo/{grupoBurbujaId}")
 	public Response readAllAlumnosbyGroup(@PathParam("grupoBurbujaId") String grupoBurbujaId) {
 		GrupoBurbuja grupo = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(grupoBurbujaId);
 		return Response.status(Response.Status.OK).entity(grupo.getAlumnos()).build();

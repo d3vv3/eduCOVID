@@ -6,9 +6,10 @@ import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "alumnos")
+@Table(name = "alumnos", uniqueConstraints = @UniqueConstraint(columnNames = { "fk_id_grupo", "numeroMatricula" }))
 public class Alumno extends Usuario implements Serializable {
 	@Column(nullable = false)
 	private String numeroMatricula;

@@ -2,7 +2,7 @@ package es.upm.dit.isst.educovid.model;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,12 +10,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "gruposburbuja")
+@Table(name = "gruposburbuja", uniqueConstraints = @UniqueConstraint(columnNames = { "fk_id_clase", "nombre" }))
 public class GrupoBurbuja implements Serializable {
 	@Id
 	@GeneratedValue
@@ -24,15 +24,12 @@ public class GrupoBurbuja implements Serializable {
 	private String nombre;
 	@Column(nullable = false)
 	private String estadoSanitario;
-	@Column(nullable = false)
-	private String estadoDocencia;
 	private Date fechaConfinamiento;
 	private Integer prioridad;
 	private Date fechaUltimaConmutacion;
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "gruposburbuja_alumnos", joinColumns = { @JoinColumn(name = "fk_id_grupoburbuja") }, inverseJoinColumns = {
-			@JoinColumn(name = "fk_id_alumnos") })
-	private Set<Alumno> alumnos; // Set because List uses too many queries:
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "fk_id_grupo")
+	private List<Alumno> alumnos; // Set because List uses too many queries:
 										// https://www.adictosaltrabajo.com/2020/04/02/hibernate-onetoone-onetomany-manytoone-y-manytomany/
 	private static final long serialVersionUID = 1L;
 
@@ -40,12 +37,11 @@ public class GrupoBurbuja implements Serializable {
 		super();
 	}
 
-	public GrupoBurbuja(String nombre, String estadoSanitario, String estadoDocencia, Date fechaConfinamiento, Integer prioridad,
-			Date fechaUltimaConmutacion, Set<Alumno> alumnos) {
+	public GrupoBurbuja(String nombre, String estadoSanitario, Date fechaConfinamiento, Integer prioridad,
+			Date fechaUltimaConmutacion, List<Alumno> alumnos) {
 		super();
 		this.nombre = nombre;
 		this.estadoSanitario = estadoSanitario;
-		this.estadoDocencia = estadoDocencia;
 		this.fechaConfinamiento = fechaConfinamiento;
 		this.prioridad = prioridad;
 		this.fechaUltimaConmutacion = fechaUltimaConmutacion;
@@ -76,14 +72,6 @@ public class GrupoBurbuja implements Serializable {
 		this.estadoSanitario = estadoSanitario;
 	}
 
-	public String getEstadoDocencia() {
-		return estadoDocencia;
-	}
-
-	public void setEstadoDocencia(String estadoDocencia) {
-		this.estadoDocencia = estadoDocencia;
-	}
-
 	public Date getFechaConfinamiento() {
 		return fechaConfinamiento;
 	}
@@ -108,11 +96,11 @@ public class GrupoBurbuja implements Serializable {
 		this.fechaUltimaConmutacion = fechaUltimaConmutacion;
 	}
 
-	public Set<Alumno> getAlumnos() {
+	public List<Alumno> getAlumnos() {
 		return alumnos;
 	}
 
-	public void setAlumnos(Set<Alumno> alumnos) {
+	public void setAlumnos(List<Alumno> alumnos) {
 		this.alumnos = alumnos;
 	}
 

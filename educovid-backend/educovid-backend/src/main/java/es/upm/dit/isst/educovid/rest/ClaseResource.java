@@ -71,7 +71,7 @@ public class ClaseResource {
 				for (GrupoBurbuja gc : c.getGruposBurbuja()) {
 					for (Alumno al : gc.getAlumnos()) {
 						if (al.getId().equals(Integer.parseInt(alumnoId))) {
-							claseAlumno = new Clase(c.getNombre(), null, null, null);
+							claseAlumno = new Clase(c.getNombre(), null, null, null, null, null);
 							return Response.ok(claseAlumno, MediaType.APPLICATION_JSON).build();
 						}
 					}

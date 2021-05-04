@@ -51,9 +51,9 @@ public class GrupoBurbujaResource {
 						}
 					}
 					if(confinados) {
-						gruposFront.add(new GrupoBurbuja(clase.getNombre() + " - " + grupo.getNombre(), "alumnosconfinados", grupo.getEstadoDocencia(), null, null, null, null));
+						gruposFront.add(new GrupoBurbuja(clase.getNombre() + " - " + grupo.getNombre(), "alumnosconfinados", null, null, null, null));
 					} else {
-						gruposFront.add(new GrupoBurbuja(clase.getNombre() + " - " + grupo.getNombre(), "alumnosnoconfinados", grupo.getEstadoDocencia(), null, null, null, null));
+						gruposFront.add(new GrupoBurbuja(clase.getNombre() + " - " + grupo.getNombre(), "alumnosnoconfinados", null, null, null, null));
 					}
 				}
 			}
@@ -62,13 +62,13 @@ public class GrupoBurbujaResource {
 	}
 	
 	@GET
-	@Path("alumno/{id}")
+	@Path("/alumno/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readGrupoAlumnobyId(@PathParam("id") String id) {
 		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyAlumnoId(id);
 		if (g == null)
 			return Response.status(Response.Status.NOT_FOUND).build();
-		GrupoBurbuja gNew = new GrupoBurbuja(g.getNombre(), g.getEstadoSanitario(), g.getEstadoDocencia(), null, null, null, null);
+		GrupoBurbuja gNew = new GrupoBurbuja(g.getNombre(), g.getEstadoSanitario(), null, null, null, null);
 		return Response.ok(gNew, MediaType.APPLICATION_JSON).build();
 	}
 }

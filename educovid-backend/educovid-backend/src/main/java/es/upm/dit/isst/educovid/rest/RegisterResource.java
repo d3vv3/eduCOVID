@@ -22,7 +22,6 @@ import javax.ws.rs.core.Response;
 
 import org.json.JSONObject;
 
-import com.github.dhiraj072.randomwordgenerator.RandomWordGenerator;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 
@@ -82,7 +81,7 @@ public class RegisterResource {
 	public Response registerStudents(@PathParam("centerName") String centerName, String CSVString)
 			throws URISyntaxException, IOException, CsvException {
 
-		Map<String, Set<Alumno>> configuration = new HashMap<String, Set<Alumno>>();
+		Map<String, List<Alumno>> configuration = new HashMap<String, List<Alumno>>();
 
 		System.out.println(CSVString);
 		try (CSVReader reader = new CSVReader(new StringReader(CSVString))) {
@@ -97,11 +96,11 @@ public class RegisterResource {
 				AlumnoDAOImpl.getInstance().createAlumno(newStudent);
 
 				try {
-					Set<Alumno> currentStudents = configuration.get(student[0]);
+					List<Alumno> currentStudents = configuration.get(student[0]);
 					currentStudents.add(newStudent);
 					configuration.put(student[0].trim(), currentStudents);
 				} catch (Exception e) {
-					Set<Alumno> alumnos = new HashSet<Alumno>();
+					List<Alumno> alumnos = new ArrayList<Alumno>();
 					alumnos.add(newStudent);
 					configuration.put(student[0].trim(), alumnos);
 				}
@@ -116,12 +115,12 @@ public class RegisterResource {
 			configuration.keySet().forEach((key) -> {
 				String[] names = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 				String name = " GRUPO " + names[(int) Math.floor(Math.random()*names.length)] + names[(int) Math.floor(Math.random()*names.length)];
-				GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", "presencial", null, null, null,
+				GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", null, null, null,
 						configuration.get(key));
 				GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(newBubbleGroup);
 				List<GrupoBurbuja> bubbleGroups = new ArrayList<>();
 				bubbleGroups.add(newBubbleGroup);
-				Clase newClass = new Clase(key, null, null, bubbleGroups);
+				Clase newClass = new Clase(key, bubbleGroups.get(0), null, null, null, bubbleGroups);
 				classes.add(newClass);
 				ClaseDAOImpl.getInstance().createClase(newClass);
 			});
