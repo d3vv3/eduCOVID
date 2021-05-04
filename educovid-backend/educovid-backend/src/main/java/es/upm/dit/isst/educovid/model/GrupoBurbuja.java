@@ -107,5 +107,5 @@ public class GrupoBurbuja implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
+	
 }

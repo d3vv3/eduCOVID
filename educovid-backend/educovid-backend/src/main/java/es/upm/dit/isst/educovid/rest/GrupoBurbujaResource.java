@@ -1,7 +1,11 @@
 package es.upm.dit.isst.educovid.rest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -11,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.upm.dit.isst.educovid.anotation.Secured;
+import es.upm.dit.isst.educovid.aux.Security;
+import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
@@ -41,19 +47,32 @@ public class GrupoBurbujaResource {
 					}
 				}
 			}
-			List<GrupoBurbuja> gruposFront = new ArrayList<GrupoBurbuja> ();
+			//List<GrupoBurbuja> gruposFront = new ArrayList<GrupoBurbuja> ();
+			List<Map<String,String>> gruposFront = new ArrayList<Map<String,String>> ();
 			for (Clase clase: clasesProfesor) {
 				for (GrupoBurbuja grupo: clase.getGruposBurbuja()) {
 					boolean confinados = false;
+					boolean grupoPresencial = grupo.getNombre().equals(clase.getBurbujaPresencial().getNombre());
 					for (Alumno a: grupo.getAlumnos()) {
 						if (a.getEstadoSanitario().equals("confinado")) {
 							confinados = true;
 						}
 					}
+					
 					if(confinados) {
-						gruposFront.add(new GrupoBurbuja(clase.getNombre() + " - " + grupo.getNombre(), "alumnosconfinados", null, null, null, null));
+						//gruposFront.add(new GrupoBurbuja(clase.getNombre() + " - " + grupo.getNombre(), "alumnosconfinados", null, null, null, null));
+						Map<String,String> g = new HashMap<String,String>();
+						g.put("nombre", clase.getNombre() + " - " + grupo.getNombre());
+						g.put("grupoPresencial", String.valueOf(grupoPresencial));
+						g.put("alumnosConfinados", String.valueOf(true));
+						gruposFront.add(g);
 					} else {
-						gruposFront.add(new GrupoBurbuja(clase.getNombre() + " - " + grupo.getNombre(), "alumnosnoconfinados", null, null, null, null));
+						//gruposFront.add(new GrupoBurbuja(clase.getNombre() + " - " + grupo.getNombre(), "alumnosnoconfinados", null, null, null, null));
+						Map<String,String> g = new HashMap<String,String>();
+						g.put("nombre", clase.getNombre() + " - " + grupo.getNombre());
+						g.put("grupoPresencial", String.valueOf(grupoPresencial));
+						g.put("alumnosConfinados", String.valueOf(false));
+						gruposFront.add(g);
 					}
 				}
 			}

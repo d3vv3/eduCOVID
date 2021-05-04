@@ -32,43 +32,22 @@ function ProfessorPage(props) {
   }, [userData]);
 
   useEffect(async () => {
-    try {
-      const token = localStorage.getItem('token') || "";
-      const groupsRes = await fetch(backUrl + "/grupo/" + professorId + "/" + professorCenter, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      let groupsData = await groupsRes.json();
-      console.log(groupsData)
+    if(professorId != -1){
+      try {
+        const token = localStorage.getItem('token') || "";
+        const groupsRes = await fetch(backUrl + "/grupo/" + professorId + "/" + professorCenter, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        let groupsData = await groupsRes.json();
+        console.log(groupsData)
         setProfessorGroups(groupsData)
-    } catch (e) {
-      // Nothing to do
+      } catch (e) {
+        // Nothing to do
+      }
     }
   }, [professorId]);
-
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const callGroups = async () => {
-  //     try {
-  //       const token = localStorage.getItem('token') || "";
-  //       const groupsRes = await fetch(backUrl + "/grupo/" + professorId + "/" + professorCenter, {
-  //         headers: {
-  //           'Authorization': `Bearer ${token}`
-  //         }
-  //       });
-  //       let groupsData = await groupsRes.json();
-  //       console.log(groupsData)
-  //       if(isMounted){
-  //         setProfessorGroups(groupsData)
-  //       }
-  //     } catch (e) {
-  //       // Nothing to do
-  //     }
-  //   };
-  //   callGroups();
-  //   return () => { isMounted = false };
-  // }, []);
 
   return (
     <div>
@@ -99,17 +78,16 @@ function ProfessorPage(props) {
               ? "Debe impartir clase de manera online"
               : "Puede impartir clase de manera presencial"}
           </p>
-          {console.log(professorGroups)}
           {professorGroups.map((group, index) =>
             <Card>
-              <Card.Header className={group.estadoDocencia.toLowerCase() === "online" ? "card-header-bad" : "card-header-good"}>
-                {group.nombre} - {group.estadoDocencia.toLowerCase() === "online" ? "Online" : "Presencial"}
+              <Card.Header className={group.grupoPresencial.toLowerCase() === "true" ? "card-header-good" : "card-header-bad"}>
+                {group.nombre} - {group.grupoPresencial.toLowerCase() === "true" ? "Presencial" : "Online"}
               </Card.Header>
-              {group.estadoDocencia.toLowerCase() === "presencial" ? (
+              {group.grupoPresencial.toLowerCase() === "true" ? (
                 <Card.Body>
                   <blockquote className="blockquote mb-0">
-                    <p className={group.estadoSanitario === "alumnosconfinados" ? "p-bad" : "p-good"}>
-                      {group.estadoSanitario === "alumnosconfinados" ? "Hay alumnos confinados" : "No hay alumnos confinados"}
+                    <p className={group.alumnosCnfinados === "true" ? "p-bad" : "p-good"}>
+                      {group.alumnosConfinados === "true" ? "Hay alumnos confinados" : "No hay alumnos confinados"}
                     </p>
                   </blockquote>
                 </Card.Body>
