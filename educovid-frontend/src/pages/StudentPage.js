@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 
 // Bootstrap imports
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 
 // import { students } from "../tests/prueba";
 import { backUrl } from "../constants/constants";
@@ -11,7 +12,7 @@ import Notifications from "../components/Notifications";
 
 function StudentPage(props) {
 
-  const { history, userData } = props;
+  const { history, userData, onLogOut } = props;
 
   const [studentId] = useState(userData.id);
   const [studentName, setStudentName] = useState(userData.nombre);
@@ -51,25 +52,39 @@ function StudentPage(props) {
   }, [studentId]);
 
   return (
-    <div className="student-page-container">
-      <Notifications userId={studentId} role="alumno" />
-      <div className="centered-div">
-        <h4>Alumno/a</h4>
-        <h1>{studentName}</h1>
-        <h2 className={studentState.toLowerCase() === "confinado" ? "bad" : "good"}>
-        {studentState.toLowerCase() === "confinado" ? "Confinado" : "No confinado"}
-        </h2>
-            <p className="description">
-             {studentGroup?.estadoSanitario.toLowerCase() === "confinado" ||
-                studentGroup?.estadoDocencia.toLowerCase() === "online" ||
-                studentState.toLowerCase() === "confinado"
-                ? "Debe recibir clase de manera online" : "Debe recibir clase de manera presencial"}
-            </p>
+    <div>
+      <div className="logout-button">
+        <Button
+          className="nord-button"
+          variant="primary"
+          onClick={() => {
+            onLogOut();
+            localStorage.removeItem('token');
+          }}
+        >
+          Cerrar sesión
+        </Button>
+      </div>
+      <div className="student-page-container">
+        <Notifications userId={studentId} role="alumno" />
+        <div className="centered-div">
+          <h4>Alumno/a</h4>
+          <h1>{studentName}</h1>
+          <h2 className={studentState.toLowerCase() === "confinado" ? "bad" : "good"}>
+          {studentState.toLowerCase() === "confinado" ? "Confinado" : "No confinado"}
+          </h2>
+              <p className="description">
+               {studentGroup?.estadoSanitario.toLowerCase() === "confinado" ||
+                  studentGroup?.estadoDocencia.toLowerCase() === "online" ||
+                  studentState.toLowerCase() === "confinado"
+                  ? "Debe recibir clase de manera online" : "Debe recibir clase de manera presencial"}
+              </p>
 
-            <Card className={studentGroup?.estadoSanitario.toLowerCase() === "confinado" || studentGroup?.estadoDocencia?.toLowerCase() === "online"
-               ? "card-header-bad" : "card-header-good"} as={Card.Header}>
-                  {studentClass?.nombre} - {studentGroup?.nombre} - Docencia: {studentGroup?.estadoDocencia.toLowerCase() === "online" ? "Online" : "Presencial"}
-            </Card>
+              <Card className={studentGroup?.estadoSanitario.toLowerCase() === "confinado" || studentGroup?.estadoDocencia?.toLowerCase() === "online"
+                 ? "card-header-bad" : "card-header-good"} as={Card.Header}>
+                    {studentClass?.nombre} - {studentGroup?.nombre} - Docencia: {studentGroup?.estadoDocencia.toLowerCase() === "online" ? "Online" : "Presencial"}
+              </Card>
+        </div>
       </div>
     </div>
   );

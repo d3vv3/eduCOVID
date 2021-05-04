@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 
 import ActionBar from "../components/ActionBar";
@@ -8,15 +8,27 @@ import CardDeck from "react-bootstrap/CardDeck";
 import { LinkContainer } from "react-router-bootstrap";
 
 function Dashboard(props) {
-  const { userData } = props;
+  const { userData, onLogOut } = props;
 
-  const [responsibleId] = useState(userData.id);
-  const [responsibleName, setResponsibleName] = useState(userData.nombre);
-  const [responsibleCenter, setResponsibleCenter] = useState(userData.centro);
+  const [responsibleId, setResponsibleId] = useState(-1);
+  const [responsibleName, setResponsibleName] = useState("");
+  const [responsibleCenter, setResponsibleCenter] = useState("");
+
+  useEffect(() => {
+    if(userData){
+      setResponsibleId(userData.id);
+      setResponsibleName(userData.nombre);
+      setResponsibleCenter(userData.centro);
+    }
+  }, [userData]);
 
   return (
     <div>
-      <ActionBar />
+      <ActionBar
+        onLogOut={() => {
+          onLogOut();
+        }}
+      />
       <div className="dashboard-page-container">
         <div className="centered-div">
           <h1>¡Bienvenido {responsibleName}!</h1>

@@ -10,7 +10,9 @@ import Button from "react-bootstrap/Button";
 // Constants
 import { backUrl } from "../constants/constants";
 
-function Confine({ history }) {
+function Confine(props) {
+  const {history, onLogOut} = props;
+
   const [professors, setProfessors] = useState([]);
   const [students, setStudents] = useState([]);
   const [bubbleGroups, setBubbleGroups] = useState([]);
@@ -129,7 +131,11 @@ function Confine({ history }) {
 
   return (
     <div>
-      <ActionBar />
+      <ActionBar
+        onLogOut={() => {
+          onLogOut();
+        }}
+      />
       <div className="confine-container">
         <div className="left-menu">
           <div className="selector">
