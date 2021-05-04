@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
 function ActionBar(props) {
@@ -28,6 +28,16 @@ function ActionBar(props) {
           <Nav.Link>Centro</Nav.Link>
         </LinkContainer>
       </Nav>
+      <Button
+        className="nord-button"
+        variant="primary"
+        onClick={() => {
+          props.onLogOut();
+          localStorage.removeItem('token');
+        }}
+      >
+        Cerrar sesión
+      </Button>
     </Navbar>
   );
 }
