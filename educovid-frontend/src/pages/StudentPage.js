@@ -14,9 +14,9 @@ function StudentPage(props) {
 
   const { history, userData, onLogOut } = props;
 
-  const [studentId] = useState(userData.id);
-  const [studentName, setStudentName] = useState(userData.nombre);
-  const [studentState, setStudentEstadoSanitario] = useState(userData.estadoSanitario);
+  const [studentId] = useState(userData?.id);
+  const [studentName, setStudentName] = useState(userData?.nombre);
+  const [studentState, setStudentEstadoSanitario] = useState(userData?.estadoSanitario);
   const [studentGroup, setStudentGroup] = useState();
   const [studentClass, setStudentClass] = useState();
 
@@ -26,7 +26,12 @@ function StudentPage(props) {
     let isMounted = true;
     const callGroup = async () => {
       try {
-        const groupRes = await fetch(backUrl + "/grupo/alumno/" + studentId);
+        const token =localStorage.getItem('token') || "";
+        const groupRes = await fetch(backUrl + "/grupo/alumno/" + studentId, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         let groupData = await groupRes.json();
         if (isMounted) setStudentGroup(groupData);
         console.log(groupData);
@@ -37,7 +42,12 @@ function StudentPage(props) {
     };
     const callClass = async () => {
       try {
-        const classRes = await fetch(backUrl + "/clase/alumno/" + studentId);
+        const token =localStorage.getItem('token') || "";
+        const classRes = await fetch(backUrl + "/clase/alumno/" + studentId, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         let classData = await classRes.json();
         if (isMounted) setStudentClass(classData);
         console.log(classData);
@@ -70,19 +80,19 @@ function StudentPage(props) {
         <div className="centered-div">
           <h4>Alumno/a</h4>
           <h1>{studentName}</h1>
-          <h2 className={studentState.toLowerCase() === "confinado" ? "bad" : "good"}>
-          {studentState.toLowerCase() === "confinado" ? "Confinado" : "No confinado"}
+          <h2 className={studentState?.toLowerCase() === "confinado" ? "bad" : "good"}>
+          {studentState?.toLowerCase() === "confinado" ? "Confinado" : "No confinado"}
           </h2>
               <p className="description">
                {studentGroup?.estadoSanitario.toLowerCase() === "confinado" ||
-                  studentGroup?.estadoDocencia.toLowerCase() === "online" ||
-                  studentState.toLowerCase() === "confinado"
+                  studentClass?.grupoPresencial === "false" ||
+                  studentState?.toLowerCase() === "confinado"
                   ? "Debe recibir clase de manera online" : "Debe recibir clase de manera presencial"}
               </p>
 
-              <Card className={studentGroup?.estadoSanitario.toLowerCase() === "confinado" || studentGroup?.estadoDocencia?.toLowerCase() === "online"
+              <Card className={studentGroup?.estadoSanitario.toLowerCase() === "confinado" || studentClass?.grupoPresencial === "false"
                  ? "card-header-bad" : "card-header-good"} as={Card.Header}>
-                    {studentClass?.nombre} - {studentGroup?.nombre} - Docencia: {studentGroup?.estadoDocencia.toLowerCase() === "online" ? "Online" : "Presencial"}
+                    {studentClass?.nombreClase} - {studentGroup?.nombre} - Docencia: {studentClass?.grupoPresencial == "true" ? "Presencial" : "Online"}
               </Card>
         </div>
       </div>

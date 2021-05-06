@@ -3,7 +3,9 @@ package es.upm.dit.isst.educovid.rest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -57,6 +59,7 @@ public class ClaseResource {
 	@Path("/alumno/{alumnoId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readClaseByAlumno(@PathParam("alumnoId") String alumnoId) {
+		Map<String, String> datos = new HashMap<String, String>();
 		Alumno a = AlumnoDAOImpl.getInstance().readAlumnobyId(alumnoId);
 		System.out.println(a);
 		if (a == null) {
@@ -66,13 +69,13 @@ public class ClaseResource {
 			if (clases == null) {
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
-			Clase claseAlumno = null;
 			for (Clase c: clases) {
 				for (GrupoBurbuja gc : c.getGruposBurbuja()) {
 					for (Alumno al : gc.getAlumnos()) {
 						if (al.getId().equals(Integer.parseInt(alumnoId))) {
-							claseAlumno = new Clase(c.getNombre(), null, null, null, null, null);
-							return Response.ok(claseAlumno, MediaType.APPLICATION_JSON).build();
+							datos.put("nombreClase", c.getNombre());
+							datos.put("grupoPresencial", String.valueOf(gc.getId().equals(c.getBurbujaPresencial().getId())));
+							return Response.ok(datos, MediaType.APPLICATION_JSON).build();
 						}
 					}
 				}
