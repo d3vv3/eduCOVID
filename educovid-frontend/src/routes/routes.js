@@ -93,6 +93,7 @@ function Routes(props) {
         <Route exact path="/manage/student">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
           <ManageStudent
+            userData={userData}
             onLogOut={() => {
               props.dispatch(logOut())
             }}

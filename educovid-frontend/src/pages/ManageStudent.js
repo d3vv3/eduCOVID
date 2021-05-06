@@ -15,7 +15,8 @@ import { backUrl } from "../constants/constants";
 function MyVerticallyCenteredModal(props) {
   const [studentName, setStudentName] = useState("");
   const [numMat, setNumMat] = useState("");
-  const [password, setPassword] = useState("");
+  const [studentBubbleGroup, setStudentBubbleGroup] = useState("");
+  const [studentClass, setStudentClass] = useState("");
   const [errors, setErrors] = useState({});
   const [feedbacks, setFeedbacks] = useState({
     numMat: ""
@@ -27,10 +28,32 @@ function MyVerticallyCenteredModal(props) {
     const { name, value } = event.target;
     switch (name) {
       case "studentName":
+        setFeedbacks({
+          numMat: ""
+        });
+        setErrors({});
         setStudentName(value);
         break;
       case "numMat":
+        setFeedbacks({
+          numMat: ""
+        });
+        setErrors({});
         setNumMat(value);
+        break;
+      case "studentBubbleGroup":
+        setFeedbacks({
+          numMat: ""
+        });
+        setErrors({});
+        setStudentBubbleGroup(value);
+        break;
+      case "studentClass":
+        setFeedbacks({
+          numMat: ""
+        });
+        setErrors({});
+        setStudentClass(value);
         break;
       default:
         return;
@@ -51,26 +74,6 @@ function MyVerticallyCenteredModal(props) {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Group controlId="formStudentName">
-            <Form.Label>Nombre del alumno</Form.Label>
-            <Form.Control
-              required
-              autoFocus
-              type="text"
-              placeholder="Introduzca el nombre del alumno"
-              name="studentName"
-              onChange={updateFormState}
-              value={studentName}
-              isInvalid={!!errors.studentName}
-            />
-            <Form.Control.Feedback type="invalid">
-              Nombre de alumno inválido
-            </Form.Control.Feedback>
-            <Form.Control.Feedback type="valid">
-              Perfecto
-            </Form.Control.Feedback>
-          </Form.Group>
-
           <Form.Group controlId="formNumMat">
             <Form.Label>Número de matrícula</Form.Label>
             <Form.Control
@@ -92,18 +95,75 @@ function MyVerticallyCenteredModal(props) {
               Perfecto
             </Form.Control.Feedback>
           </Form.Group>
+          <Form.Group controlId="formStudentName">
+            <Form.Label>Nombre del alumno</Form.Label>
+            <Form.Control
+              required
+              autoFocus
+              type="text"
+              placeholder="Introduzca el nombre del alumno"
+              name="studentName"
+              onChange={updateFormState}
+              value={studentName}
+              isInvalid={!!errors.studentName}
+            />
+            <Form.Control.Feedback type="invalid">
+              Nombre de alumno inválido
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">
+              Perfecto
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="studentClass">
+            <Form.Label>Nombre de la clase del alumno</Form.Label>
+            <Form.Control
+              required
+              autoFocus
+              type="text"
+              placeholder="Introduzca el nombre de la clase"
+              name="studentClass"
+              onChange={updateFormState}
+              value={studentClass}
+              isInvalid={!!errors.studentClass}
+            />
+            <Form.Control.Feedback type="invalid">
+              Nombre de grupo inválido
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">
+              Perfecto
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="studentBubbleGroup">
+            <Form.Label>Nombre del grupo burbuja del alumno</Form.Label>
+            <Form.Control
+              required
+              autoFocus
+              type="text"
+              placeholder="Introduzca el nombre del grupo burbuja"
+              name="studentBubbleGroup"
+              onChange={updateFormState}
+              value={studentBubbleGroup}
+              isInvalid={!!errors.studentBubbleGroup}
+            />
+            <Form.Control.Feedback type="invalid">
+              Nombre de grupo inválido
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">
+              Perfecto
+            </Form.Control.Feedback>
+          </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onInsert}>Insertar</Button>
-        <Button onClick={props.onCancel}>Cancelar</Button>
+        <Button onClick={props.onHide}>Cancelar</Button>
+        <Button onClick={() => props.onInsert(studentName, numMat, studentClass, studentBubbleGroup, errors, feedbacks, setErrors, setFeedbacks)} disabled={numMat === "" || studentName === "" || studentBubbleGroup === "" || studentClass === ""}>Insertar</Button>
       </Modal.Footer>
     </Modal>
   );
 }
 
 function ManageStudent(props) {
-  const { history, onLogOut } = props;
+  const { history, onLogOut, userData } = props;
 
   const [modalShow, setModalShow] = React.useState(false);
   const [students, setStudents] = useState([]);
@@ -138,42 +198,26 @@ function ManageStudent(props) {
     // const bubbleGroupsRes = await fetch(backUrl + "/manage/bubblegroups");
     let response;
     let responseData;
-    switch (selectedType) {
-      case "bubbleGroups":
-        response = await fetch(backUrl + "/manage/bubblegroups", {
-          method: "GET",
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
-          }
-        });
-        responseData = await response.json();
-        setBubbleGroups(responseData);
-        break;
-      case "students":
-        if (selectedFilter === "*") {
-          response = await fetch(backUrl + "/manage/students", {
-            method: "GET",
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
-            }
-          });
-          responseData = await response.json();
-          setStudents(responseData);
-        } else {
-          response = await fetch(backUrl + `/alumno/grupo/${selectedFilter}`, {
-            method: "GET",
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
-            }
-          });
-          responseData = await response.json();
-          console.log(responseData);
-          console.log();
-          setStudents(responseData);
+    if (selectedFilter === "*") {
+      response = await fetch(backUrl + "/manage/students", {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
         }
-        break;
-      default:
-        break;
+      });
+      responseData = await response.json();
+      setStudents(responseData);
+    } else {
+      response = await fetch(backUrl + `/alumno/grupo/${selectedFilter}`, {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
+        }
+      });
+      responseData = await response.json();
+      console.log(responseData);
+      console.log();
+      setStudents(responseData);
     }
   };
 
@@ -186,12 +230,7 @@ function ManageStudent(props) {
   }, []);
 
   const getListOnSelectedType = () => {
-    switch (selectedType) {
-      case "students":
-        return students;
-      default:
-        return students;
-    }
+    return students;
   };
 
   const handleConfine = async () => {
@@ -390,7 +429,47 @@ function ManageStudent(props) {
         </div>
       </div>
 
-      <MyVerticallyCenteredModal show={modalShow} onCancel={() => setModalShow(false)} />
+      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} onInsert={async (name, numMat, studentClass, studentBubbleGroup, errors, feedbacks, setErrors, setFeedbacks) => {
+        const newStudent = {
+          nombre: name,
+          hash: "",
+          salt: "",
+          subscriptionEndpoint: null,
+          p256dh: null,
+          auth: null,
+          numeroMatricula: numMat,
+          estadoSanitario: "no confinado",
+          fechaConfinamiento: null
+        };
+        try {
+          // const res = await fetch(backUrl + "/alumno", {
+          //   method: "POST",
+          //   headers: {
+          //     'Authorization': `Bearer ${localStorage.getItem('token') || ""}`,
+          //     'Content-Type': 'application/json; charset=UTF-8'
+          //   },
+          //   body: JSON.stringify(newStudent)
+          // });
+          const res = await fetch(backUrl + `/centro/insert/alumno/${userData.centro}/${studentClass}/${studentBubbleGroup}`, {
+            method: "POST",
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token') || ""}`,
+              'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify(newStudent)
+          });
+          if (!res.ok) {
+            errors.numMat = true;
+            feedbacks.numMat = "No se puede insertar el alumno en el grupo burbuja de la clase especificada.";
+            setErrors(errors);
+            setFeedbacks(feedbacks);
+          } else {
+            setModalShow(false);
+          }
+        } catch (e) {
+          // Nothing to do
+        }
+      }} />
     </div>
   );
 }

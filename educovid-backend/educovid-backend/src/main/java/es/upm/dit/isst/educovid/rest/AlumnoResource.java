@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.upm.dit.isst.educovid.anotation.Secured;
+import es.upm.dit.isst.educovid.aux.Security;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;
@@ -26,12 +27,16 @@ public class AlumnoResource {
 	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createAlumno(Alumno alumnoNuevo) throws URISyntaxException {
+		String salt = Security.getSalt();
+		String hash = Security.getHash(alumnoNuevo.getNumeroMatricula(), salt);
+		alumnoNuevo.setSalt(salt);
+		alumnoNuevo.setHash(hash);
 		Alumno a = AlumnoDAOImpl.getInstance().createAlumno(alumnoNuevo);
 	    if (a != null) {
 	            URI uri = new URI("/educovid-backend/rest/alumno/" + a.getId());
 	            return Response.created(uri).build();
 	    }
-	    return Response.status(Response.Status.NOT_FOUND).build();
+	    return Response.status(Response.Status.CONFLICT).build();
 	}
 	
 //	@GET
