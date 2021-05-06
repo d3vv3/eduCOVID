@@ -39,15 +39,14 @@ function Dashboard(props) {
           <CardDeck>
             <Card>
               <Card.Body>
-                <Card.Title>Gestionar confinamientos</Card.Title>
+                <Card.Title>Alumnos</Card.Title>
                 <Card.Text>
-                  En esta sección podrá confinar y desconfinar alumnos,
-                  profesores o grupos burbuja.
+                  En esta sección podrá gestionar los alumnos.
                 </Card.Text>
               </Card.Body>
-              <LinkContainer className="container-dashboard" to="/confine">
+              <LinkContainer className="container-dashboard" to="/manage/student">
                 <Button type="submit" variant="primary" className="nord-button">
-                  Ir a confinamientos
+                  Alumnos
                 </Button>
               </LinkContainer>
             </Card>

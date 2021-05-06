@@ -22,7 +22,7 @@ import StudentPage from "../pages/StudentPage";
 import ProfessorPage from "../pages/ProfessorPage";
 import LoginPage from "../pages/LoginPage";
 import Terms from "../pages/Terms";
-import Confine from "../pages/Confine";
+import ManageStudent from "../pages/ManageStudent";
 import Dashboard from "../pages/Dashboard";
 import Teaching from "../pages/Teaching";
 import Center from "../pages/Center";
@@ -90,9 +90,9 @@ function Routes(props) {
         <Route exact path="/terms">
           <Terms history={history} />
         </Route>
-        <Route exact path="/confine">
+        <Route exact path="/manage/student">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <Confine
+          <ManageStudent
             onLogOut={() => {
               props.dispatch(logOut())
             }}

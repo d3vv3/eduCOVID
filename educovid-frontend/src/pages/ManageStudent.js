@@ -6,32 +6,131 @@ import ActionBar from "../components/ActionBar";
 // Bootstrap imports
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+
 
 // Constants
 import { backUrl } from "../constants/constants";
 
-function Confine(props) {
-  const {history, onLogOut} = props;
+function MyVerticallyCenteredModal(props) {
+  const [studentName, setStudentName] = useState("");
+  const [numMat, setNumMat] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [feedbacks, setFeedbacks] = useState({
+    numMat: ""
+  });
 
-  const [professors, setProfessors] = useState([]);
+  const updateFormState = event => {
+    // On change, set the states with the updates
+    // console.log(event);
+    const { name, value } = event.target;
+    switch (name) {
+      case "studentName":
+        setStudentName(value);
+        break;
+      case "numMat":
+        setNumMat(value);
+        break;
+      default:
+        return;
+    }
+  };
+
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Insertar Alumno
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Group controlId="formStudentName">
+            <Form.Label>Nombre del alumno</Form.Label>
+            <Form.Control
+              required
+              autoFocus
+              type="text"
+              placeholder="Introduzca el nombre del alumno"
+              name="studentName"
+              onChange={updateFormState}
+              value={studentName}
+              isInvalid={!!errors.studentName}
+            />
+            <Form.Control.Feedback type="invalid">
+              Nombre de alumno inválido
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">
+              Perfecto
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group controlId="formNumMat">
+            <Form.Label>Número de matrícula</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              placeholder="Introduzca el número de matrícula"
+              name="numMat"
+              onChange={updateFormState}
+              value={numMat}
+              isInvalid={!!errors.numMat}
+            />
+            <Form.Text className="text-muted">
+              Debe ser único en el centro
+            </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              {feedbacks.numMat}
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">
+              Perfecto
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onInsert}>Insertar</Button>
+        <Button onClick={props.onCancel}>Cancelar</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
+function ManageStudent(props) {
+  const { history, onLogOut } = props;
+
+  const [modalShow, setModalShow] = React.useState(false);
   const [students, setStudents] = useState([]);
   const [bubbleGroups, setBubbleGroups] = useState([]);
-  const [selectedType, setSelectedType] = useState("bubbleGroups");
+  const [selectedType, setSelectedType] = useState("students");
   const [selected, setSelected] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("*");
 
   const initComponent = async () => {
     let response;
     let responseData;
-    response = await fetch(backUrl + "/manage/bubblegroups");
+    response = await fetch(backUrl + "/manage/bubblegroups", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
+      }
+    });
     responseData = await response.json();
     setBubbleGroups(responseData);
-    response = await fetch(backUrl + "/manage/students");
+    response = await fetch(backUrl + "/manage/students", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
+      }
+    });
     responseData = await response.json();
     setStudents(responseData);
-    response = await fetch(backUrl + "/manage/professors");
-    responseData = await response.json();
-    setProfessors(responseData);
     console.log("UPDATED A");
   };
 
@@ -41,27 +140,37 @@ function Confine(props) {
     let responseData;
     switch (selectedType) {
       case "bubbleGroups":
-        response = await fetch(backUrl + "/manage/bubblegroups");
+        response = await fetch(backUrl + "/manage/bubblegroups", {
+          method: "GET",
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
+          }
+        });
         responseData = await response.json();
         setBubbleGroups(responseData);
         break;
       case "students":
         if (selectedFilter === "*") {
-          response = await fetch(backUrl + "/manage/students");
+          response = await fetch(backUrl + "/manage/students", {
+            method: "GET",
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
+            }
+          });
           responseData = await response.json();
           setStudents(responseData);
         } else {
-          response = await fetch(backUrl + `/alumno/grupo/${selectedFilter}`);
+          response = await fetch(backUrl + `/alumno/grupo/${selectedFilter}`, {
+            method: "GET",
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
+            }
+          });
           responseData = await response.json();
           console.log(responseData);
           console.log();
           setStudents(responseData);
         }
-        break;
-      case "professors":
-        response = await fetch(backUrl + "/manage/professors");
-        responseData = await response.json();
-        setProfessors(responseData);
         break;
       default:
         break;
@@ -78,14 +187,10 @@ function Confine(props) {
 
   const getListOnSelectedType = () => {
     switch (selectedType) {
-      case "bubbleGroups":
-        return bubbleGroups;
-      case "professors":
-        return professors;
       case "students":
         return students;
       default:
-        return bubbleGroups;
+        return students;
     }
   };
 
@@ -94,7 +199,7 @@ function Confine(props) {
     if (selected.every(e => e.estadoSanitario.toLowerCase() === "confinado")) {
       await fetch(backUrl + `/manage/unconfine/${selectedType}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
         body: JSON.stringify(selected)
       });
       await callMainSelector();
@@ -103,14 +208,14 @@ function Confine(props) {
     ) {
       await fetch(backUrl + `/manage/confine/${selectedType}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
         body: JSON.stringify(selected)
       });
       await callMainSelector();
     } else {
       await fetch(backUrl + `/manage/switch/${selectedType}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
         body: JSON.stringify(selected)
       });
       await callMainSelector();
@@ -121,12 +226,20 @@ function Confine(props) {
         console.log(value);
         const notificationRes = await fetch(
           backUrl +
-          `/notification/subscription/${selectedType}/` + value.id
-        );
+          `/notification/subscription/${selectedType}/` + value.id, {
+          method: "GET",
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
+          }
+        });
       } catch (e) {
         console.log("Error pushing notification");
       }
     });
+  };
+
+  const handleInsertStudent = async () => {
+    setModalShow(true);
   };
 
   return (
@@ -139,30 +252,6 @@ function Confine(props) {
       <div className="confine-container">
         <div className="left-menu">
           <div className="selector">
-            <Form>
-              <Form.Group controlId="group">
-                <Form.Control
-                  as="select"
-                  defaultValue="bubbleGroups"
-                  onChange={e => {
-                    setSelectedType(e.target.value);
-                    setSelectedFilter("*");
-                    setSelected([]);
-                    callMainSelector();
-                  }}
-                >
-                  <option key="1" value="bubbleGroups">
-                    Grupos burbuja
-                  </option>
-                  <option key="2" value="students">
-                    Alumnos
-                  </option>
-                  <option key="3" value="professors">
-                    Profesores
-                  </option>
-                </Form.Control>
-              </Form.Group>
-            </Form>
             {selectedType === "students" ? (
               <Form>
                 <Form.Group controlId="group">
@@ -201,8 +290,7 @@ function Confine(props) {
                   }
                 }}
                 className={
-                  "person-card" +
-                  (item.estadoSanitario === "confinado" ? " red" : " green") +
+                  "person-card" + " green" +
                   (getListOnSelectedType().some(e => e === item)
                     ? ""
                     : " selected")
@@ -230,15 +318,14 @@ function Confine(props) {
                 key={index}
                 onClick={e => {
                   if (selected.some(e => e.nombre === person.nombre)) {
-                    var filtered = selected.filter(function(value, index, arr) {
+                    var filtered = selected.filter(function (value, index, arr) {
                       return value.nombre !== person.nombre;
                     });
                     setSelected(filtered);
                   }
                 }}
                 className={
-                  "person-card" +
-                  (person.estadoSanitario === "confinado" ? " red" : " green") +
+                  "person-card" + " green" +
                   (getListOnSelectedType().some(e => e === person)
                     ? " selected"
                     : "")
@@ -284,17 +371,28 @@ function Confine(props) {
                 )
                   ? "Desconfinar"
                   : selected.every(
-                      e => e.estadoSanitario.toLowerCase() === "no confinado"
-                    )
-                  ? "Confinar"
-                  : "Cambiar estados"}
+                    e => e.estadoSanitario.toLowerCase() === "no confinado"
+                  )
+                    ? "Confinar"
+                    : "Cambiar estados"}
               </Button>
             ) : null}
+            <Button
+              variant="primary"
+              className="nord-button"
+              onClick={e => {
+                handleInsertStudent();
+              }}
+            >
+              Insertar alumno
+              </Button>
           </Form>
         </div>
       </div>
+
+      <MyVerticallyCenteredModal show={modalShow} onCancel={() => setModalShow(false)} />
     </div>
   );
 }
 
-export default withRouter(Confine);
+export default withRouter(ManageStudent);
