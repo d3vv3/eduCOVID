@@ -162,10 +162,62 @@ function MyVerticallyCenteredModal(props) {
   );
 }
 
+function NotificationModal(props) {
+  const [confinedText, setConfinedText] = useState("");
+  const [unconfinedText, setUnconfinedText] = useState("");
+  const [stateStudents, setStateStudents] = useState({});
+
+  const { onHide, onFinish } = props;
+
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Mensaje explicativo
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          {localStorage.getItem("no confinados") === "true" ? (
+          <Form.Group controlId="formConfinedText">
+            <Form.Label>Mensaje para alumnos a confinar</Form.Label>
+            <Form.Control
+              placeholder="Introduzca el mensaje"
+              onChange={(e) => setConfinedText(e.target.value)}
+              value={confinedText}
+            />
+          </Form.Group>
+          ) : null}
+          {localStorage.getItem("confinados") === "true" ? (
+          <Form.Group controlId="formUnconfinedText">
+            <Form.Label>Mensaje para alumnos a desconfinar</Form.Label>
+            <Form.Control
+              placeholder="Introduzca el mensaje"
+              onChange={(e) => setUnconfinedText(e.target.value)}
+              value={unconfinedText}
+            />
+          </Form.Group>
+          ) : null}
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={onHide}>Cancelar</Button>
+        <Button onClick={onFinish}>Finalizar</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
 function ManageStudent(props) {
   const { history, onLogOut, userData } = props;
 
-  const [modalShow, setModalShow] = React.useState(false);
+  const [insertModalShow, setInsertModalShow] = React.useState(false);
+  const [notificationModalShow, setNotificationModalShow] = React.useState(false);
   const [students, setStudents] = useState([]);
   const [bubbleGroups, setBubbleGroups] = useState([]);
   const [selectedType, setSelectedType] = useState("students");
@@ -278,8 +330,14 @@ function ManageStudent(props) {
   };
 
   const handleInsertStudent = async () => {
-    setModalShow(true);
+    setInsertModalShow(true);
   };
+
+  const handleNotification = async () => {
+    setNotificationModalShow(true);
+    localStorage.setItem("confinados", selected.some(e => e.estadoSanitario.toLowerCase() === "confinado"));
+    localStorage.setItem("no confinados", selected.some(e => e.estadoSanitario.toLowerCase() === "no confinado"));
+  }
 
   return (
     <div>
@@ -399,6 +457,7 @@ function ManageStudent(props) {
                     //     : (e.estadoSanitario = "confinado")
                     // );
                     handleConfine();
+                    handleNotification();
                     setSelected([]);
                   } else {
                     alert("Seleccione las personas a confinar");
@@ -429,7 +488,13 @@ function ManageStudent(props) {
         </div>
       </div>
 
-      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} onInsert={async (name, numMat, studentClass, studentBubbleGroup, errors, feedbacks, setErrors, setFeedbacks) => {
+      <NotificationModal show={notificationModalShow} onHide={() => setNotificationModalShow(false)} onFinish={() => {
+        setNotificationModalShow(false);
+        localStorage.removeItem("confinados");
+        localStorage.removeItem("no confinados");
+      }}/>
+
+      <MyVerticallyCenteredModal show={insertModalShow} onHide={() => setInsertModalShow(false)} onInsert={async (name, numMat, studentClass, studentBubbleGroup, errors, feedbacks, setErrors, setFeedbacks) => {
         const newStudent = {
           nombre: name,
           hash: "",
@@ -464,7 +529,7 @@ function ManageStudent(props) {
             setErrors(errors);
             setFeedbacks(feedbacks);
           } else {
-            setModalShow(false);
+            setInsertModalShow(false);
           }
         } catch (e) {
           // Nothing to do
