@@ -30,7 +30,7 @@ public class GrupoBurbuja implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "fk_id_grupo")
 	private List<Alumno> alumnos; // Set because List uses too many queries:
-										// https://www.adictosaltrabajo.com/2020/04/02/hibernate-onetoone-onetomany-manytoone-y-manytomany/
+								  // https://www.adictosaltrabajo.com/2020/04/02/hibernate-onetoone-onetomany-manytoone-y-manytomany/
 	private static final long serialVersionUID = 1L;
 
 	public GrupoBurbuja() {
