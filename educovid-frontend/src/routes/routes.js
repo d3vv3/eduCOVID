@@ -24,7 +24,7 @@ import LoginPage from "../pages/LoginPage";
 import Terms from "../pages/Terms";
 import Confine from "../pages/Confine";
 import Dashboard from "../pages/Dashboard";
-import Teaching from "../pages/Teaching";
+import ManageProfessor from "../pages/ManageProfessor";
 import Center from "../pages/Center";
 
 function Routes(props) {
@@ -40,19 +40,19 @@ function Routes(props) {
   };
 
   const getUserSession = async () => {
-    const token = localStorage.getItem('token') || "";
+    const token = localStorage.getItem("token") || "";
     try {
       console.log("Retrieving session from JWT " + token);
       const sessionRes = await fetch(backUrl + "/login/session", {
         method: "GET",
         headers: {
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         }
       });
       const sessionCenterRes = await fetch(backUrl + "/login/session/center", {
         method: "GET",
         headers: {
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         }
       });
       if (sessionRes.ok && sessionCenterRes.ok) {
@@ -60,13 +60,15 @@ function Routes(props) {
         const sessionCenterData = await sessionCenterRes.text();
         console.log("JWT token: " + sessionData.hash);
         console.log("Center: " + sessionCenterData);
-        localStorage.setItem('token', sessionData.hash);
+        localStorage.setItem("token", sessionData.hash);
         const role = sessionData.salt;
         sessionData.salt = "";
         sessionData.hash = "";
-        props.dispatch(logIn({ ...sessionData, role, centro: sessionCenterData }));
+        props.dispatch(
+          logIn({ ...sessionData, role, centro: sessionCenterData })
+        );
       }
-    } catch(e) {
+    } catch (e) {
       // ...
     }
   };
@@ -94,7 +96,7 @@ function Routes(props) {
           {!loggedIn ? <Redirect to={`/login`} /> : null}
           <Confine
             onLogOut={() => {
-              props.dispatch(logOut())
+              props.dispatch(logOut());
             }}
           />
         </Route>
@@ -114,7 +116,7 @@ function Routes(props) {
             history={history}
             userData={userData}
             onLogOut={() => {
-              props.dispatch(logOut())
+              props.dispatch(logOut());
             }}
           />
         </Route>
@@ -124,7 +126,7 @@ function Routes(props) {
             history={history}
             userData={userData}
             onLogOut={() => {
-              props.dispatch(logOut())
+              props.dispatch(logOut());
             }}
           />
         </Route>
@@ -139,13 +141,13 @@ function Routes(props) {
           <Dashboard
             userData={userData}
             onLogOut={() => {
-              props.dispatch(logOut())
+              props.dispatch(logOut());
             }}
           />
         </Route>
-        <Route exact path="/teaching">
+        <Route exact path="/manage/professor">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <Teaching />
+          <ManageProfessor />
         </Route>
         <Route exact path="/center">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
