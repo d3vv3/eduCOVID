@@ -35,7 +35,7 @@ public class ProfesorResource {
 	}
 	
 	@GET
-	@Secured
+	//@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readProfesorByNIFNIE(@PathParam("id") String id) {
@@ -47,7 +47,7 @@ public class ProfesorResource {
 	}
 	
 	@PUT
-	@Secured
+	//@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")

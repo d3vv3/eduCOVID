@@ -45,7 +45,7 @@ public class AlumnoResource {
 //	}
 	
 	@GET
-	@Secured
+	//@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readAlumnobyId(@PathParam("id") String id) {

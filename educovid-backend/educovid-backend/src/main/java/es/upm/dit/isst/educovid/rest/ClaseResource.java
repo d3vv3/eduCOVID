@@ -95,7 +95,7 @@ public class ClaseResource {
 	}
 	
 	@GET
-	@Secured
+	//@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readClasebyId(@PathParam("id") String id) {
