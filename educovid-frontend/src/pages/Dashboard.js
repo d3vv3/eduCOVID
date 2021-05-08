@@ -15,7 +15,7 @@ function Dashboard(props) {
   const [responsibleCenter, setResponsibleCenter] = useState("");
 
   useEffect(() => {
-    if(userData){
+    if (userData) {
       setResponsibleId(userData.id);
       setResponsibleName(userData.nombre);
       setResponsibleCenter(userData.centro);
@@ -44,7 +44,10 @@ function Dashboard(props) {
                   En esta sección podrá gestionar los alumnos.
                 </Card.Text>
               </Card.Body>
-              <LinkContainer className="container-dashboard" to="/manage/student">
+              <LinkContainer
+                className="container-dashboard"
+                to="/manage/student"
+              >
                 <Button type="submit" variant="primary" className="nord-button">
                   Alumnos
                 </Button>
@@ -59,7 +62,10 @@ function Dashboard(props) {
                   entre docencia presencial y online.
                 </Card.Text>
               </Card.Body>
-              <LinkContainer className="container-dashboard" to="/teaching">
+              <LinkContainer
+                className="container-dashboard"
+                to="/manage/professor"
+              >
                 <Button type="submit" variant="primary" className="nord-button">
                   Ir a docencia
                 </Button>

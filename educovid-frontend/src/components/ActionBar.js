@@ -21,8 +21,8 @@ function ActionBar(props) {
         <LinkContainer to="/manage/student">
           <Nav.Link>Alumnos</Nav.Link>
         </LinkContainer>
-        <LinkContainer to="/teaching">
-          <Nav.Link>Docencia</Nav.Link>
+        <LinkContainer to="/manage/professor">
+          <Nav.Link>Profesores</Nav.Link>
         </LinkContainer>
         <LinkContainer to="/center">
           <Nav.Link>Centro</Nav.Link>
@@ -33,7 +33,7 @@ function ActionBar(props) {
         variant="primary"
         onClick={() => {
           props.onLogOut();
-          localStorage.removeItem('token');
+          localStorage.removeItem("token");
         }}
       >
         Cerrar sesión

@@ -39,19 +39,19 @@
   flex-wrap: nowrap;
 }
 
-@mixin nordButton() {
+@mixin nordButton($mainColor: $mintShade700, $hoverColor: $clearMint) {
     // Mixin to customize buttons with our theme palette
 
     // Change the color and margin
     .nord-button {
-        background-color: $mintShade700;
+        background-color: $mainColor;
         border-color: $white500;
         margin: 8px;
     }
 
     // When cursor hovering the button, change color
     .nord-button:hover {
-        background-color: $clearMint !important;
+        background-color: $hoverColor !important;
         color: $dark900;
         border-color: $white500 !important;
     }
@@ -59,7 +59,7 @@
     // When clicked and while clicking, change color
     .nord-button:active,
     .nord-button:focus {
-        background-color: $clearMint !important;
+        background-color: $hoverColor !important;
         color: $dark900;
         border-color: $white500 !important;
     }

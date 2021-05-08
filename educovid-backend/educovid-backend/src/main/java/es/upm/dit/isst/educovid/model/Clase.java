@@ -33,7 +33,7 @@ public class Clase implements Serializable {
 	private GrupoBurbuja burbujaPresencial;
 	private Date fechaInicioConmutacion;
 	private Integer tiempoConmutacion; // In school days
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, orphanRemoval = true })
 	@JoinTable(name = "clases_profesores", joinColumns = { @JoinColumn(name = "fk_id_clase") }, inverseJoinColumns = {
 			@JoinColumn(name = "fk_id_profesor") })
 	private Set<Profesor> profesores; // Set because List uses too many queries:

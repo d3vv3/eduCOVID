@@ -160,13 +160,14 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 
 	@Override
 	public List<GrupoBurbuja> readAllGruposBurbujabyClase(Clase clase) {
-		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
+		List<GrupoBurbuja> gruposBurbuja = new ArrayList<GrupoBurbuja> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.clase=" + clase).list());
+        gruposBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.clase=" + clase.getId()).list());
+        System.out.print(gruposBurbuja);
         session.getTransaction().commit();
         session.close();
-        return grupoBurbuja;
+        return gruposBurbuja;
 	}
 
 	@Override

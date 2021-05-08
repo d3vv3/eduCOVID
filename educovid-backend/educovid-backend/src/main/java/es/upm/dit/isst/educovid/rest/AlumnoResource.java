@@ -75,7 +75,7 @@ public class AlumnoResource {
 	}
 	
 	@DELETE
-	@Secured
+	// @Secured
 	@Path("/{id}")
 	public Response deleteAlumno(@PathParam("id") String id) {
 		Alumno a = AlumnoDAOImpl.getInstance().readAlumnobyId(id);
