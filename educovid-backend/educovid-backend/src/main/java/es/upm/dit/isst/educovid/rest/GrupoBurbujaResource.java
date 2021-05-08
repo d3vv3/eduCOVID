@@ -101,7 +101,7 @@ public class GrupoBurbujaResource {
 	//Métodos rest para gestionar centro parte de grupos
 	
 	@POST
-	@Secured
+	//@Secured
 	@Path("/{classId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createGroup(GrupoBurbuja grupoNuevo, @PathParam("classId") String classId) throws URISyntaxException {
@@ -111,7 +111,7 @@ public class GrupoBurbujaResource {
 		grupoList.add(g);
 		c.setGruposBurbuja(grupoList);
 	    if (g != null && grupoList != null) {
-	            URI uri = new URI("/educovid-backend/rest/grupo/" + g.getId());
+	            URI uri = new URI("/educovid-backend/rest/grupo/" + c.getId());
 	            return Response.created(uri).build();
 	    }
 	    return Response.status(Response.Status.NOT_FOUND).build();
@@ -119,7 +119,7 @@ public class GrupoBurbujaResource {
 	
 	
 	@DELETE
-	@Secured
+	//@Secured
 	@Path("/{id}")
 	public Response deleteGroup(@PathParam("id") String id) {
 		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(id);
@@ -130,17 +130,30 @@ public class GrupoBurbujaResource {
 	}
 	
 	@PUT
-	@Secured
+	//@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
 	public Response updateGroup(@PathParam("id") String id, GrupoBurbuja g) {
-		GrupoBurbuja gr = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(id);
-	    if (gr == null) {
+		GrupoBurbuja gOld = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(id);
+	    if (gOld == null || (! gOld.getId().equals(g.getId()))) {
 	    	return Response.notModified().build();
 	    }
-	    GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(gr);
-	    return Response.ok(gr, MediaType.APPLICATION_JSON).build();
+	    
+	    GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(g);
+	    return Response.ok(g, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@GET
+	//@Secured
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response readGrpuoById(@PathParam("id") String id) {
+		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(id);
+		if (g == null ) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		return Response.ok(g, MediaType.APPLICATION_JSON).build();
 	}
 	
 }
