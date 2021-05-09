@@ -163,11 +163,11 @@ function MyVerticallyCenteredModal(props) {
 }
 
 function NotificationModal(props) {
-  const [confinedText, setConfinedText] = useState("");
-  const [unconfinedText, setUnconfinedText] = useState("");
+  const [confinedText, setConfinedText] = useState("Has sido confinado");
+  const [unconfinedText, setUnconfinedText] = useState("Has sido desconfinado");
   const [stateStudents, setStateStudents] = useState({});
 
-  const { onHide, onFinish } = props;
+  const { onHide, onFinish, onChangeConfineMessage, onChangeUnconfineMessage } = props;
 
   return (
     <Modal
@@ -188,7 +188,10 @@ function NotificationModal(props) {
             <Form.Label>Mensaje para alumnos a confinar</Form.Label>
             <Form.Control
               placeholder="Introduzca el mensaje"
-              onChange={(e) => setConfinedText(e.target.value)}
+              onChange={(e) => {
+                setConfinedText(e.target.value);
+                onChangeConfineMessage(e.target.value);
+              }}
               value={confinedText}
             />
           </Form.Group>
@@ -198,7 +201,10 @@ function NotificationModal(props) {
             <Form.Label>Mensaje para alumnos a desconfinar</Form.Label>
             <Form.Control
               placeholder="Introduzca el mensaje"
-              onChange={(e) => setUnconfinedText(e.target.value)}
+              onChange={(e) => {
+                setUnconfinedText(e.target.value);
+                onChangeUnconfineMessage(e.target.value);
+              }}
               value={unconfinedText}
             />
           </Form.Group>
@@ -207,14 +213,18 @@ function NotificationModal(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onHide}>Cancelar</Button>
-        <Button onClick={onFinish}>Finalizar</Button>
+        <Button onClick={() => {
+          setConfinedText("Has sido confinado");
+          setUnconfinedText("Has sido desconfinado");
+          onFinish();
+        }}>Finalizar</Button>
       </Modal.Footer>
     </Modal>
   );
 }
 
 function ManageStudent(props) {
-  const { history, onLogOut, userData } = props;
+  const { history, onLogOut, userData, confineMessage, unconfineMessage, onChangeConfineMessage, onChangeUnconfineMessage } = props;
 
   const [insertModalShow, setInsertModalShow] = React.useState(false);
   const [notificationModalShow, setNotificationModalShow] = React.useState(false);
@@ -286,6 +296,10 @@ function ManageStudent(props) {
   };
 
   const handleConfine = async () => {
+    console.log("MENSAJE CONFINAR: " + confineMessage);
+    console.log("MENSAJE DESCONFINAR: " + unconfineMessage);
+    console.log(JSON.stringify(selected));
+    console.log(JSON.stringify({"confineMessage" : confineMessage, "unconfineMessage" : unconfineMessage}));
     selected.every(e => console.log(e.estadoSanitario.toLowerCase()));
     if (selected.every(e => e.estadoSanitario.toLowerCase() === "confinado")) {
       await fetch(backUrl + `/manage/unconfine/${selectedType}`, {
@@ -318,15 +332,29 @@ function ManageStudent(props) {
         const notificationRes = await fetch(
           backUrl +
           `/notification/subscription/${selectedType}/` + value.id, {
-          method: "GET",
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
-          }
+          method: "POST",
+          headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
+          body: JSON.stringify({"confineMessage" : confineMessage, "unconfineMessage" : unconfineMessage})
         });
       } catch (e) {
         console.log("Error pushing notification");
       }
     });
+    // selected.forEach(async (value) => {
+    //   try {
+    //     console.log(value);
+    //     const notificationRes = await fetch(
+    //       backUrl +
+    //       `/notification/subscription/${selectedType}/` + value.id, {
+    //       method: "GET",
+    //       headers: {
+    //         'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
+    //       }
+    //     });
+    //   } catch (e) {
+    //     console.log("Error pushing notification");
+    //   }
+    // });
   };
 
   const handleInsertStudent = async () => {
@@ -456,9 +484,9 @@ function ManageStudent(props) {
                     //     ? (e.estadoSanitario = "no confinado")
                     //     : (e.estadoSanitario = "confinado")
                     // );
-                    handleConfine();
                     handleNotification();
-                    setSelected([]);
+                    //handleConfine();
+                    //setSelected([]);
                   } else {
                     alert("Seleccione las personas a confinar");
                   }
@@ -488,11 +516,23 @@ function ManageStudent(props) {
         </div>
       </div>
 
-      <NotificationModal show={notificationModalShow} onHide={() => setNotificationModalShow(false)} onFinish={() => {
-        setNotificationModalShow(false);
-        localStorage.removeItem("confinados");
-        localStorage.removeItem("no confinados");
-      }}/>
+      <NotificationModal
+        show={notificationModalShow}
+        onHide={() => setNotificationModalShow(false)}
+        onFinish={() => {
+          handleConfine();
+          setSelected([]);
+          setNotificationModalShow(false);
+          localStorage.removeItem("confinados");
+          localStorage.removeItem("no confinados");
+        }}
+        onChangeConfineMessage={(message) => {
+          onChangeConfineMessage(message);
+        }}
+        onChangeUnconfineMessage={(message) => {
+          onChangeUnconfineMessage(message);
+        }}
+      />
 
       <MyVerticallyCenteredModal show={insertModalShow} onHide={() => setInsertModalShow(false)} onInsert={async (name, numMat, studentClass, studentBubbleGroup, errors, feedbacks, setErrors, setFeedbacks) => {
         const newStudent = {
