@@ -1,0 +1,10 @@
+.professor-modal-container {
+    @include nordButton();
+    .classes {
+        .form-group {
+            .form-control {
+                height: 150px !important;
+            }
+        }
+    }
+}

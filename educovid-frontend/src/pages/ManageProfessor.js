@@ -17,7 +17,8 @@ function ManageProfessor(props) {
 
   const [professors, setProfessors] = useState([]);
   const [selected, setSelected] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showNewModal, setShowNewModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
     retrieveProfessors();
@@ -39,8 +40,75 @@ function ManageProfessor(props) {
   };
 
   const handleNewProfessor = async () => {
-    setShowModal(true);
+    setShowNewModal(true);
   };
+
+  const handleEditProfessor = async () => {
+    setShowEditModal(true);
+  };
+
+  const onInsertProfessor = async (
+    name,
+    id,
+    professorClasses,
+    errors,
+    feedbacks,
+    setErrors,
+    setFeedbacks
+  ) => {
+    const newProfessor = {
+      nombre: name,
+      hash: "",
+      salt: "",
+      subscriptionEndpoint: null,
+      p256dh: null,
+      auth: null,
+      nifNie: id,
+      estadoSanitario: "no confinado",
+      fechaConfinamiento: null
+    };
+    try {
+      // Create professor on database
+      const res = await fetch(
+        // TODO backend method
+        backUrl + `/centro/insert/professor/${userData.centro}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(newProfessor)
+        }
+      );
+      // Add professor to classes
+      let classes = professorClasses.split(",").trim();
+      let promises = classes.map(clase => {
+        return fetch(
+          // TODO backend method and change the path
+          backUrl + `/centro/insert/alumno/${userData.centro}/`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+              "Content-Type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify(newProfessor)
+          }
+        );
+      });
+      let responses = Promise.all(promises);
+      responses.some(response =>
+        !response.ok
+          ? alert(`Hubo un fallo al crear el profesor`)
+          : setShowNewModal(false)
+      );
+    } catch (e) {
+      // Nothing to do
+    }
+  };
+
+  const onEditProfessor = async () => {};
 
   const handleDelete = async () => {
     let pendingDeletes = selected.map(professor => {
@@ -114,16 +182,12 @@ function ManageProfessor(props) {
                   (professors.some(e => e === item) ? "" : " selected")
                 }
               >
-                {item?.nombre?.includes("Grupo") ? (
-                  <h5>{item.nombre}</h5>
-                ) : (
-                  <h5>{item.nombre}</h5>
-                )}
-                <h8>
+                <h5>{item.nombre}</h5>
+                <h5>
                   {item.estadoSanitario === "no confinado"
                     ? "No confinado"
                     : "Confinado"}
-                </h8>
+                </h5>
               </div>
             ))}
           </div>
@@ -201,11 +265,20 @@ function ManageProfessor(props) {
                 variant="primary"
                 className="nord-button"
                 onClick={e => {
-                  if (selected != null) {
-                    handleNewProfessor();
+                  if (selected.length === 1) {
+                    handleEditProfessor();
                   } else {
-                    alert("Seleccione personas para ejecutar esta acción");
+                    alert("Seleccione un solo profesor para esta acción");
                   }
+                }}
+              >
+                Propiedades
+              </Button>
+              <Button
+                variant="primary"
+                className="nord-button"
+                onClick={e => {
+                  handleNewProfessor();
                 }}
               >
                 Añadir
@@ -228,72 +301,18 @@ function ManageProfessor(props) {
           </Form>
         </div>
       </div>
-      <ProfessorCenteredModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        onInsert={async (
-          name,
-          id,
-          professorClasses,
-          errors,
-          feedbacks,
-          setErrors,
-          setFeedbacks
-        ) => {
-          const newProfessor = {
-            nombre: name,
-            hash: "",
-            salt: "",
-            subscriptionEndpoint: null,
-            p256dh: null,
-            auth: null,
-            nifNie: id,
-            estadoSanitario: "no confinado",
-            fechaConfinamiento: null
-          };
-          try {
-            // Create professor on database
-            const res = await fetch(
-              // TODO backend method
-              backUrl + `/centro/insert/professor/${userData.centro}`,
-              {
-                method: "POST",
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token") ||
-                    ""}`,
-                  "Content-Type": "application/json; charset=UTF-8"
-                },
-                body: JSON.stringify(newProfessor)
-              }
-            );
-            // Add professor to classes
-            let classes = professorClasses.split(",").trim();
-            let promises = classes.map(clase => {
-              return fetch(
-                // TODO backend method and change the path
-                backUrl + `/centro/insert/alumno/${userData.centro}/`,
-                {
-                  method: "POST",
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token") ||
-                      ""}`,
-                    "Content-Type": "application/json; charset=UTF-8"
-                  },
-                  body: JSON.stringify(newProfessor)
-                }
-              );
-            });
-            let responses = Promise.all(promises);
-            responses.some(response =>
-              !response.ok
-                ? alert(`Hubo un fallo al crear el profesor`)
-                : setShowModal(false)
-            );
-          } catch (e) {
-            // Nothing to do
-          }
-        }}
-      />
+      {showNewModal || showEditModal ? (
+        <ProfessorCenteredModal
+          existingProfessor={showEditModal ? selected[0] : null}
+          show={showNewModal || showEditModal}
+          onHide={() => {
+            setShowNewModal(false);
+            setShowEditModal(false);
+            setSelected([]);
+          }}
+          onInsert={showNewModal ? onInsertProfessor : onEditProfessor}
+        />
+      ) : null}
     </div>
   );
 }

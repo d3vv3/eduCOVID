@@ -26,6 +26,16 @@ import es.upm.dit.isst.educovid.model.Profesor;
 
 @Path("/clase")
 public class ClaseResource {
+	
+	@GET
+	@Secured
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response readAllClases() {
+		List<Clase> clases = ClaseDAOImpl.getInstance().readAllClases();
+		return Response.ok(clases, MediaType.APPLICATION_JSON).build();
+	}
+
 
 	@GET
 	@Secured
