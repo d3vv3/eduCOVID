@@ -148,7 +148,11 @@ function Routes(props) {
         </Route>
         <Route exact path="/manage/professor">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <ManageProfessor />
+          <ManageProfessor
+            userData={userData}
+            onLogOut={() => {
+              props.dispatch(logOut());
+            }} />
         </Route>
         <Route exact path="/center">
           {!loggedIn ? <Redirect to={`/login`} /> : null}

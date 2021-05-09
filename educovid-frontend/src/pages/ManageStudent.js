@@ -114,7 +114,7 @@ function MyVerticallyCenteredModal(props) {
               Perfecto
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group controlId="studentClass">
+          <Form.Group controlId="formStudentClass">
             <Form.Label>Nombre de la clase del alumno</Form.Label>
             <Form.Control
               required
@@ -133,7 +133,7 @@ function MyVerticallyCenteredModal(props) {
               Perfecto
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group controlId="studentBubbleGroup">
+          <Form.Group controlId="formStudentBubbleGroup">
             <Form.Label>Nombre del grupo burbuja del alumno</Form.Label>
             <Form.Control
               required
@@ -146,7 +146,7 @@ function MyVerticallyCenteredModal(props) {
               isInvalid={!!errors.studentBubbleGroup}
             />
             <Form.Control.Feedback type="invalid">
-              Nombre de grupo inválido
+              {feedbacks.studentBubbleGroup}
             </Form.Control.Feedback>
             <Form.Control.Feedback type="valid">
               Perfecto
@@ -423,7 +423,7 @@ function ManageStudent(props) {
                 handleInsertStudent();
               }}
             >
-              Insertar alumno
+              Añadir alumno
               </Button>
           </Form>
         </div>
@@ -459,10 +459,7 @@ function ManageStudent(props) {
             body: JSON.stringify(newStudent)
           });
           if (!res.ok) {
-            errors.numMat = true;
-            feedbacks.numMat = "No se puede insertar el alumno en el grupo burbuja de la clase especificada.";
-            setErrors(errors);
-            setFeedbacks(feedbacks);
+            alert("Hubo un fallo al crear el alumno");
           } else {
             setModalShow(false);
           }

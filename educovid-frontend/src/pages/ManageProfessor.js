@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 // Local components
 import ActionBar from "../components/ActionBar";
-import ProfessorCenteredModal from "../components/NewProfessorFormModal";
+// import ProfessorCenteredModal from "../components/NewProfessorFormModal";
 
 // Constants
 import { backUrl } from "../constants/constants";
@@ -11,6 +11,131 @@ import { backUrl } from "../constants/constants";
 // Bootstrap imports
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+
+function ProfessorCenteredModal(props) {
+  const [professorName, setProfessorName] = useState("");
+  const [id, setId] = useState("");
+  const [professorClasses, setProfessorClasses] = useState("");
+  const [errors, setErrors] = useState({});
+  const [feedbacks, setFeedbacks] = useState({
+    id: "",
+    classes: ""
+  });
+
+  const updateFormState = event => {
+    // On change, set the states with the updates
+    // console.log(event);
+    const { name, value } = event.target;
+    switch (name) {
+      case "professorName":
+        setFeedbacks({
+          id: ""
+        });
+        setErrors({});
+        setProfessorName(value);
+        break;
+      case "id":
+        setFeedbacks({
+          id: ""
+        });
+        setErrors({});
+        setId(value);
+        break;
+      case "professorClasses":
+        setFeedbacks({
+          id: ""
+        });
+        setErrors({});
+        setProfessorClasses(value);
+        break;
+      default:
+        return;
+    }
+  };
+
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Insertar Profesor
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Group controlId="formNumMat">
+            <Form.Label>NIF/NIE</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              placeholder="Introduzca el NIF/NIE"
+              name="id"
+              onChange={updateFormState}
+              value={id}
+              isInvalid={!!errors.id}
+            />
+            <Form.Text className="text-muted">
+              Debe ser único en el centro
+            </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              {feedbacks.id}
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">Perfecto</Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="formStudentName">
+            <Form.Label>Nombre del profesor</Form.Label>
+            <Form.Control
+              required
+              autoFocus
+              type="text"
+              placeholder="Introduzca el nombre del profesor"
+              name="professorName"
+              onChange={updateFormState}
+              value={professorName}
+              isInvalid={!!errors.professorName}
+            />
+            <Form.Control.Feedback type="invalid">
+              Nombre de profesor inválido
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">Perfecto</Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="professorClasses">
+            <Form.Label>Clases del profesor</Form.Label>
+            <Form.Control
+              required
+              autoFocus
+              type="text"
+              placeholder="Introduzca las clases separadas por coma: 11,12,13"
+              name="professorClasses"
+              onChange={updateFormState}
+              value={professorClasses}
+              isInvalid={!!errors.professorClasses}
+            />
+            <Form.Control.Feedback type="invalid">
+              Clases inválidas
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">Perfecto</Form.Control.Feedback>
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Cancelar</Button>
+        <Button onClick={() => props.onInsert(professorName, id, professorClasses)}
+          disabled={
+            id === "" || professorName === "" || professorClasses === ""
+          }
+        >
+          Insertar
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
 
 function ManageProfessor(props) {
   const { history, onLogOut, userData } = props;
@@ -136,7 +261,7 @@ function ManageProfessor(props) {
                 key={index}
                 onClick={e => {
                   if (selected.some(e => e.nombre === person.nombre)) {
-                    var filtered = selected.filter(function(value, index, arr) {
+                    var filtered = selected.filter(function (value, index, arr) {
                       return value.nombre !== person.nombre;
                     });
                     setSelected(filtered);
@@ -208,7 +333,7 @@ function ManageProfessor(props) {
                   }
                 }}
               >
-                Añadir
+                Añadir profesor
               </Button>
               <Button
                 variant="primary"
@@ -222,40 +347,61 @@ function ManageProfessor(props) {
                   }
                 }}
               >
-                Borrar
+                Borrar profesor
               </Button>
             </div>
           </Form>
         </div>
       </div>
-      <ProfessorCenteredModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        onInsert={async (
-          name,
-          id,
-          professorClasses,
-          errors,
-          feedbacks,
-          setErrors,
-          setFeedbacks
-        ) => {
-          const newProfessor = {
-            nombre: name,
-            hash: "",
-            salt: "",
-            subscriptionEndpoint: null,
-            p256dh: null,
-            auth: null,
-            nifNie: id,
-            estadoSanitario: "no confinado",
-            fechaConfinamiento: null
-          };
-          try {
-            // Create professor on database
+      <ProfessorCenteredModal show={showModal} onHide={() => setShowModal(false)} onInsert={async (name, id, professorClasses) => {
+        const newProfessor = {
+          nombre: name,
+          hash: "",
+          salt: "",
+          subscriptionEndpoint: null,
+          p256dh: null,
+          auth: null,
+          nifNie: id,
+          estadoSanitario: "no confinado",
+          fechaConfinamiento: null
+        };
+        try {
+          // Create professor on database
+          // const res = await fetch(
+          //   // TODO backend method
+          //   backUrl + `/centro/insert/professor/${userData.centro}`,
+          //   {
+          //     method: "POST",
+          //     headers: {
+          //       Authorization: `Bearer ${localStorage.getItem("token") ||
+          //         ""}`,
+          //       "Content-Type": "application/json; charset=UTF-8"
+          //     },
+          //     body: JSON.stringify(newProfessor)
+          //   }
+          // );
+          // Create profesor and add it to each class
+          let classes = professorClasses.trim().split(",");
+          // let promises = classes.map(clase => {
+          //   return fetch(
+          //     // TODO backend method and change the path
+          //     backUrl + `/centro/insert/professor/${userData.centro}/${clase}`,
+          //     {
+          //       method: "POST",
+          //       headers: {
+          //         Authorization: `Bearer ${localStorage.getItem("token") ||
+          //           ""}`,
+          //         "Content-Type": "application/json; charset=UTF-8"
+          //       },
+          //       body: JSON.stringify(newProfessor)
+          //     }
+          //   );
+          // });
+          console.log(classes);
+          classes.forEach(async (clase) => {
             const res = await fetch(
-              // TODO backend method
-              backUrl + `/centro/insert/professor/${userData.centro}`,
+              // TODO backend method and change the path
+              backUrl + `/centro/insert/professor/${userData.centro}/${clase}`,
               {
                 method: "POST",
                 headers: {
@@ -266,33 +412,22 @@ function ManageProfessor(props) {
                 body: JSON.stringify(newProfessor)
               }
             );
-            // Add professor to classes
-            let classes = professorClasses.split(",").trim();
-            let promises = classes.map(clase => {
-              return fetch(
-                // TODO backend method and change the path
-                backUrl + `/centro/insert/alumno/${userData.centro}/`,
-                {
-                  method: "POST",
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token") ||
-                      ""}`,
-                    "Content-Type": "application/json; charset=UTF-8"
-                  },
-                  body: JSON.stringify(newProfessor)
-                }
-              );
-            });
-            let responses = Promise.all(promises);
-            responses.some(response =>
-              !response.ok
-                ? alert(`Hubo un fallo al crear el profesor`)
-                : setShowModal(false)
-            );
-          } catch (e) {
-            // Nothing to do
-          }
-        }}
+            if (!res.ok) {
+              alert(`Hubo un fallo al crear el profesor`);
+            } else {
+              setShowModal(false);
+            }
+          });
+          // let responses = Promise.all(promises);
+          // responses.some(response =>
+          //   !response.ok
+          //     ? alert(`Hubo un fallo al crear el profesor`)
+          //     : setShowModal(false)
+          // );
+        } catch (e) {
+          console.log(e);
+        }
+      }}
       />
     </div>
   );
