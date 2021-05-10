@@ -34,7 +34,8 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
            session.close();
            return grupoBurbuja;
 	}
-
+	
+	
 	@Override
 	public GrupoBurbuja readGrupoBurbujabyId(String id) {
 		Session session = SessionFactoryService.get().openSession();

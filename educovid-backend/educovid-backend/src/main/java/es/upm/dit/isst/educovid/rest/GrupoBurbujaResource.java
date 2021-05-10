@@ -99,33 +99,50 @@ public class GrupoBurbujaResource {
 	}
 	
 	//Métodos rest para gestionar centro parte de grupos
-	
+
 	@POST
-	//@Secured
-	@Path("/{classId}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createGroup(GrupoBurbuja grupoNuevo, @PathParam("classId") String classId) throws URISyntaxException {
-		Clase c = ClaseDAOImpl.getInstance().readClasebyId(classId);
+ 	//@Secured
+ 	@Consumes(MediaType.APPLICATION_JSON)
+ 	@Path("/insert/grupoburbuja/{nombreCentro}/{nombreClase}")
+ 	public Response insertGrupoEnClase(GrupoBurbuja grupoNuevo, @PathParam("nombreCentro") String nombreCentro, @PathParam("nombreClase") String nombreClase) {
 		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(grupoNuevo);
-		List<GrupoBurbuja> grupoList = c.getGruposBurbuja();
-		grupoList.add(g);
-		c.setGruposBurbuja(grupoList);
-	    if (g != null && grupoList != null) {
-	            URI uri = new URI("/educovid-backend/rest/grupo/" + c.getId());
-	            return Response.created(uri).build();
-	    }
-	    return Response.status(Response.Status.NOT_FOUND).build();
-	}
+ 		CentroEducativo centro = CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(nombreCentro);
+ 		Clase clase = null;
+ 		for (Clase c : centro.getClases()) {
+ 			if (c.getNombre().equals(nombreClase)) {
+ 				clase = c;
+ 			}
+ 		}
+ 		if (clase == null || g == null) return Response.status(Response.Status.CONFLICT).build();
+ 		List<GrupoBurbuja> grupos = clase.getGruposBurbuja();
+ 		grupos.add(g);
+ 		clase.setGruposBurbuja(grupos);
+ 		try {
+ 			ClaseDAOImpl.getInstance().updateClase(clase);
+ 		} catch(Exception e) {
+ 			GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(grupoNuevo);
+ 			return Response.status(Response.Status.CONFLICT).build();
+ 		}
+ 		return Response.ok().build();
+ 	}
 	
 	
 	@DELETE
 	//@Secured
-	@Path("/{id}")
-	public Response deleteGroup(@PathParam("id") String id) {
-		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(id);
-		if (g == null)
-			return Response.notModified().build();
-		GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(g);
+	@Path("/delete/{nombreClase}/{idGrupo}")
+	public Response deleteGroup(@PathParam("nombreClase") String nombreClase, @PathParam("idGrupo") String idGrupo) {
+		GrupoBurbuja grupo = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(idGrupo);
+		Clase clase = ClaseDAOImpl.getInstance().readClasebyName(nombreClase);
+		List<GrupoBurbuja> grupos = clase.getGruposBurbuja();
+		for (GrupoBurbuja g : clase.getGruposBurbuja()) {
+ 			if (g.getId().equals(idGrupo)) {
+ 				grupos.remove(g);
+ 			}
+ 		}
+		clase.setGruposBurbuja(grupos);
+		if (grupo == null || idGrupo == null) return Response.status(Response.Status.CONFLICT).build();
+		
+		GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(grupo);
 		return Response.ok(MediaType.APPLICATION_JSON).build();
 	}
 	
