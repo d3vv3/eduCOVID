@@ -149,7 +149,6 @@ function Routes(props) {
         <Route exact path="/manage/professor">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
           <ManageProfessor
-            history={history}
             userData={userData}
             onLogOut={() => {
               props.dispatch(logOut());

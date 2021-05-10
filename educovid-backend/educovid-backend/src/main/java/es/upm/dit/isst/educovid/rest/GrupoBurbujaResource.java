@@ -29,6 +29,15 @@ import es.upm.dit.isst.educovid.model.Profesor;
 
 @Path("/grupo")
 public class GrupoBurbujaResource {
+	
+	@GET
+	@Secured
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response readAllClases() {
+		List<GrupoBurbuja> grupos = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbuja();
+		return Response.ok(grupos, MediaType.APPLICATION_JSON).build();
+	}
 
 	@GET
 	@Secured

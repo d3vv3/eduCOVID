@@ -2,6 +2,7 @@ package es.upm.dit.isst.educovid.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -16,11 +17,14 @@ import es.upm.dit.isst.educovid.anotation.Secured;
 import es.upm.dit.isst.educovid.aux.Security;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
+import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
+import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
+import es.upm.dit.isst.educovid.model.Profesor;
 
 @Path("/centro")
 public class CentroResource {
@@ -70,4 +74,32 @@ public class CentroResource {
 		return Response.ok().build();
 	}
 	
+	@POST
+	@Secured
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/insert/professor/{nombreCentro}/{nombreClase}")
+	public Response insertProfesorEnCentro(Profesor profesorNuevo, @PathParam("nombreCentro") String nombreCentro, @PathParam("nombreClase") String nombreClase) {
+		String salt = Security.getSalt();
+		String hash = Security.getHash(profesorNuevo.getNifNie(), salt);
+		profesorNuevo.setSalt(salt);
+		profesorNuevo.setHash(hash);
+		Profesor p = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(profesorNuevo.getNifNie());
+		if (p == null) p = ProfesorDAOImpl.getInstance().createProfesor(profesorNuevo);
+		if (p == null) return Response.status(Response.Status.CONFLICT).build();
+		CentroEducativo centro = CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(nombreCentro);
+		for (Clase clase : centro.getClases()) {
+			if (clase.getNombre().equals(nombreClase)) {
+				Set<Profesor> profesoresClase = clase.getProfesores();
+				profesoresClase.add(p);
+				clase.setProfesores(profesoresClase);
+				try {
+					ClaseDAOImpl.getInstance().updateClase(clase);
+				} catch(Exception e) {
+					ProfesorDAOImpl.getInstance().deleteProfesor(profesorNuevo);
+					return Response.status(Response.Status.CONFLICT).build();
+				}
+			}
+		}
+		return Response.ok().build();
+	}
 }

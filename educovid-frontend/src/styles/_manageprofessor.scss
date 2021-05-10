@@ -114,15 +114,6 @@
             }
 
         }
-        h8 {
-            margin-bottom: 8px;
-            // This is for phone sized displays
-            @media only screen and (max-width: 520px) {
-                font-size: 0.9em;
-
-            }
-        }
-
     }
 
     .green {
@@ -139,6 +130,9 @@
         transform: translateY(35px);
         .red {
             background-color: $warning;
+        }
+        .padded {
+            width: 95%;
         }
         .nord-button {
             width: 95%;

@@ -2,207 +2,40 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
 import ActionBar from "../components/ActionBar";
+import StudentCenteredModal from "../components/NewStudentFormModal";
 
 // Bootstrap imports
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-
 
 // Constants
 import { backUrl } from "../constants/constants";
 
-function MyVerticallyCenteredModal(props) {
-  const [studentName, setStudentName] = useState("");
-  const [numMat, setNumMat] = useState("");
-  const [studentBubbleGroup, setStudentBubbleGroup] = useState("");
-  const [studentClass, setStudentClass] = useState("");
-  const [errors, setErrors] = useState({});
-  const [feedbacks, setFeedbacks] = useState({
-    numMat: ""
-  });
-
-  const updateFormState = event => {
-    // On change, set the states with the updates
-    // console.log(event);
-    const { name, value } = event.target;
-    switch (name) {
-      case "studentName":
-        setFeedbacks({
-          numMat: ""
-        });
-        setErrors({});
-        setStudentName(value);
-        break;
-      case "numMat":
-        setFeedbacks({
-          numMat: ""
-        });
-        setErrors({});
-        setNumMat(value);
-        break;
-      case "studentBubbleGroup":
-        setFeedbacks({
-          numMat: ""
-        });
-        setErrors({});
-        setStudentBubbleGroup(value);
-        break;
-      case "studentClass":
-        setFeedbacks({
-          numMat: ""
-        });
-        setErrors({});
-        setStudentClass(value);
-        break;
-      default:
-        return;
-    }
-  };
-
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Insertar Alumno
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-          <Form.Group controlId="formNumMat">
-            <Form.Label>Número de matrícula</Form.Label>
-            <Form.Control
-              required
-              type="text"
-              placeholder="Introduzca el número de matrícula"
-              name="numMat"
-              onChange={updateFormState}
-              value={numMat}
-              isInvalid={!!errors.numMat}
-            />
-            <Form.Text className="text-muted">
-              Debe ser único en el centro
-            </Form.Text>
-            <Form.Control.Feedback type="invalid">
-              {feedbacks.numMat}
-            </Form.Control.Feedback>
-            <Form.Control.Feedback type="valid">
-              Perfecto
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="formStudentName">
-            <Form.Label>Nombre del alumno</Form.Label>
-            <Form.Control
-              required
-              autoFocus
-              type="text"
-              placeholder="Introduzca el nombre del alumno"
-              name="studentName"
-              onChange={updateFormState}
-              value={studentName}
-              isInvalid={!!errors.studentName}
-            />
-            <Form.Control.Feedback type="invalid">
-              Nombre de alumno inválido
-            </Form.Control.Feedback>
-            <Form.Control.Feedback type="valid">
-              Perfecto
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="studentClass">
-            <Form.Label>Nombre de la clase del alumno</Form.Label>
-            <Form.Control
-              required
-              autoFocus
-              type="text"
-              placeholder="Introduzca el nombre de la clase"
-              name="studentClass"
-              onChange={updateFormState}
-              value={studentClass}
-              isInvalid={!!errors.studentClass}
-            />
-            <Form.Control.Feedback type="invalid">
-              Nombre de grupo inválido
-            </Form.Control.Feedback>
-            <Form.Control.Feedback type="valid">
-              Perfecto
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="studentBubbleGroup">
-            <Form.Label>Nombre del grupo burbuja del alumno</Form.Label>
-            <Form.Control
-              required
-              autoFocus
-              type="text"
-              placeholder="Introduzca el nombre del grupo burbuja"
-              name="studentBubbleGroup"
-              onChange={updateFormState}
-              value={studentBubbleGroup}
-              isInvalid={!!errors.studentBubbleGroup}
-            />
-            <Form.Control.Feedback type="invalid">
-              Nombre de grupo inválido
-            </Form.Control.Feedback>
-            <Form.Control.Feedback type="valid">
-              Perfecto
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Cancelar</Button>
-        <Button onClick={() => props.onInsert(studentName, numMat, studentClass, studentBubbleGroup, errors, feedbacks, setErrors, setFeedbacks)} disabled={numMat === "" || studentName === "" || studentBubbleGroup === "" || studentClass === ""}>Insertar</Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
-
 function ManageStudent(props) {
-  const { history, onLogOut, userData } = props;
+  const { onLogOut, userData } = props;
 
-  const [modalShow, setModalShow] = React.useState(false);
+  const [showNewModal, setShowNewModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [students, setStudents] = useState([]);
   const [bubbleGroups, setBubbleGroups] = useState([]);
-  const [selectedType, setSelectedType] = useState("students");
   const [selected, setSelected] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("*");
 
-  const initComponent = async () => {
-    let response;
-    let responseData;
-    response = await fetch(backUrl + "/manage/bubblegroups", {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
-      }
-    });
-    responseData = await response.json();
-    setBubbleGroups(responseData);
-    response = await fetch(backUrl + "/manage/students", {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
-      }
-    });
-    responseData = await response.json();
-    setStudents(responseData);
-    console.log("UPDATED A");
-  };
+  useEffect(() => {
+    refreshStudents();
+  }, [selectedFilter]);
 
-  const callMainSelector = async () => {
-    // const bubbleGroupsRes = await fetch(backUrl + "/manage/bubblegroups");
-    let response;
-    let responseData;
+  useEffect(() => {
+    initComponent();
+  }, []);
+
+  const refreshStudents = async () => {
+    let response, responseData;
     if (selectedFilter === "*") {
       response = await fetch(backUrl + "/manage/students", {
         method: "GET",
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`
         }
       });
       responseData = await response.json();
@@ -211,74 +44,144 @@ function ManageStudent(props) {
       response = await fetch(backUrl + `/alumno/grupo/${selectedFilter}`, {
         method: "GET",
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`
         }
       });
       responseData = await response.json();
-      console.log(responseData);
-      console.log();
       setStudents(responseData);
     }
   };
 
-  useEffect(() => {
-    callMainSelector();
-  }, [selectedType, selectedFilter]);
+  const initComponent = async () => {
+    let response;
+    let responseData;
+    response = await fetch(backUrl + "/manage/bubblegroups", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+      }
+    });
+    responseData = await response.json();
+    setBubbleGroups(responseData);
+    refreshStudents();
+  };
 
-  useEffect(() => {
-    initComponent();
-  }, []);
+  const onEditStudent = async (
+    name,
+    numMat,
+    studentClass,
+    studentBubbleGroup,
+    errors,
+    feedbacks,
+    setErrors,
+    setFeedbacks
+  ) => {
+    await onInsertStudent(
+      name,
+      numMat,
+      studentClass,
+      studentBubbleGroup,
+      errors,
+      feedbacks,
+      setErrors,
+      setFeedbacks
+    );
+  };
+
+  const onInsertStudent = async (
+    name,
+    numMat,
+    studentClass,
+    studentBubbleGroup,
+    errors,
+    feedbacks,
+    setErrors,
+    setFeedbacks
+  ) => {
+    const newStudent = {
+      nombre: name,
+      hash: "",
+      salt: "",
+      subscriptionEndpoint: null,
+      p256dh: null,
+      auth: null,
+      numeroMatricula: numMat,
+      estadoSanitario: "no confinado",
+      fechaConfinamiento: null
+    };
+    try {
+      const res = await fetch(
+        backUrl +
+          `/centro/insert/alumno/${userData.centro}/${studentClass}/${studentBubbleGroup}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(newStudent)
+        }
+      );
+      if (!res.ok) {
+        alert("Hubo un fallo al crear el alumno");
+      } else {
+        setShowNewModal(false);
+      }
+    } catch (e) {
+      // Nothing to do
+    }
+    refreshStudents();
+  };
 
   const getListOnSelectedType = () => {
     return students;
   };
 
-  const handleConfine = async () => {
-    selected.every(e => console.log(e.estadoSanitario.toLowerCase()));
-    if (selected.every(e => e.estadoSanitario.toLowerCase() === "confinado")) {
-      await fetch(backUrl + `/manage/unconfine/${selectedType}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
-        body: JSON.stringify(selected)
+  const handleDelete = async () => {
+    let pendingDeletes = selected.map(student => {
+      return fetch(backUrl + `/alumno/${student.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+          "Content-Type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify(student)
       });
-      await callMainSelector();
-    } else if (
-      selected.every(e => e.estadoSanitario.toLowerCase() === "no confinado")
-    ) {
-      await fetch(backUrl + `/manage/confine/${selectedType}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
-        body: JSON.stringify(selected)
-      });
-      await callMainSelector();
-    } else {
-      await fetch(backUrl + `/manage/switch/${selectedType}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
-        body: JSON.stringify(selected)
-      });
-      await callMainSelector();
-    }
+    });
+    let responses = await Promise.all(pendingDeletes);
+    responses.some(response =>
+      !response.ok ? alert(`Hubo un fallo al borrar un profesor`) : null
+    );
+    refreshStudents();
+  };
+
+  const handleAction = async action => {
+    await fetch(backUrl + `/manage/${action}/students`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+      },
+      body: JSON.stringify(selected)
+    });
+    await refreshStudents();
     // notify everyone
-    selected.forEach(async (value) => {
+    selected.forEach(async value => {
       try {
         console.log(value);
-        const notificationRes = await fetch(
-          backUrl +
-          `/notification/subscription/${selectedType}/` + value.id, {
-          method: "GET",
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token') || ""}`
+        await fetch(
+          backUrl + `/notification/subscription/students/` + value.id,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+            }
           }
-        });
+        );
       } catch (e) {
         console.log("Error pushing notification");
       }
     });
-  };
-
-  const handleInsertStudent = async () => {
-    setModalShow(true);
   };
 
   return (
@@ -288,39 +191,35 @@ function ManageStudent(props) {
           onLogOut();
         }}
       />
-      <div className="confine-container">
+      <div className="manage-student-container">
         <div className="left-menu">
           <div className="selector">
-            {selectedType === "students" ? (
-              <Form>
-                <Form.Group controlId="group">
-                  <Form.Control
-                    as="select"
-                    defaultValue="*"
-                    onChange={e => {
-                      setSelected([]);
-                      setSelectedFilter(e.target.value);
-                      callMainSelector();
-                    }}
-                  >
-                    <option key="0" value="*">
-                      Todos
+            <Form>
+              <Form.Group controlId="group">
+                <Form.Control
+                  as="select"
+                  defaultValue="*"
+                  onChange={e => {
+                    setSelected([]);
+                    setSelectedFilter(e.target.value);
+                    refreshStudents();
+                  }}
+                >
+                  <option key="0" value="*">
+                    Todos
+                  </option>
+                  {(bubbleGroups || []).map((group, index) => (
+                    <option key={index} value={group.id}>
+                      {group.nombre}
                     </option>
-                    {(bubbleGroups || []).map((group, index) => (
-                      <option key={index} value={group.id}>
-                        {group.nombre}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-              </Form>
-            ) : (
-              <div />
-            )}
+                  ))}
+                </Form.Control>
+              </Form.Group>
+            </Form>
           </div>
 
           <div className="list-container">
-            {(getListOnSelectedType() || []).map((item, index) => (
+            {(students || []).map((item, index) => (
               <div
                 key={index}
                 onClick={e => {
@@ -329,10 +228,9 @@ function ManageStudent(props) {
                   }
                 }}
                 className={
-                  "person-card" + " green" +
-                  (getListOnSelectedType().some(e => e === item)
-                    ? ""
-                    : " selected")
+                  "person-card" +
+                  " green" +
+                  (students.some(e => e === item) ? "" : " selected")
                 }
               >
                 {item?.nombre?.includes("Grupo") ? (
@@ -340,11 +238,11 @@ function ManageStudent(props) {
                 ) : (
                   <h5>{item.nombre}</h5>
                 )}
-                <h8>
+                <h6>
                   {item.estadoSanitario === "no confinado"
                     ? "No confinado"
                     : "Confinado"}
-                </h8>
+                </h6>
               </div>
             ))}
           </div>
@@ -357,17 +255,16 @@ function ManageStudent(props) {
                 key={index}
                 onClick={e => {
                   if (selected.some(e => e.nombre === person.nombre)) {
-                    var filtered = selected.filter(function (value, index, arr) {
+                    var filtered = selected.filter(function(value, index, arr) {
                       return value.nombre !== person.nombre;
                     });
                     setSelected(filtered);
                   }
                 }}
                 className={
-                  "person-card" + " green" +
-                  (getListOnSelectedType().some(e => e === person)
-                    ? " selected"
-                    : "")
+                  "person-card" +
+                  " green" +
+                  (students.some(e => e === person) ? " selected" : "")
                 }
               >
                 {person.nombre.includes("Grupo") ? (
@@ -375,101 +272,105 @@ function ManageStudent(props) {
                 ) : (
                   <h5>{person.nombre}</h5>
                 )}
-                <h8>
+                <h6>
                   {person.estadoSanitario === "no confinado"
                     ? "No confinado"
                     : "Confinado"}
-                </h8>
+                </h6>
               </div>
             ))}
           </div>
         </div>
         <div className="buttons-container">
-          <Form>
-            {selected.length > 0 ? (
+          {selected.length > 0 ? (
+            <div className="padded">
               <Button
                 variant="primary"
                 className="nord-button"
                 onClick={e => {
-                  if (selected != null) {
-                    // let x = selected;
-                    // let confined = x.forEach(e =>
-                    //   e.estadoSanitario === "confinado"
-                    //     ? (e.estadoSanitario = "no confinado")
-                    //     : (e.estadoSanitario = "confinado")
-                    // );
-                    handleConfine();
+                  if (selected.length < 1) {
+                    handleAction("confine");
                     setSelected([]);
                   } else {
                     alert("Seleccione las personas a confinar");
                   }
                 }}
               >
-                {selected.every(
-                  e => e.estadoSanitario.toLowerCase() === "confinado"
-                )
-                  ? "Desconfinar"
-                  : selected.every(
-                    e => e.estadoSanitario.toLowerCase() === "no confinado"
-                  )
-                    ? "Confinar"
-                    : "Cambiar estados"}
+                Confinar
+              </Button>
+              <Button
+                variant="primary"
+                className="nord-button"
+                onClick={e => {
+                  if (selected.length < 1) {
+                    handleAction("unconfine");
+                    setSelected([]);
+                  } else {
+                    alert("Seleccione las personas a confinar");
+                  }
+                }}
+              >
+                Desconfinar
+              </Button>
+            </div>
+          ) : null}
+          <div className="padded">
+            {selected.length === 1 ? (
+              <Button
+                variant="primary"
+                className="nord-button"
+                onClick={e => {
+                  if (selected.length === 1) {
+                    setShowEditModal(true);
+                  } else {
+                    alert("Seleccione un solo profesor para esta acción");
+                  }
+                }}
+              >
+                Propiedades
               </Button>
             ) : null}
             <Button
               variant="primary"
               className="nord-button"
               onClick={e => {
-                handleInsertStudent();
+                setShowNewModal(true);
               }}
             >
-              Insertar alumno
+              Añadir alumno
+            </Button>
+            {selected.length > 0 ? (
+              <Button
+                variant="primary"
+                className="nord-button red"
+                onClick={e => {
+                  if (selected.length > 0) {
+                    handleDelete();
+                    setSelected([]);
+                  } else {
+                    alert("Seleccione personas para ejecutar esta acción");
+                  }
+                }}
+              >
+                Borrar
               </Button>
-          </Form>
+            ) : null}
+          </div>
         </div>
       </div>
-
-      <MyVerticallyCenteredModal show={modalShow} onHide={() => setModalShow(false)} onInsert={async (name, numMat, studentClass, studentBubbleGroup, errors, feedbacks, setErrors, setFeedbacks) => {
-        const newStudent = {
-          nombre: name,
-          hash: "",
-          salt: "",
-          subscriptionEndpoint: null,
-          p256dh: null,
-          auth: null,
-          numeroMatricula: numMat,
-          estadoSanitario: "no confinado",
-          fechaConfinamiento: null
-        };
-        try {
-          // const res = await fetch(backUrl + "/alumno", {
-          //   method: "POST",
-          //   headers: {
-          //     'Authorization': `Bearer ${localStorage.getItem('token') || ""}`,
-          //     'Content-Type': 'application/json; charset=UTF-8'
-          //   },
-          //   body: JSON.stringify(newStudent)
-          // });
-          const res = await fetch(backUrl + `/centro/insert/alumno/${userData.centro}/${studentClass}/${studentBubbleGroup}`, {
-            method: "POST",
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token') || ""}`,
-              'Content-Type': 'application/json; charset=UTF-8'
-            },
-            body: JSON.stringify(newStudent)
-          });
-          if (!res.ok) {
-            errors.numMat = true;
-            feedbacks.numMat = "No se puede insertar el alumno en el grupo burbuja de la clase especificada.";
-            setErrors(errors);
-            setFeedbacks(feedbacks);
-          } else {
-            setModalShow(false);
-          }
-        } catch (e) {
-          // Nothing to do
-        }
-      }} />
+      {showNewModal || showEditModal ? (
+        <StudentCenteredModal
+          existingStudent={showEditModal ? selected[0] : null}
+          show={showNewModal || showEditModal}
+          onHide={() => {
+            setShowNewModal(false);
+            setShowEditModal(false);
+            setSelected([]);
+          }}
+          onInsert={onInsertStudent}
+          onEdit={onEditStudent}
+        />
+      ) : null}
     </div>
   );
 }

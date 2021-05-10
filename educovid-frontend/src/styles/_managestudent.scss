@@ -1,4 +1,4 @@
-.confine-container {
+.manage-student-container {
     height: 100vh;
     @include flexCenter(row);
 
@@ -137,6 +137,12 @@
         @include flexCenter(column);
         @include nordButton();
         transform: translateY(35px);
+        .red {
+            background-color: $warning;
+        }
+        .padded {
+            width: 95%;
+        }
         .nord-button {
             width: 95%;
         }

@@ -13,12 +13,6 @@ function ProfessorCenteredModal(props) {
     props?.existingProfessor?.nombre || ""
   );
   const [id, setId] = useState(props?.existingProfessor?.nifNie || "");
-  const [healthState, setHealthState] = useState(
-    props?.existingProfessor?.estadoSanitario || ""
-  );
-  const [confineDate, setConfineDate] = useState(
-    props?.existingProfessor?.fechaConfinamiento || ""
-  );
   const [professorClasses, setProfessorClasses] = useState([]);
   const [allClasses, setAllClasses] = useState([]);
   const [errors, setErrors] = useState({});
@@ -42,7 +36,7 @@ function ProfessorCenteredModal(props) {
       }
     });
     responseData = await response.json();
-    setAllClasses(responseData);
+    setAllClasses(responseData.map(clase => clase.nombre));
     if (props.existingProfessor) {
       response = await fetch(
         backUrl + `/clase/profesor/${props.existingProfessor.id}`,
@@ -55,14 +49,15 @@ function ProfessorCenteredModal(props) {
         }
       );
       responseData = await response.json();
-      setProfessorClasses(responseData);
+      setProfessorClasses(responseData.map(clase => clase.nombre));
     }
   };
 
   const updateFormState = event => {
     // On change, set the states with the updates
-    // console.log(event);
+    //console.log(event);
     const { name, value } = event.target;
+    //console.log(name, value);
     switch (name) {
       case "professorName":
         setFeedbacks({
@@ -78,26 +73,15 @@ function ProfessorCenteredModal(props) {
         setErrors({});
         setId(value);
         break;
-      case "healthState":
-        setFeedbacks({
-          healthState: ""
-        });
-        setErrors({});
-        setHealthState(value);
-        break;
-      case "confineDate":
-        setFeedbacks({
-          confineDate: ""
-        });
-        setErrors({});
-        setConfineDate(value);
-        break;
       case "professorClasses":
         setFeedbacks({
-          id: ""
+          professorClasses: ""
         });
         setErrors({});
-        setProfessorClasses(value);
+        let values = Array.prototype.slice
+          .call(event.target.selectedOptions)
+          .map(item => item.value);
+        setProfessorClasses(values);
         break;
       default:
         return;
@@ -106,6 +90,7 @@ function ProfessorCenteredModal(props) {
 
   return (
     <Modal
+      className="professor-modal-container"
       {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
@@ -160,69 +145,59 @@ function ProfessorCenteredModal(props) {
           </Form.Group>
           <Form.Group controlId="professorClasses" className="classes">
             <Form.Label>Clases del profesor</Form.Label>
-            <Form.Control as="select" multiple>
+            <Form.Control
+              as="select"
+              name="professorClasses"
+              multiple
+              onChange={updateFormState}
+              isInvalid={!!errors.professorClasses}
+            >
               {(allClasses || []).map(clase => {
-                let professorClassesIds = professorClasses.map(
-                  claseProfesor => {
-                    return claseProfesor.id;
-                  }
-                );
-                if (professorClassesIds.includes(clase.id)) {
+                if (professorClasses.includes(clase)) {
                   return (
-                    <option selected key={clase.id} value={clase.id}>
-                      {clase.nombre}
+                    <option selected key={clase} value={clase}>
+                      {clase}
                     </option>
                   );
                 } else {
                   return (
-                    <option key={clase.id} value={clase.id}>
-                      {clase.nombre}
+                    <option key={clase} value={clase}>
+                      {clase}
                     </option>
                   );
                 }
               })}
             </Form.Control>
           </Form.Group>
-          {props.existingProfessor ? (
-            <Form.Group controlId="formHealthState">
-              <Form.Label>Estado sanitario</Form.Label>
-              <Form.Control
-                as="select"
-                name="healthState"
-                value={healthState}
-                onChange={updateFormState}
-              >
-                <option key="1" value="no confinado">
-                  No confinado
-                </option>
-                <option key="2" value="confinado">
-                  Confinado
-                </option>
-              </Form.Control>
-              <Form.Control.Feedback type="invalid">
-                Nombre de profesor inválido
-              </Form.Control.Feedback>
-              <Form.Control.Feedback type="valid">
-                Perfecto
-              </Form.Control.Feedback>
-            </Form.Group>
-          ) : null}
         </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Cancelar</Button>
         <Button
-          onClick={() =>
-            props.onInsert(
-              professorName,
-              id,
-              professorClasses,
-              errors,
-              feedbacks,
-              setErrors,
-              setFeedbacks
-            )
-          }
+          onClick={() => {
+            if (props.existingProfessor) {
+              props.onInsert(
+                professorName,
+                id,
+                professorClasses,
+                errors,
+                feedbacks,
+                setErrors,
+                setFeedbacks
+              );
+            } else {
+              props.onEdit(
+                professorName,
+                id,
+                professorClasses,
+                errors,
+                feedbacks,
+                setErrors,
+                setFeedbacks
+              );
+            }
+            props.onHide();
+          }}
           disabled={
             id === "" || professorName === "" || professorClasses === ""
           }

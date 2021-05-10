@@ -9,11 +9,10 @@ import ProfessorCenteredModal from "../components/NewProfessorFormModal";
 import { backUrl } from "../constants/constants";
 
 // Bootstrap imports
-import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 function ManageProfessor(props) {
-  const { history, onLogOut, userData } = props;
+  const { onLogOut, userData } = props;
 
   const [professors, setProfessors] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -39,23 +38,7 @@ function ManageProfessor(props) {
     setProfessors(responseData);
   };
 
-  const handleNewProfessor = async () => {
-    setShowNewModal(true);
-  };
-
-  const handleEditProfessor = async () => {
-    setShowEditModal(true);
-  };
-
-  const onInsertProfessor = async (
-    name,
-    id,
-    professorClasses,
-    errors,
-    feedbacks,
-    setErrors,
-    setFeedbacks
-  ) => {
+  const onInsertProfessor = (name, id, professorClasses) => {
     const newProfessor = {
       nombre: name,
       hash: "",
@@ -68,25 +51,13 @@ function ManageProfessor(props) {
       fechaConfinamiento: null
     };
     try {
-      // Create professor on database
-      const res = await fetch(
-        // TODO backend method
-        backUrl + `/centro/insert/professor/${userData.centro}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-            "Content-Type": "application/json; charset=UTF-8"
-          },
-          body: JSON.stringify(newProfessor)
-        }
-      );
-      // Add professor to classes
-      let classes = professorClasses.split(",").trim();
-      let promises = classes.map(clase => {
-        return fetch(
+      professorClasses.forEach(async clase => {
+        const res = await fetch(
           // TODO backend method and change the path
-          backUrl + `/centro/insert/alumno/${userData.centro}/`,
+          backUrl +
+            `/centro/insert/professor/${userData.centro}/${encodeURIComponent(
+              clase
+            )}`,
           {
             method: "POST",
             headers: {
@@ -96,19 +67,22 @@ function ManageProfessor(props) {
             body: JSON.stringify(newProfessor)
           }
         );
+        if (!res.ok) {
+          alert(`Hubo un fallo al crear el profesor`);
+        } else {
+          setShowNewModal(false);
+        }
       });
-      let responses = Promise.all(promises);
-      responses.some(response =>
-        !response.ok
-          ? alert(`Hubo un fallo al crear el profesor`)
-          : setShowNewModal(false)
-      );
     } catch (e) {
-      // Nothing to do
+      console.log(e);
+    } finally {
+      retrieveProfessors();
     }
   };
 
-  const onEditProfessor = async () => {};
+  const onEditProfessor = async (name, id, professorClasses) => {
+    await onInsertProfessor(name, id, professorClasses);
+  };
 
   const handleDelete = async () => {
     let pendingDeletes = selected.map(professor => {
@@ -142,7 +116,7 @@ function ManageProfessor(props) {
     // notify everyone
     selected.forEach(async value => {
       try {
-        const notificationRes = await fetch(
+        await fetch(
           backUrl + `/notification/subscription/professor/` + value.id,
           {
             method: "POST",
@@ -177,17 +151,16 @@ function ManageProfessor(props) {
                   }
                 }}
                 className={
-                  "person-card" +
-                  (item.estadoSanitario === "confinado" ? " red" : " green") +
+                  "person-card green" +
                   (professors.some(e => e === item) ? "" : " selected")
                 }
               >
                 <h5>{item.nombre}</h5>
-                <h5>
+                <h6>
                   {item.estadoSanitario === "no confinado"
                     ? "No confinado"
                     : "Confinado"}
-                </h5>
+                </h6>
               </div>
             ))}
           </div>
@@ -207,8 +180,7 @@ function ManageProfessor(props) {
                   }
                 }}
                 className={
-                  "person-card" +
-                  (person.estadoSanitario === "confinado" ? " red" : " green") +
+                  "person-card green" +
                   (professors.some(e => e === person) ? " selected" : "")
                 }
               >
@@ -217,56 +189,56 @@ function ManageProfessor(props) {
                 ) : (
                   <h5>{person.nombre}</h5>
                 )}
-                <h8>
+                <h6>
                   {person.estadoSanitario === "no confinado"
                     ? "No confinado"
                     : "Confinado"}
-                </h8>
+                </h6>
               </div>
             ))}
           </div>
         </div>
         <div className="buttons-container">
-          <Form>
-            {selected.length > 0 ? (
-              <div className="confine-option-buttons">
-                <Button
-                  variant="primary"
-                  className="nord-button"
-                  onClick={e => {
-                    if (selected != null) {
-                      handleHealthState("confine");
-                      setSelected([]);
-                    } else {
-                      alert("Seleccione las personas a confinar");
-                    }
-                  }}
-                >
-                  Confinar
-                </Button>
-                <Button
-                  variant="primary"
-                  className="nord-button"
-                  onClick={e => {
-                    if (selected != null) {
-                      handleHealthState("unconfine");
-                      setSelected([]);
-                    } else {
-                      alert("Seleccione las personas a confinar");
-                    }
-                  }}
-                >
-                  Desconfinar
-                </Button>
-              </div>
-            ) : null}
-            <div>
+          {selected.length > 0 ? (
+            <div className="padded">
+              <Button
+                variant="primary"
+                className="nord-button"
+                onClick={e => {
+                  if (selected.length > 0) {
+                    handleHealthState("confine");
+                    setSelected([]);
+                  } else {
+                    alert("Seleccione las personas a confinar");
+                  }
+                }}
+              >
+                Confinar
+              </Button>
+              <Button
+                variant="primary"
+                className="nord-button"
+                onClick={e => {
+                  if (selected != null) {
+                    handleHealthState("unconfine");
+                    setSelected([]);
+                  } else {
+                    alert("Seleccione las personas a confinar");
+                  }
+                }}
+              >
+                Desconfinar
+              </Button>
+            </div>
+          ) : null}
+          <div className="padded">
+            {selected.length === 1 ? (
               <Button
                 variant="primary"
                 className="nord-button"
                 onClick={e => {
                   if (selected.length === 1) {
-                    handleEditProfessor();
+                    setShowEditModal(true);
                   } else {
                     alert("Seleccione un solo profesor para esta acción");
                   }
@@ -274,20 +246,22 @@ function ManageProfessor(props) {
               >
                 Propiedades
               </Button>
-              <Button
-                variant="primary"
-                className="nord-button"
-                onClick={e => {
-                  handleNewProfessor();
-                }}
-              >
-                Añadir
-              </Button>
+            ) : null}
+            <Button
+              variant="primary"
+              className="nord-button"
+              onClick={e => {
+                setShowNewModal(true);
+              }}
+            >
+              Añadir profesor
+            </Button>
+            {selected.length > 0 ? (
               <Button
                 variant="primary"
                 className="nord-button red"
                 onClick={e => {
-                  if (selected != null) {
+                  if (selected.length > 0) {
                     handleDelete();
                     setSelected([]);
                   } else {
@@ -297,8 +271,8 @@ function ManageProfessor(props) {
               >
                 Borrar
               </Button>
-            </div>
-          </Form>
+            ) : null}
+          </div>
         </div>
       </div>
       {showNewModal || showEditModal ? (
@@ -310,7 +284,8 @@ function ManageProfessor(props) {
             setShowEditModal(false);
             setSelected([]);
           }}
-          onInsert={showNewModal ? onInsertProfessor : onEditProfessor}
+          onInsert={onInsertProfessor}
+          onEdit={onEditProfessor}
         />
       ) : null}
     </div>
