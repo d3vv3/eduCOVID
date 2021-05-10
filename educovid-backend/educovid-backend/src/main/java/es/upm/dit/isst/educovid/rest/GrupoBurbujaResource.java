@@ -21,7 +21,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.upm.dit.isst.educovid.anotation.Secured;
+<<<<<<< HEAD
 import es.upm.dit.isst.educovid.aux.Security;
+=======
+>>>>>>> 152ba8bc4a89e5e48a5f1f4ce1be291a56aacf43
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
 import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;

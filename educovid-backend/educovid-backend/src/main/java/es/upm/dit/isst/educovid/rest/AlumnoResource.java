@@ -45,7 +45,7 @@ public class AlumnoResource {
 //	}
 	
 	@GET
-	@Secured
+	//@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readAlumnobyId(@PathParam("id") String id) {
@@ -70,7 +70,7 @@ public class AlumnoResource {
 	}
 	
 	@DELETE
-	@Secured
+	//@Secured
 	@Path("/{id}")
 	public Response deleteAlumno(@PathParam("id") String id) {
 		Alumno a = AlumnoDAOImpl.getInstance().readAlumnobyId(id);
