@@ -156,7 +156,7 @@ function Routes(props) {
           />
         </Route>
         <Route exact path="/center">
-          {!loggedIn ? <Redirect to={`/login`} /> : null}
+         
           <Center />
         </Route>
       </Switch>
