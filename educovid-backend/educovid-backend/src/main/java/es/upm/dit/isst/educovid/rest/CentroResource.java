@@ -160,13 +160,13 @@ public class CentroResource {
 		// Coger profesor y añadirlo
 		Profesor prof = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(nifProfesor);
 		if (prof == null) return Response.status(Response.Status.CONFLICT).build();
-		System.out.println("Clase: " + newClass.getNombre());
+		System.out.println("Clase: " + newClass.getNombre() + ", Profesor: " + prof.getNombre());
 		try {
 			Clase c = ClaseDAOImpl.getInstance().readClasebyName(newClass.getNombre(), nombreCentro);
 			if (c == null)
 				return Response.status(Response.Status.CONFLICT).build();
 			Set<Profesor> profesoresClase;
-			if (c.getProfesores() == null) profesoresClase = c.getProfesores();
+			if (c.getProfesores() != null) profesoresClase = c.getProfesores();
 			else profesoresClase = new HashSet<Profesor>();
 			profesoresClase.add(prof);
 			c.setProfesores(profesoresClase);
@@ -174,6 +174,7 @@ public class CentroResource {
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Error updating clase or reading clase");
+			return Response.status(Response.Status.CONFLICT).build();
 		}
 		return Response.ok().build();
 	}

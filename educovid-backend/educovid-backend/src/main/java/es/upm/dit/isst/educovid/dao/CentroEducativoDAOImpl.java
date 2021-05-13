@@ -137,31 +137,31 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO {
 		// Validate:
 		// 1. Numero de matricula unique per alumno per center
 		// 2. Alumno unique per Grupo Burbuja
-		Set<String> numsMatricula = new HashSet<String>();
-		Set<Integer> idAlumnoGruposBurbuja = new HashSet<Integer>();
-		Set<String> nombreClases = new HashSet<String>();
-		List<Clase> clases = centroEducativo.getClases();
-		System.out.println(clases.toString());
-		for (Clase clase : clases) {
-			for (GrupoBurbuja grupo : clase.getGruposBurbuja()) {
-				for (Alumno alumno : grupo.getAlumnos()) {
-					if (numsMatricula.contains(alumno.getNumeroMatricula())) {
-						System.out.println("There cannot be two Alumno with the same numeroMatricula");
-						return null;
-					} else {
-						numsMatricula.add(alumno.getNumeroMatricula());
-					}
-					if (idAlumnoGruposBurbuja.contains(alumno.getId())) {
-						System.out.println("The same Alumno cannot be in two GrupoBurbuja");
-						return null;
-					}
-				}
-			}
-
-			if (nombreClases.contains(clase.getNombre())) {
-				nombreClases.add(clase.getNombre());
-			}
-		}
+//		Set<String> numsMatricula = new HashSet<String>();
+//		Set<Integer> idAlumnoGruposBurbuja = new HashSet<Integer>();
+//		Set<String> nombreClases = new HashSet<String>();
+//		List<Clase> clases = centroEducativo.getClases();
+//		System.out.println(clases.toString());
+//		for (Clase clase : clases) {
+//			for (GrupoBurbuja grupo : clase.getGruposBurbuja()) {
+//				for (Alumno alumno : grupo.getAlumnos()) {
+//					if (numsMatricula.contains(alumno.getNumeroMatricula())) {
+//						System.out.println("There cannot be two Alumno with the same numeroMatricula");
+//						return null;
+//					} else {
+//						numsMatricula.add(alumno.getNumeroMatricula());
+//					}
+//					if (idAlumnoGruposBurbuja.contains(alumno.getId())) {
+//						System.out.println("The same Alumno cannot be in two GrupoBurbuja");
+//						return null;
+//					}
+//				}
+//			}
+//
+//			if (nombreClases.contains(clase.getNombre())) {
+//				nombreClases.add(clase.getNombre());
+//			}
+//		}
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
 		try {
