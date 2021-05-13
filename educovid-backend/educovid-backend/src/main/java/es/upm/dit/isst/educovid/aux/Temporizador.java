@@ -7,6 +7,7 @@ import java.util.TimerTask;
 
 import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.model.Clase;
+import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 
 public class Temporizador extends TimerTask {
 	
@@ -59,7 +60,18 @@ public class Temporizador extends TimerTask {
 			// Si han pasado tantos dias como indica el tiempo de conmutacion o un multiplo de este, hacemos que cambie la presencialidad
 			// al siguiente grupo que le toque
 			if ((diasPasados % c.getTiempoConmutacion()) == 0) {
+				GrupoBurbuja presencialActual = c.getBurbujaPresencial();
+				Integer prioridadSiguiente = (presencialActual.getPrioridad() % c.getGruposBurbuja().size()) + 1;
+				GrupoBurbuja nuevoPresencial = null;
+				for (GrupoBurbuja b : c.getGruposBurbuja()) {
+					if (b.getPrioridad() == prioridadSiguiente) {
+						nuevoPresencial = b;
+						break;
+					}
+				}
 				ClaseDAOImpl.getInstance().updatePresencialGroup(c);
+				NotificacionesPresencialidad.cambioPresencialidadGrupo(presencialActual.getAlumnos(), c.getProfesores(), presencialActual.getNombre(), c.getNombre(), false);
+				NotificacionesPresencialidad.cambioPresencialidadGrupo(nuevoPresencial.getAlumnos(), c.getProfesores(), nuevoPresencial.getNombre(), c.getNombre(), true);
 			}
 		}
 		System.out.println("Comprobación de rotación terminada.");
