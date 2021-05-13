@@ -15,7 +15,10 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "gruposburbuja", uniqueConstraints = @UniqueConstraint(columnNames = { "fk_id_clase", "nombre" }))
+@Table(name = "gruposburbuja", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "fk_id_clase", "nombre" }),
+		@UniqueConstraint(columnNames = {"prioridad", "fk_id_clase"})
+})
 public class GrupoBurbuja implements Serializable {
 	@Id
 	@GeneratedValue
