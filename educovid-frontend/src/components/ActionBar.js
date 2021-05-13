@@ -9,7 +9,7 @@ function ActionBar(props) {
         <Navbar.Brand>
           <img
             alt=""
-            src={process.env.PUBLIC_URL + "logo512.png"}
+            src="/logo512.png"
             width="30"
             height="30"
             className="d-inline-block align-top"

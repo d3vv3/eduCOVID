@@ -76,12 +76,7 @@ function ManageStudent(props) {
     setErrors,
     setFeedbacks
   ) => {
-    await onInsertStudent(
-      name,
-      numMat,
-      studentClass,
-      studentBubbleGroup,
-    );
+    await onInsertStudent(name, numMat, studentClass, studentBubbleGroup);
   };
 
   const onInsertStudent = async (
@@ -104,7 +99,7 @@ function ManageStudent(props) {
     try {
       const res = await fetch(
         backUrl +
-        `/centro/insert/alumno/${userData?.centro}/${studentClass}/${studentBubbleGroup}`,
+          `/centro/insert/alumno/${userData?.centro}/${studentClass}/${studentBubbleGroup}`,
         {
           method: "POST",
           headers: {
@@ -247,7 +242,7 @@ function ManageStudent(props) {
                 key={index}
                 onClick={e => {
                   if (selected.some(e => e.nombre === person.nombre)) {
-                    var filtered = selected.filter(function (value, index, arr) {
+                    var filtered = selected.filter(function(value, index, arr) {
                       return value.nombre !== person.nombre;
                     });
                     setSelected(filtered);
