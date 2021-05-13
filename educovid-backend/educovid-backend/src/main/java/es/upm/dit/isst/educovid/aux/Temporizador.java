@@ -59,7 +59,8 @@ public class Temporizador extends TimerTask {
 			
 			// Si han pasado tantos dias como indica el tiempo de conmutacion o un multiplo de este, hacemos que cambie la presencialidad
 			// al siguiente grupo que le toque
-			if ((diasPasados % c.getTiempoConmutacion()) == 0) {
+			//if ((diasPasados % c.getTiempoConmutacion()) == 0) {
+			if(true) {
 				GrupoBurbuja presencialActual = c.getBurbujaPresencial();
 				Integer prioridadSiguiente = (presencialActual.getPrioridad() % c.getGruposBurbuja().size()) + 1;
 				GrupoBurbuja nuevoPresencial = null;

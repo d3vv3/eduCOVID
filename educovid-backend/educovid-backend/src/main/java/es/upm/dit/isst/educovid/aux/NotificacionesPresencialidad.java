@@ -27,6 +27,9 @@ import es.upm.dit.isst.educovid.model.Profesor;
 public class NotificacionesPresencialidad {
 	
 	public static void cambioPresencialidadGrupo(List<Alumno> alumnos, Set<Profesor> profesores, String grupo, String clase, boolean puestoPresencial) {
+		System.out.println("PRUEBA 1" + grupo);
+		System.out.println("PRUEBA 2" + clase);
+		System.out.println("PRUEBA");
 		cambioPresencialidadAlumnos(alumnos, puestoPresencial);
 		cambioPresencialidadProfesores(profesores, grupo, clase, puestoPresencial);
 	}
