@@ -149,4 +149,14 @@ public class ProfesorDAOImpl implements ProfesorDAO {
 		return profesor;
 	}
 
+	public List<Profesor> readAllProfesores(String nombreCentro) {
+		List<Profesor> profesoresCentro = new ArrayList<Profesor>();
+		List<Clase> clasesCentro = ClaseDAOImpl.getInstance().readAllClases(nombreCentro);
+		for (Clase c : clasesCentro) {
+			for (Profesor p : c.getProfesores()) {
+				profesoresCentro.add(p);
+			}
+		}
+		return profesoresCentro;
+	}
 }

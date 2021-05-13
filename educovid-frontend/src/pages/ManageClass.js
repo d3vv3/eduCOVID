@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 // Local components
 import ActionBar from "../components/ActionBar";
-import ProfessorCenteredModal from "../components/NewProfessorFormModal";
+import ClassCenteredModal from "../components/NewClassFormModal";
 
 // Constants
 import { backUrl } from "../constants/constants";
@@ -11,23 +11,23 @@ import { backUrl } from "../constants/constants";
 // Bootstrap imports
 import Button from "react-bootstrap/Button";
 
-function ManageProfessor(props) {
+function ManageClass(props) {
   const { onLogOut, userData } = props;
 
-  const [professors, setProfessors] = useState([]);
+  const [classes, setClasses] = useState([]);
   const [selected, setSelected] = useState([]);
   const [showNewModal, setShowNewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
-    retrieveProfessors();
+    retrieveClasses();
   }, []);
 
-  const retrieveProfessors = async () => {
+  const retrieveClasses = async () => {
     const token = localStorage.getItem("token") || "";
     let response;
     let responseData;
-    response = await fetch(backUrl + `/centro/${userData?.centro}/professors`, {
+    response = await fetch(backUrl + `/centro/${userData?.centro}/classes`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -35,27 +35,42 @@ function ManageProfessor(props) {
       }
     });
     responseData = await response.json();
-    setProfessors(responseData);
+    setClasses(responseData);
   };
 
-  const onInsertProfessor = (name, id, professorClasses) => {
-    const newProfessor = {
+  const onInsertClass = async (name, classProfessors) => {
+    const newClass = {
       nombre: name,
-      hash: "",
-      salt: "",
-      subscriptionEndpoint: null,
-      p256dh: null,
-      auth: null,
-      nifNie: id,
-      estadoSanitario: "no confinado",
-      fechaConfinamiento: null
+      burbujaPresencial: null,
+      fechaInicioConmutacion: null,
+      tiempoConmutacion: null,
+      profesores: null,
+      gruposBurbuja: null
     };
     try {
-      professorClasses.forEach(async clase => {
+      const res0 = await fetch(
+        backUrl +
+        `/centro/insert/class/${userData?.centro}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(newClass)
+        }
+      );
+      console.log(res0);
+      if (!res0.ok) {
+        alert(`Hubo un fallo al crear la clase`);
+      } else {
+        setShowNewModal(false);
+      }
+      classProfessors.forEach(async professor => {
         const res = await fetch(
           backUrl +
-          `/centro/insert/professor/${userData?.centro}/${encodeURIComponent(
-            clase
+          `/centro/insert/class/${userData?.centro}/${encodeURIComponent(
+            professor
           )}`,
           {
             method: "POST",
@@ -63,11 +78,11 @@ function ManageProfessor(props) {
               Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
               "Content-Type": "application/json; charset=UTF-8"
             },
-            body: JSON.stringify(newProfessor)
+            body: JSON.stringify(newClass)
           }
         );
         if (!res.ok) {
-          alert(`Hubo un fallo al crear el profesor`);
+          alert(`Hubo un fallo al crear la clase`);
         } else {
           setShowNewModal(false);
         }
@@ -75,15 +90,15 @@ function ManageProfessor(props) {
     } catch (e) {
       console.log(e);
     } finally {
-      retrieveProfessors();
+      retrieveClasses();
     }
   };
 
-  const onEditProfessor = async (name, id, professorClasses) => {
-    await onInsertProfessor(name, id, professorClasses);
+  const onEditClass = async (name, classProfessors) => {
+    await onInsertClass(name, classProfessors);
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async () => { // TODO
     let pendingDeletes = selected.map(professor => {
       return fetch(backUrl + `/professor/${professor.id}`, {
         method: "DELETE",
@@ -100,37 +115,6 @@ function ManageProfessor(props) {
     );
   };
 
-  const handleHealthState = async action => {
-    const token = localStorage.getItem("token") || "";
-    await fetch(backUrl + `/manage/${action}/professors`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(selected)
-    });
-    await retrieveProfessors();
-
-    // notify everyone
-    selected.forEach(async value => {
-      try {
-        await fetch(
-          backUrl + `/notification/subscription/professor/` + value.id,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json"
-            }
-          }
-        );
-      } catch (e) {
-        console.log("Error pushing notification");
-      }
-    });
-  };
-
   return (
     <div>
       <ActionBar
@@ -141,7 +125,7 @@ function ManageProfessor(props) {
       <div className="manage-professor-container">
         <div className="left-menu">
           <div className="list-container">
-            {(professors ?? []).map((item, index) => (
+            {(classes ?? []).map((item, index) => (
               <div
                 key={index}
                 onClick={e => {
@@ -151,15 +135,10 @@ function ManageProfessor(props) {
                 }}
                 className={
                   "person-card green" +
-                  (professors.some(e => e === item) ? "" : " selected")
+                  (classes.some(e => e === item) ? "" : " selected")
                 }
               >
                 <h5>{item.nombre}</h5>
-                <h6>
-                  {item.estadoSanitario === "no confinado"
-                    ? "No confinado"
-                    : "Confinado"}
-                </h6>
               </div>
             ))}
           </div>
@@ -167,69 +146,32 @@ function ManageProfessor(props) {
         <div className="right-options">
           <h2>Seleccionados</h2>
           <div className="seleccionados">
-            {(selected || []).map((person, index) => (
+            {(selected || []).map((indivClass, index) => (
               <div
                 key={index}
                 onClick={e => {
-                  if (selected.some(e => e.nombre === person.nombre)) {
+                  if (selected.some(e => e.nombre === indivClass.nombre)) {
                     var filtered = selected.filter(function (value, index, arr) {
-                      return value.nombre !== person.nombre;
+                      return value.nombre !== indivClass.nombre;
                     });
                     setSelected(filtered);
                   }
                 }}
                 className={
                   "person-card green" +
-                  (professors.some(e => e === person) ? " selected" : "")
+                  (classes.some(e => e === indivClass) ? " selected" : "")
                 }
               >
-                {person.nombre.includes("Grupo") ? (
-                  <h5>{person.nombre}</h5>
+                {indivClass.nombre.includes("Grupo") ? (
+                  <h5>{indivClass.nombre}</h5>
                 ) : (
-                  <h5>{person.nombre}</h5>
+                  <h5>{indivClass.nombre}</h5>
                 )}
-                <h6>
-                  {person.estadoSanitario === "no confinado"
-                    ? "No confinado"
-                    : "Confinado"}
-                </h6>
               </div>
             ))}
           </div>
         </div>
         <div className="buttons-container">
-          {selected.length > 0 ? (
-            <div className="padded">
-              <Button
-                variant="primary"
-                className="nord-button"
-                onClick={e => {
-                  if (selected.length > 0) {
-                    handleHealthState("confine");
-                    setSelected([]);
-                  } else {
-                    alert("Seleccione las personas a confinar");
-                  }
-                }}
-              >
-                Confinar
-              </Button>
-              <Button
-                variant="primary"
-                className="nord-button"
-                onClick={e => {
-                  if (selected != null) {
-                    handleHealthState("unconfine");
-                    setSelected([]);
-                  } else {
-                    alert("Seleccione las personas a confinar");
-                  }
-                }}
-              >
-                Desconfinar
-              </Button>
-            </div>
-          ) : null}
           <div className="padded">
             {selected.length === 1 ? (
               <Button
@@ -239,7 +181,7 @@ function ManageProfessor(props) {
                   if (selected.length === 1) {
                     setShowEditModal(true);
                   } else {
-                    alert("Seleccione un solo profesor para esta acción");
+                    alert("Seleccione una sola clase para esta acción");
                   }
                 }}
               >
@@ -253,7 +195,7 @@ function ManageProfessor(props) {
                 setShowNewModal(true);
               }}
             >
-              Añadir profesor
+              Añadir clase
             </Button>
             {selected.length > 0 ? (
               <Button
@@ -264,7 +206,7 @@ function ManageProfessor(props) {
                     handleDelete();
                     setSelected([]);
                   } else {
-                    alert("Seleccione personas para ejecutar esta acción");
+                    alert("Seleccione clases para ejecutar esta acción");
                   }
                 }}
               >
@@ -275,20 +217,21 @@ function ManageProfessor(props) {
         </div>
       </div>
       {showNewModal || showEditModal ? (
-        <ProfessorCenteredModal
-          existingProfessor={showEditModal ? selected[0] : null}
+        <ClassCenteredModal
+          centro={userData.centro}
+          existingClass={showEditModal ? selected[0] : null}
           show={showNewModal || showEditModal}
           onHide={() => {
             setShowNewModal(false);
             setShowEditModal(false);
             setSelected([]);
           }}
-          onInsert={onInsertProfessor}
-          onEdit={onEditProfessor}
+          onInsert={onInsertClass}
+          onEdit={onEditClass}
         />
       ) : null}
     </div>
   );
 }
 
-export default withRouter(ManageProfessor);
+export default withRouter(ManageClass);

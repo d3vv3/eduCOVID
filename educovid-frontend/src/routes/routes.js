@@ -26,6 +26,7 @@ import ManageStudent from "../pages/ManageStudent";
 import Dashboard from "../pages/Dashboard";
 import ManageProfessor from "../pages/ManageProfessor";
 import Center from "../pages/Center";
+import ManageClass from "../pages/ManageClass";
 
 function Routes(props) {
   // Create the history of the user (to go back and forth from the browser or
@@ -95,6 +96,15 @@ function Routes(props) {
         <Route exact path="/manage/student">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
           <ManageStudent
+            userData={userData}
+            onLogOut={() => {
+              props.dispatch(logOut());
+            }}
+          />
+        </Route>
+        <Route exact path="/manage/class">
+          {!loggedIn ? <Redirect to={`/login`} /> : null}
+          <ManageClass
             userData={userData}
             onLogOut={() => {
               props.dispatch(logOut());

@@ -60,15 +60,12 @@ public class ClaseDAOImpl implements ClaseDAO {
 	}
 
 	@Override
-	public Clase readClasebyName(String name) {
-		Session session = SessionFactoryService.get().openSession();
-		session.beginTransaction();
+	public Clase readClasebyName(String name, String centro) {
+		List<Clase> clasesCentro = this.readAllClases(centro);
 		Clase clase = null;
-		Object object = session.createQuery("from Clase c where c.nombre='" + name + "'").uniqueResult();
-		if (object != null)
-			clase = (Clase) object;
-		session.getTransaction().commit();
-		session.close();
+		for (Clase c : clasesCentro) {
+			if (c.getNombre().equals(name)) clase = c;
+		}
 		return clase;
 	}
 
@@ -101,6 +98,11 @@ public class ClaseDAOImpl implements ClaseDAO {
 		session.getTransaction().commit();
 		session.close();
 		return clases;
+	}
+	
+	@Override
+	public List<Clase> readAllClases(String nombreCentro) {
+		return CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(nombreCentro).getClases();
 	}
 
 }

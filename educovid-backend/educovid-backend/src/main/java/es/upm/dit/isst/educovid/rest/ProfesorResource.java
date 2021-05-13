@@ -2,7 +2,9 @@ package es.upm.dit.isst.educovid.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -16,12 +18,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.upm.dit.isst.educovid.anotation.Secured;
+import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
+import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.Profesor;
 
 @Path("/professor")
 public class ProfesorResource {
-
+	
 	@POST
 	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -79,5 +83,17 @@ public class ProfesorResource {
 	public List<Profesor> readAllProfesorbyEstadoSanitario(@PathParam("estadoSanitario") String estadoSanitario) {
 		return ProfesorDAOImpl.getInstance().readAllProfesorbyEstadoSanitario(estadoSanitario);
 	}
-
+	
+	@GET
+	@Secured
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/professors/{nombreCentro}/{nombreClase}")
+	public Set<Profesor> readAllProfesorbyClase(@PathParam("nombreCentro") String nombreCentro, @PathParam("nombreClase") String nombreClase) {
+		List<Clase> clasesCentro = ClaseDAOImpl.getInstance().readAllClases(nombreCentro);
+		for (Clase c : clasesCentro) {
+			if (c.getNombre().equals(nombreClase)) return c.getProfesores();
+		}
+		return new HashSet<Profesor>();
+	}
+	
 }

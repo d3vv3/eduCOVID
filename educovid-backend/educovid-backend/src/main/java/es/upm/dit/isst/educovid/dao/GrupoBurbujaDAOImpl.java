@@ -203,5 +203,15 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
         return grupoBurbuja;
 	}
 
+	public List<GrupoBurbuja> readAllGruposBurbujabyCentro(String nombreCentro) {
+		List<Clase> clasesCentro = ClaseDAOImpl.getInstance().readAllClases(nombreCentro);
+		List<GrupoBurbuja> gruposCentro = new ArrayList<GrupoBurbuja>();
+		for (Clase c : clasesCentro) {
+			for (GrupoBurbuja g : c.getGruposBurbuja()) {
+				gruposCentro.add(g);
+			}
+		}
+		return gruposCentro;
+	}
 
 }

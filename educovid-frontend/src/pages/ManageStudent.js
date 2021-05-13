@@ -81,10 +81,6 @@ function ManageStudent(props) {
       numMat,
       studentClass,
       studentBubbleGroup,
-      errors,
-      feedbacks,
-      setErrors,
-      setFeedbacks
     );
   };
 
@@ -92,11 +88,7 @@ function ManageStudent(props) {
     name,
     numMat,
     studentClass,
-    studentBubbleGroup,
-    errors,
-    feedbacks,
-    setErrors,
-    setFeedbacks
+    studentBubbleGroup
   ) => {
     const newStudent = {
       nombre: name,
@@ -112,7 +104,7 @@ function ManageStudent(props) {
     try {
       const res = await fetch(
         backUrl +
-          `/centro/insert/alumno/${userData.centro}/${studentClass}/${studentBubbleGroup}`,
+        `/centro/insert/alumno/${userData?.centro}/${studentClass}/${studentBubbleGroup}`,
         {
           method: "POST",
           headers: {
@@ -255,7 +247,7 @@ function ManageStudent(props) {
                 key={index}
                 onClick={e => {
                   if (selected.some(e => e.nombre === person.nombre)) {
-                    var filtered = selected.filter(function(value, index, arr) {
+                    var filtered = selected.filter(function (value, index, arr) {
                       return value.nombre !== person.nombre;
                     });
                     setSelected(filtered);

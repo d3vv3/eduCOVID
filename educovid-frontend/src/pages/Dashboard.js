@@ -57,7 +57,7 @@ function Dashboard(props) {
               <Card.Body>
                 <Card.Title>Profesores</Card.Title>
                 <Card.Text>
-                En esta sección podrá gestionar los profesores.
+                  En esta sección podrá gestionar los profesores.
                 </Card.Text>
               </Card.Body>
               <LinkContainer
@@ -71,14 +71,12 @@ function Dashboard(props) {
             </Card>
             <Card>
               <Card.Body>
-                <Card.Title>Gestionar centro</Card.Title>
+                <Card.Title>Clases</Card.Title>
                 <Card.Text>
-                  En esta sección podrá consultar y gestionar los datos del
-                  centro en la plataforma, así como modificar, eliminar o añadir
-                  alumnos y profesores.
+                  En esta sección podrá gestionar las clases.
                 </Card.Text>
               </Card.Body>
-              <LinkContainer className="container-dashboard" to="/center">
+              <LinkContainer className="container-dashboard" to="/manage/class">
                 <Button type="submit" variant="primary" className="nord-button">
                   Ir a centro
                 </Button>

@@ -226,10 +226,6 @@ function StudentCenteredModal(props) {
               numMat,
               studentClass,
               studentBubbleGroup,
-              errors,
-              feedbacks,
-              setErrors,
-              setFeedbacks
             )
           }
           disabled={

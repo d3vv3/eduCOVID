@@ -24,8 +24,8 @@ function ActionBar(props) {
         <LinkContainer to="/manage/professor">
           <Nav.Link>Profesores</Nav.Link>
         </LinkContainer>
-        <LinkContainer to="/center">
-          <Nav.Link>Centro</Nav.Link>
+        <LinkContainer to="/manage/class">
+          <Nav.Link>Clases</Nav.Link>
         </LinkContainer>
       </Nav>
       <Button
