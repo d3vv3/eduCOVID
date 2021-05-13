@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.hibernate.Session;
 
+import es.upm.dit.isst.educovid.aux.NotificacionesPresencialidad;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 
@@ -118,4 +119,6 @@ public class ClaseDAOImpl implements ClaseDAO {
 		updateClase(clase);
 		return clase;
 	}
+	
+	
 }
