@@ -18,8 +18,8 @@ function ActionBar(props) {
         </Navbar.Brand>
       </LinkContainer>
       <Nav className="mr-auto">
-        <LinkContainer to="/confine">
-          <Nav.Link>Confinamientos</Nav.Link>
+        <LinkContainer to="/manage/student">
+          <Nav.Link>Alumnos</Nav.Link>
         </LinkContainer>
         <LinkContainer to="/teaching">
           <Nav.Link>Docencia</Nav.Link>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 // Redux related
 import { connect } from "react-redux";
-import { logIn, logOut } from "../redux/actions";
+import { logIn, logOut, changeConfineMessage, changeUnconfineMessage } from "../redux/actions";
 
 // Constants
 import { backUrl } from "../constants/constants";
@@ -22,7 +22,7 @@ import StudentPage from "../pages/StudentPage";
 import ProfessorPage from "../pages/ProfessorPage";
 import LoginPage from "../pages/LoginPage";
 import Terms from "../pages/Terms";
-import Confine from "../pages/Confine";
+import ManageStudent from "../pages/ManageStudent";
 import Dashboard from "../pages/Dashboard";
 import Teaching from "../pages/Teaching";
 import Center from "../pages/Center";
@@ -30,7 +30,7 @@ import Center from "../pages/Center";
 function Routes(props) {
   // Create the history of the user (to go back and forth from the browser or
   // from the app itself by pushing routes)
-  const { userData, loggedIn } = props;
+  const { userData, loggedIn, confineMessage, unconfineMessage } = props;
   const history = useHistory();
 
   const routesMapper = {
@@ -90,11 +90,20 @@ function Routes(props) {
         <Route exact path="/terms">
           <Terms history={history} />
         </Route>
-        <Route exact path="/confine">
+        <Route exact path="/manage/student">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <Confine
+          <ManageStudent
+            userData={userData}
+            confineMessage={confineMessage}
+            unconfineMessage={unconfineMessage}
             onLogOut={() => {
               props.dispatch(logOut())
+            }}
+            onChangeConfineMessage={(message) => {
+              props.dispatch(changeConfineMessage(message))
+            }}
+            onChangeUnconfineMessage={(message) => {
+              props.dispatch(changeUnconfineMessage(message))
             }}
           />
         </Route>

@@ -2,7 +2,7 @@
 import { combineReducers } from "redux";
 
 // Constants
-import { LOG_IN, LOG_OUT } from "../constants/constants";
+import { LOG_IN, LOG_OUT, CONFINE_MESSAGE, UNCONFINE_MESSAGE } from "../constants/constants";
 
 function loggedIn(state = false, action) {
   switch (action.type) {
@@ -26,9 +26,29 @@ function userData(state = null, action) {
   }
 }
 
+function confineMessage(state = "", action) {
+  switch (action.type) {
+    case CONFINE_MESSAGE:
+      return action.payload.confineMessage;
+    default:
+      return state;
+  }
+}
+
+function unconfineMessage(state = "", action) {
+  switch (action.type) {
+    case UNCONFINE_MESSAGE:
+      return action.payload.unconfineMessage;
+    default:
+      return state;
+  }
+}
+
 const GlobalState = combineReducers({
     loggedIn,
-    userData
+    userData,
+    confineMessage,
+    unconfineMessage
 });
 
 export default GlobalState;
