@@ -86,12 +86,6 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 	}
 
 	@Override
-	public GrupoBurbuja updateGrupoBurbujabyEstadoDocencia(String estadoDocencia) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public GrupoBurbuja updateGrupoBurbujabyClase(Clase clase) {
 		// TODO Auto-generated method stub
 		return null;
@@ -99,12 +93,6 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 
 	@Override
 	public GrupoBurbuja updateGrupoBurbujabyFechaConfinamiento(Date fechaConfinamiento) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public GrupoBurbuja updateGrupoBurbujabyFechaUltimaConmutacion(Date fechaUltConmutacion) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -147,16 +135,16 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
         return grupoBurbuja;
 	}
 
-	@Override
-	public List<GrupoBurbuja> readAllGruposBurbujabyEstadoDocencia(String estadoDocencia) {
-		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
-        Session session = SessionFactoryService.get().openSession();
-        session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.estadoDocencia=" + estadoDocencia).list());
-        session.getTransaction().commit();
-        session.close();
-        return grupoBurbuja;
-	}
+	/*
+	 * @Override public List<GrupoBurbuja>
+	 * readAllGruposBurbujabyEstadoDocencia(String estadoDocencia) {
+	 * List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> (); Session
+	 * session = SessionFactoryService.get().openSession();
+	 * session.beginTransaction(); grupoBurbuja.addAll(session.
+	 * createQuery("from GrupoBurbuja a where GrupoBurbuja.estadoDocencia=" +
+	 * estadoDocencia).list()); session.getTransaction().commit(); session.close();
+	 * return grupoBurbuja; }
+	 */
 
 	@Override
 	public List<GrupoBurbuja> readAllGruposBurbujabyClase(Clase clase) {
@@ -180,16 +168,16 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
         return grupoBurbuja;
 	}
 
-	@Override
-	public List<GrupoBurbuja> readAllGruposBurbujabyFechaUltimaConmutacion(Date fechaUltConmutacion) {
-		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
-        Session session = SessionFactoryService.get().openSession();
-        session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.fechaUltimaConmutacion=" + fechaUltConmutacion).list());
-        session.getTransaction().commit();
-        session.close();
-        return grupoBurbuja;
-	}
+	/*
+	 * @Override public List<GrupoBurbuja>
+	 * readAllGruposBurbujabyFechaUltimaConmutacion(Date fechaUltConmutacion) {
+	 * List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> (); Session
+	 * session = SessionFactoryService.get().openSession();
+	 * session.beginTransaction(); grupoBurbuja.addAll(session.
+	 * createQuery("from GrupoBurbuja a where GrupoBurbuja.fechaUltimaConmutacion="
+	 * + fechaUltConmutacion).list()); session.getTransaction().commit();
+	 * session.close(); return grupoBurbuja; }
+	 */
 
 	@Override
 	public List<GrupoBurbuja> readAllGruposBurbujabyPrioridad(Integer prioridad) {

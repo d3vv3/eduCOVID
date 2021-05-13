@@ -12,5 +12,6 @@ public interface ClaseDAO {
 	public Clase updateClase (Clase clase);
 	public Clase deleteClase (Clase clase);
 	public List<Clase> readAllClases();
+	public Clase updatePresencialGroup(Clase clase);
 		
 }
