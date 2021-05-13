@@ -55,11 +55,9 @@ function Dashboard(props) {
             </Card>
             <Card>
               <Card.Body>
-                <Card.Title>Gestionar docencia</Card.Title>
+                <Card.Title>Profesores</Card.Title>
                 <Card.Text>
-                  En esta sección podrá crear distintos grupos burbuja por clase
-                  o modificar los existentes, además de gestionar la alternancia
-                  entre docencia presencial y online.
+                En esta sección podrá gestionar los profesores.
                 </Card.Text>
               </Card.Body>
               <LinkContainer
@@ -67,7 +65,7 @@ function Dashboard(props) {
                 to="/manage/professor"
               >
                 <Button type="submit" variant="primary" className="nord-button">
-                  Ir a docencia
+                  Profesores
                 </Button>
               </LinkContainer>
             </Card>

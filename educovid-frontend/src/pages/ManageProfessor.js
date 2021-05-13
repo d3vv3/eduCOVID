@@ -53,7 +53,6 @@ function ManageProfessor(props) {
     try {
       professorClasses.forEach(async clase => {
         const res = await fetch(
-          // TODO backend method and change the path
           backUrl +
             `/centro/insert/professor/${userData.centro}/${encodeURIComponent(
               clase

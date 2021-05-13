@@ -83,9 +83,15 @@ public class CentroResource {
 		String hash = Security.getHash(profesorNuevo.getNifNie(), salt);
 		profesorNuevo.setSalt(salt);
 		profesorNuevo.setHash(hash);
-		Profesor p = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(profesorNuevo.getNifNie());
-		if (p == null) p = ProfesorDAOImpl.getInstance().createProfesor(profesorNuevo);
-		if (p == null) return Response.status(Response.Status.CONFLICT).build();
+//		Profesor p = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(profesorNuevo.getNifNie());
+//		System.out.println(p);
+		Profesor p;
+		try {
+			p = ProfesorDAOImpl.getInstance().createProfesor(profesorNuevo);
+		} catch (Exception e) {
+			System.out.println("Professor exists");
+			p = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(profesorNuevo.getNifNie());
+		}
 		CentroEducativo centro = CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(nombreCentro);
 		for (Clase clase : centro.getClases()) {
 			if (clase.getNombre().equals(nombreClase)) {
