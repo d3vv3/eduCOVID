@@ -103,4 +103,19 @@ public class ClaseDAOImpl implements ClaseDAO {
 		return clases;
 	}
 
+	public Clase updatePresencialGroup(Clase clase) {
+		List<GrupoBurbuja> grupos = clase.getGruposBurbuja();
+		GrupoBurbuja presencialActual = clase.getBurbujaPresencial();
+		Integer prioridadSiguiente = (presencialActual.getPrioridad() % grupos.size()) + 1;
+		GrupoBurbuja nuevoPresencial = null;
+		for (GrupoBurbuja b : grupos) {
+			if (b.getPrioridad() == prioridadSiguiente) {
+				nuevoPresencial = b;
+				break;
+			}
+		}
+		clase.setBurbujaPresencial(nuevoPresencial);
+		updateClase(clase);
+		return clase;
+	}
 }

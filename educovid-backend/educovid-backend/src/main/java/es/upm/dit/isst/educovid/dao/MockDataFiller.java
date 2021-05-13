@@ -1,6 +1,8 @@
 package es.upm.dit.isst.educovid.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,10 +62,10 @@ public class MockDataFiller {
 		alumnos2.add(alumno8);
 		alumnos3.add(alumno9);
 
-		GrupoBurbuja burbuja1 = new GrupoBurbuja("Grupo 1", "no confinado", null, null, null, alumnos1);
-		GrupoBurbuja burbuja2 = new GrupoBurbuja("Grupo 2", "no confinado", null, null, null, alumnos2);
-		GrupoBurbuja burbuja3 = new GrupoBurbuja("Grupo 3", "no confinado", null, null, null, alumnos3);
-		GrupoBurbuja burbuja4 = new GrupoBurbuja("Grupo 1", "confinado", null, null, null, alumnos3);
+		GrupoBurbuja burbuja1 = new GrupoBurbuja("Grupo 1", "no confinado", null, 1, alumnos1);
+		GrupoBurbuja burbuja2 = new GrupoBurbuja("Grupo 2", "no confinado", null, 2, alumnos2);
+		GrupoBurbuja burbuja3 = new GrupoBurbuja("Grupo 3", "no confinado", null, 3, alumnos3);
+		GrupoBurbuja burbuja4 = new GrupoBurbuja("Grupo 1", "confinado", null, null, alumnos3);
 		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(burbuja1);
 		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(burbuja2);
 		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(burbuja3);
@@ -74,8 +76,12 @@ public class MockDataFiller {
 		grupos1.add(burbuja2);
 		grupos1.add(burbuja3);
 		grupos2.add(burbuja4);
-
-		Clase clase1 = new Clase("1ºD", grupos1.get(0), null, null, profesores1, grupos1);
+		
+		String fecha = "2021-05-02";
+		
+		java.sql.Date fechaInicio = java.sql.Date.valueOf(fecha);
+		
+		Clase clase1 = new Clase("1ºD", grupos1.get(0), fechaInicio, 7, profesores1, grupos1);
 		Clase clase2 = new Clase("6ºA", grupos2.get(0), null, null, profesores2, grupos2);
 		ClaseDAOImpl.getInstance().createClase(clase1);
 		ClaseDAOImpl.getInstance().createClase(clase2);
