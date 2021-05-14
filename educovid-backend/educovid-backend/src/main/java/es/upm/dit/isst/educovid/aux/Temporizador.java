@@ -5,6 +5,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+
+import org.glassfish.jersey.client.ClientConfig;
+
 import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
@@ -71,8 +76,10 @@ public class Temporizador extends TimerTask {
 					}
 				}
 				ClaseDAOImpl.getInstance().updatePresencialGroup(c);
-				NotificacionesPresencialidad.cambioPresencialidadGrupo(presencialActual.getAlumnos(), c.getProfesores(), presencialActual.getNombre(), c.getNombre(), false);
-				NotificacionesPresencialidad.cambioPresencialidadGrupo(nuevoPresencial.getAlumnos(), c.getProfesores(), nuevoPresencial.getNombre(), c.getNombre(), true);
+				Client client = ClientBuilder.newClient(new ClientConfig());
+				client.target("http://localhost:8080/educovid-backend/rest/notification/subscription/bubbleGroups/" + presencialActual.getId()).request().get();
+				//NotificacionesPresencialidad.cambioPresencialidadGrupo(presencialActual.getAlumnos(), c.getProfesores(), presencialActual.getNombre(), c.getNombre(), false);
+				//NotificacionesPresencialidad.cambioPresencialidadGrupo(nuevoPresencial.getAlumnos(), c.getProfesores(), nuevoPresencial.getNombre(), c.getNombre(), true);
 			}
 		}
 		System.out.println("Comprobación de rotación terminada.");
