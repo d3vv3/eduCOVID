@@ -23,7 +23,7 @@ import javax.persistence.UniqueConstraint;
 public class Clase implements Serializable {
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 	@Column(nullable = false)
 	private String nombre;
 	@OneToOne(cascade = CascadeType.ALL)
@@ -58,11 +58,11 @@ public class Clase implements Serializable {
 		this.gruposBurbuja = gruposBurbuja;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
