@@ -77,7 +77,8 @@ public class Temporizador extends TimerTask {
 				}
 				ClaseDAOImpl.getInstance().updatePresencialGroup(c);
 				Client client = ClientBuilder.newClient(new ClientConfig());
-				client.target("http://localhost:8080/educovid-backend/rest/notification/subscription/bubbleGroups/" + presencialActual.getId()).request().get();
+				client.target("http://localhost:8080/educovid-backend/rest/notification/subscription/bubbleGroups/online" + presencialActual.getId()).request().get();
+				client.target("http://localhost:8080/educovid-backend/rest/notification/subscription/bubbleGroups/presencial" + nuevoPresencial.getId()).request().get();
 				//NotificacionesPresencialidad.cambioPresencialidadGrupo(presencialActual.getAlumnos(), c.getProfesores(), presencialActual.getNombre(), c.getNombre(), false);
 				//NotificacionesPresencialidad.cambioPresencialidadGrupo(nuevoPresencial.getAlumnos(), c.getProfesores(), nuevoPresencial.getNombre(), c.getNombre(), true);
 			}
