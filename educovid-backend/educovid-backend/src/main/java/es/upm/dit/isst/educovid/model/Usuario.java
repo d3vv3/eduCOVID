@@ -3,15 +3,20 @@ package es.upm.dit.isst.educovid.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
-@MappedSuperclass
+@Entity
+@Table(name = "usuarios")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 	@Column(nullable = false)
 	private String nombre;
 	@Column(nullable = false)
@@ -43,13 +48,13 @@ public class Usuario implements Serializable {
 //		this.setPassword(password);
 //	}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 	
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
-		System.out.println("Setting id: '" + id + "'");
+//		System.out.println("Setting id: '" + id + "'");
 	}
 	
 	public String getNombre() {
@@ -58,7 +63,7 @@ public class Usuario implements Serializable {
 	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-		System.out.println("Setting nombre: '" + nombre + "'");
+//		System.out.println("Setting nombre: '" + nombre + "'");
 	}
 	
 	public String getHash() {

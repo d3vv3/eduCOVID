@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class CentroEducativo implements Serializable {
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 	@Column(nullable = false, unique = true)
 	private String nombre;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -35,11 +35,11 @@ public class CentroEducativo implements Serializable {
 		this.clases = clases;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
