@@ -406,6 +406,95 @@ public class NotificationResource {
 		}
 	}
 	
+<<<<<<< HEAD
+=======
+	@GET
+	@Path("/subscription/bubbleGroups/{presencialidad}/{groupId}")
+	public Response readSubscriptionGrupo(@PathParam("presencialidad") String presencialidad, @PathParam("groupId") String groupId) {
+		try {
+			GrupoBurbuja grupo = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(groupId);
+			for (Alumno alumno : grupo.getAlumnos()) {
+				try {
+					if (alumno.getAuth() == null) continue;
+					System.out.println("Usuario obtenido: " + alumno.getNombre());
+					String subscriptionEndpoint = alumno.getSubscriptionEndpoint();
+					String auth = alumno.getAuth();
+					String p256dh = alumno.getP256dh();
+					String origin = null;
+					System.out.println("Subscription Endpoint: " + subscriptionEndpoint);
+					System.out.println("Auth: " + auth);
+					System.out.println("p256dh: " + p256dh);
+
+					URI endpointURI = URI.create(subscriptionEndpoint);
+					URL url = new URL(subscriptionEndpoint);
+					origin = url.getProtocol() + "://" + url.getHost();
+					System.out.println("Origin: " + origin);
+
+					Algorithm jwtAlgorithm = Algorithm.ECDSA256(ECDSAKeys.getInstance().getPublicKey(),
+							ECDSAKeys.getInstance().getPrivateKey());
+					Date today = new Date();
+					Date expires = new Date(today.getTime() + 12 * 60 * 60 * 1000);
+
+					String token = JWT.create().withAudience(origin).withExpiresAt(expires)
+							.withSubject("mailto:example@example.com").sign(jwtAlgorithm);
+					System.out.println("JWT: " + token);
+
+					Builder httpRequestBuilder = HttpRequest.newBuilder();
+					CryptoService cryptoService = new CryptoService();
+					ObjectMapper objectMapper = new ObjectMapper();
+					String msg = "";
+					if (presencialidad.equals("online")) {
+						msg = "Tu grupo ha pasado a dar clases online";
+					} else {
+						msg = "Tu grupo ha pasado a dar clases presenciales";
+					}
+					byte[] body = cryptoService.encrypt(
+							objectMapper.writeValueAsString(new PushMessage("eduCOVID", msg)), p256dh, auth, 0);
+					httpRequestBuilder.POST(BodyPublishers.ofByteArray(body))
+							.header("Content-Type", "application/octet-stream").header("Content-Encoding", "aes128gcm");
+					HttpRequest request = httpRequestBuilder.uri(endpointURI).header("TTL", "180")
+							.header("Authorization",
+									"vapid t=" + token + ", k=" + ECDSAKeys.getInstance().getPublicKeyBase64())
+							.build();
+					HttpClient httpClient = HttpClient.newHttpClient();
+					HttpResponse<Void> response = httpClient.send(request, BodyHandlers.discarding());
+					System.out.println("Response status code from push API: " + response.statusCode());
+
+					switch (response.statusCode()) {
+					case 201:
+						System.out.println("Push message successfully sent");
+						break;
+					case 404:
+					case 410:
+						System.out.println("Subscription not found or gone");
+						break;
+					case 429:
+						System.out.println("Too many requests");
+						break;
+					case 400:
+						System.out.println("Invalid request");
+						break;
+					case 413:
+						System.out.println("Payload size too large");
+						break;
+					default:
+						System.out.println("Unhandled status code");
+					}
+
+					return Response.status(Response.Status.OK).build();
+				} catch (Exception e) {
+					e.printStackTrace();
+					return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+				}
+			}
+			return Response.status(Response.Status.OK).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+>>>>>>> 82ef8af9318934bdba727a8441ef08a76aa8c614
 	@GET
 	@Path("/subscription/bubbleGroups/{presencialidad}/{groupId}")
 	public Response readSubscriptionGrupo(@PathParam("presencialidad") String presencialidad, @PathParam("groupId") String groupId) {
