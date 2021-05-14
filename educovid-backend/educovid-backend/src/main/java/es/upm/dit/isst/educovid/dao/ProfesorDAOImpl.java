@@ -2,8 +2,10 @@ package es.upm.dit.isst.educovid.dao;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Query;
 
@@ -151,10 +153,14 @@ public class ProfesorDAOImpl implements ProfesorDAO {
 
 	public List<Profesor> readAllProfesores(String nombreCentro) {
 		List<Profesor> profesoresCentro = new ArrayList<Profesor>();
+		List<Integer> idProfesoresCentro = new ArrayList<Integer>();
 		List<Clase> clasesCentro = ClaseDAOImpl.getInstance().readAllClases(nombreCentro);
 		for (Clase c : clasesCentro) {
 			for (Profesor p : c.getProfesores()) {
-				profesoresCentro.add(p);
+				if (!idProfesoresCentro.contains(p.getId())) {
+					profesoresCentro.add(p);
+					idProfesoresCentro.add(p.getId());
+				}
 			}
 		}
 		return profesoresCentro;
