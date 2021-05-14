@@ -1,5 +1,5 @@
 .manage-student-container {
-    height: 100vh;
+    height: 95.8vh;
     @include flexCenter(row);
 
     flex-wrap: nowrap;
@@ -57,7 +57,7 @@
         .list-container::-webkit-scrollbar {
             display: none;
         }
-        flex: 24;
+        flex: 23;
         //display: inline-block;
     }
 
