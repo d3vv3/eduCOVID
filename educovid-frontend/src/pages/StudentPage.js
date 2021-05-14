@@ -14,17 +14,22 @@ function StudentPage(props) {
 
   const { history, userData, onLogOut } = props;
 
-  const [studentId] = useState(userData?.id);
-  const [studentName, setStudentName] = useState(userData?.nombre);
-  const [studentState, setStudentEstadoSanitario] = useState(userData?.estadoSanitario);
+  const [studentId, setStudentId] = useState(-1);
+  const [studentName, setStudentName] = useState("");
+  const [studentState, setStudentEstadoSanitario] = useState("");
   const [studentGroup, setStudentGroup] = useState();
   const [studentClass, setStudentClass] = useState();
 
-  let groupDownloaded = false;
-  let classDownloaded = false;
   useEffect(() => {
-    let isMounted = true;
-    const callGroup = async () => {
+    if(userData){
+      setStudentId(userData.id);
+      setStudentName(userData.nombre);
+      setStudentEstadoSanitario(userData.estadoSanitario);
+    }
+  }, [userData]);
+
+  useEffect(async () => {
+    if(studentId != -1){
       try {
         const token =localStorage.getItem('token') || "";
         const groupRes = await fetch(backUrl + "/grupo/alumno/" + studentId, {
@@ -32,34 +37,61 @@ function StudentPage(props) {
             'Authorization': `Bearer ${token}`
           }
         });
-        let groupData = await groupRes.json();
-        if (isMounted) setStudentGroup(groupData);
-        console.log(groupData);
-        groupDownloaded = true;
-      } catch (e) {
-        // Nothing to do
-      }
-    };
-    const callClass = async () => {
-      try {
-        const token =localStorage.getItem('token') || "";
         const classRes = await fetch(backUrl + "/clase/alumno/" + studentId, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
+        let groupData = await groupRes.json();
         let classData = await classRes.json();
-        if (isMounted) setStudentClass(classData);
-        console.log(classData);
-        classDownloaded = true;
+        setStudentGroup(groupData);
+        setStudentClass(classData);
       } catch (e) {
         // Nothing to do
       }
-    };
-    callClass();
-    callGroup();
-    return () => { isMounted = false };
+    }
   }, [studentId]);
+
+  // let groupDownloaded = false;
+  // let classDownloaded = false;
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const callGroup = async () => {
+  //     try {
+  //       const token =localStorage.getItem('token') || "";
+  //       const groupRes = await fetch(backUrl + "/grupo/alumno/" + studentId, {
+  //         headers: {
+  //           'Authorization': `Bearer ${token}`
+  //         }
+  //       });
+  //       let groupData = await groupRes.json();
+  //       if (isMounted) setStudentGroup(groupData);
+  //       console.log(groupData);
+  //       groupDownloaded = true;
+  //     } catch (e) {
+  //       // Nothing to do
+  //     }
+  //   };
+  //   const callClass = async () => {
+  //     try {
+  //       const token =localStorage.getItem('token') || "";
+  //       const classRes = await fetch(backUrl + "/clase/alumno/" + studentId, {
+  //         headers: {
+  //           'Authorization': `Bearer ${token}`
+  //         }
+  //       });
+  //       let classData = await classRes.json();
+  //       if (isMounted) setStudentClass(classData);
+  //       console.log(classData);
+  //       classDownloaded = true;
+  //     } catch (e) {
+  //       // Nothing to do
+  //     }
+  //   };
+  //   callClass();
+  //   callGroup();
+  //   return () => { isMounted = false };
+  // }, [studentId]);
 
   return (
     <div>
