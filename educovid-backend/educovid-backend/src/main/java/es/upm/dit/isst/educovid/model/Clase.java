@@ -26,10 +26,12 @@ public class Clase implements Serializable {
 	private Long id;
 	@Column(nullable = false)
 	private String nombre;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinTable(name = "grupopresencial_clase", joinColumns = {
-			@JoinColumn(name = "clase_id", referencedColumnName = "id", unique = true) }, inverseJoinColumns = {
-					@JoinColumn(name = "grupo_id", referencedColumnName = "id", unique = true) })
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinTable(name = "grupopresencial_clase", joinColumns = {
+//			@JoinColumn(name = "clase_id", referencedColumnName = "id", unique = true) }, inverseJoinColumns = {
+//					@JoinColumn(name = "grupo_id", referencedColumnName = "id", unique = true) })
+//	private GrupoBurbuja burbujaPresencial;
+	@OneToOne
 	private GrupoBurbuja burbujaPresencial;
 	private Date fechaInicioConmutacion;
 	private Integer tiempoConmutacion; // In school days
