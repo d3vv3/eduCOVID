@@ -24,6 +24,8 @@ function ManageProfessor(props) {
   }, []);
 
   const retrieveProfessors = async () => {
+    console.log("Recargando profesores");
+    setProfessors([]);
     const token = localStorage.getItem("token") || "";
     let response;
     let responseData;
@@ -35,10 +37,11 @@ function ManageProfessor(props) {
       }
     });
     responseData = await response.json();
-    setProfessors(responseData);
+    setProfessors(responseData.sort((a, b) => a.id - b.id));
   };
 
-  const onInsertProfessor = (name, id, professorClasses) => {
+  const handleInsertProfessor = async (id, name, nifNie, professorClasses) => {
+    console.log("INSERT PROFE");
     const newProfessor = {
       nombre: name,
       hash: "",
@@ -46,7 +49,7 @@ function ManageProfessor(props) {
       subscriptionEndpoint: null,
       p256dh: null,
       auth: null,
-      nifNie: id,
+      nifNie: nifNie,
       estadoSanitario: "no confinado",
       fechaConfinamiento: null
     };
@@ -54,9 +57,9 @@ function ManageProfessor(props) {
       professorClasses.forEach(async clase => {
         const res = await fetch(
           backUrl +
-          `/centro/insert/professor/${userData?.centro}/${encodeURIComponent(
-            clase
-          )}`,
+            `/centro/insert/professor/${userData?.centro}/${encodeURIComponent(
+              clase
+            )}`,
           {
             method: "POST",
             headers: {
@@ -66,6 +69,7 @@ function ManageProfessor(props) {
             body: JSON.stringify(newProfessor)
           }
         );
+        await res;
         if (!res.ok) {
           alert(`Hubo un fallo al crear el profesor`);
         } else {
@@ -75,17 +79,67 @@ function ManageProfessor(props) {
     } catch (e) {
       console.log(e);
     } finally {
-      retrieveProfessors();
+      await retrieveProfessors();
     }
   };
 
-  const onEditProfessor = async (name, id, professorClasses) => {
-    await onInsertProfessor(name, id, professorClasses);
+  const handleEditProfessor = async (id, name, nifNie, professorClasses) => {
+    console.log("EDIT PROFE");
+    // Create updated professor
+    const newProfessor = {
+      id,
+      nombre: name,
+      hash: "",
+      salt: "",
+      subscriptionEndpoint: null,
+      p256dh: null,
+      auth: null,
+      nifNie,
+      estadoSanitario: "no confinado",
+      fechaConfinamiento: null
+    };
+    try {
+      // Update professor on backend
+      let res = await fetch(backUrl + `/professor/${encodeURIComponent(id)}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+          "Content-Type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify(newProfessor)
+      });
+      await res;
+      if (!res.ok) {
+        alert(`Hubo un fallo al actualizar el profesor`);
+      }
+      res = await fetch(
+        backUrl +
+          `/centro/update/professor/${userData?.centro}/${encodeURIComponent(
+            nifNie
+          )}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(professorClasses)
+        }
+      );
+      await res;
+      if (!res.ok) {
+        alert(`Hubo un fallo al actualizar el profesor`);
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      await retrieveProfessors();
+    }
   };
 
   const handleDelete = async () => {
-    let pendingDeletes = selected.map(professor => {
-      return fetch(backUrl + `/professor/${professor.id}`, {
+    selected.forEach(async professor => {
+      let res = await fetch(backUrl + `/professor/${professor.id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
@@ -93,11 +147,12 @@ function ManageProfessor(props) {
         },
         body: JSON.stringify(professor)
       });
+      await res;
+      if (!res.ok) {
+        alert("Hubo un fallo al borrar al profesor " + professor.nombre);
+      }
+      await retrieveProfessors();
     });
-    let responses = await Promise.all(pendingDeletes);
-    responses.some(response =>
-      !response.ok ? alert(`Hubo un fallo al borrar un profesor`) : null
-    );
   };
 
   const handleHealthState = async action => {
@@ -172,7 +227,7 @@ function ManageProfessor(props) {
                 key={index}
                 onClick={e => {
                   if (selected.some(e => e.nombre === person.nombre)) {
-                    var filtered = selected.filter(function (value, index, arr) {
+                    var filtered = selected.filter(function(value, index, arr) {
                       return value.nombre !== person.nombre;
                     });
                     setSelected(filtered);
@@ -259,7 +314,7 @@ function ManageProfessor(props) {
               <Button
                 variant="primary"
                 className="nord-button red"
-                onClick={e => {
+                onClick={async e => {
                   if (selected.length > 0) {
                     handleDelete();
                     setSelected([]);
@@ -283,8 +338,8 @@ function ManageProfessor(props) {
             setShowEditModal(false);
             setSelected([]);
           }}
-          onInsert={onInsertProfessor}
-          onEdit={onEditProfessor}
+          handleInsert={handleInsertProfessor}
+          handleEdit={handleEditProfessor}
         />
       ) : null}
     </div>

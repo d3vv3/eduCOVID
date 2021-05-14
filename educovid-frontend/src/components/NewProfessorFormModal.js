@@ -9,10 +9,12 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function ProfessorCenteredModal(props) {
+  const { existingProfessor, handleInsert, handleEdit } = props;
   const [professorName, setProfessorName] = useState(
-    props?.existingProfessor?.nombre || ""
+    existingProfessor?.nombre || ""
   );
-  const [id, setId] = useState(props?.existingProfessor?.nifNie || "");
+  const [id, setId] = useState(existingProfessor?.id || "");
+  const [nifNie, setNifNie] = useState(existingProfessor?.nifNie || "");
   const [professorClasses, setProfessorClasses] = useState([]);
   const [allClasses, setAllClasses] = useState([]);
   const [errors, setErrors] = useState({});
@@ -37,9 +39,9 @@ function ProfessorCenteredModal(props) {
     });
     responseData = await response.json();
     setAllClasses(responseData.map(clase => clase.nombre));
-    if (props.existingProfessor) {
+    if (existingProfessor) {
       response = await fetch(
-        backUrl + `/clase/profesor/${props.existingProfessor.id}`,
+        backUrl + `/clase/profesor/${existingProfessor.id}`,
         {
           method: "GET",
           headers: {
@@ -73,6 +75,13 @@ function ProfessorCenteredModal(props) {
         setErrors({});
         setId(value);
         break;
+      case "nifNie":
+        setFeedbacks({
+          nifNie: ""
+        });
+        setErrors({});
+        setNifNie(value);
+        break;
       case "professorClasses":
         setFeedbacks({
           professorClasses: ""
@@ -98,7 +107,7 @@ function ProfessorCenteredModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          {props.existingProfessor ? (
+          {existingProfessor ? (
             <div>Propiedades del profesor </div>
           ) : (
             <div>Insertar profesor</div>
@@ -130,10 +139,10 @@ function ProfessorCenteredModal(props) {
               required
               type="text"
               placeholder="Introduzca el NIF/NIE"
-              name="id"
+              name="nifNie"
               onChange={updateFormState}
-              value={id}
-              isInvalid={!!errors.id}
+              value={nifNie}
+              isInvalid={!!errors.nifNie}
             />
             <Form.Text className="text-muted">
               Debe ser único en el centro
@@ -175,30 +184,18 @@ function ProfessorCenteredModal(props) {
         <Button onClick={props.onHide}>Cancelar</Button>
         <Button
           onClick={() => {
-            if (props.existingProfessor) {
-              props.onInsert(
-                professorName,
-                id,
-                professorClasses
-              );
+            if (!existingProfessor) {
+              handleInsert(id, professorName, nifNie, professorClasses);
             } else {
-              props.onEdit(
-                professorName,
-                id,
-                professorClasses
-              );
+              handleEdit(id, professorName, nifNie, professorClasses);
             }
             props.onHide();
           }}
           disabled={
-            id === "" || professorName === "" || professorClasses === ""
+            nifNie === "" || professorName === "" || professorClasses === ""
           }
         >
-          {props.existingProfessor ? (
-            <div>Aplicar cambios </div>
-          ) : (
-            <div>Añadir</div>
-          )}
+          {existingProfessor ? <div>Aplicar cambios </div> : <div>Añadir</div>}
         </Button>
       </Modal.Footer>
     </Modal>

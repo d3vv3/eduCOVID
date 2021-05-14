@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -111,6 +112,43 @@ public class CentroResource {
 					return Response.status(Response.Status.CONFLICT).build();
 				}
 			}
+		}
+		return Response.ok().build();
+	}
+	
+	@PUT
+	@Secured
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/update/professor/{nombreCentro}/{nifNie}")
+	public Response updateProfesorEnCentro(@PathParam("nifNie") String nifNie, @PathParam("nombreCentro") String nombreCentro,
+			List<String> clasesProfesor) {
+		// Create classes list from list of classes names
+		List<Clase> clases = new ArrayList<>();
+		for (String nombreClase : clasesProfesor) {
+			Clase clase = ClaseDAOImpl.getInstance().readClasebyName(nombreClase, nombreCentro);
+			clases.add(clase);
+		}
+		Profesor profesor = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(nifNie);
+		if (profesor == null) return Response.status(Response.Status.CONFLICT).build();
+		// Remove the professor from all classes
+		List<Clase> allClasses = ClaseDAOImpl.getInstance().readAllClases(nombreCentro);
+		for (Clase c : allClasses) {
+			Set<Profesor> oldProfesores = c.getProfesores();
+			Set<Profesor> newProfesores = new HashSet<>();
+			oldProfesores.forEach((old) -> {
+				if (!old.getNifNie().equals(nifNie)) {
+					newProfesores.add(old);
+				}
+			});
+			c.setProfesores(newProfesores);
+			ClaseDAOImpl.getInstance().updateClase(c);
+		}
+		// Add professor to the classes it should be in
+		for (Clase c : clases) {
+			Set<Profesor> newProfesores = c.getProfesores();
+			newProfesores.add(profesor);
+			c.setProfesores(newProfesores);
+			ClaseDAOImpl.getInstance().updateClase(c);
 		}
 		return Response.ok().build();
 	}

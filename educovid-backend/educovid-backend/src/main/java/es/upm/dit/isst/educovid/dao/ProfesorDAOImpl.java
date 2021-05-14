@@ -100,6 +100,19 @@ public class ProfesorDAOImpl implements ProfesorDAO {
 
 	@Override
 	public Profesor deleteProfesor(Profesor profesor) {
+		List<Clase> allClasses = ClaseDAOImpl.getInstance().readAllClases();
+		for (Clase c : allClasses) {
+			Set<Profesor> oldProfesores = c.getProfesores();
+			Set<Profesor> newProfesores = new HashSet<>();
+			oldProfesores.forEach((e) -> {
+				if (!e.getId().equals(profesor.getId())) {
+					// System.out.print("Profesor " + e.getNombre() + " anadido a " + c.getNombre() + " \n");
+					newProfesores.add(e);
+				}
+			});
+			c.setProfesores(newProfesores);
+			ClaseDAOImpl.getInstance().updateClase(c);
+		}
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
 		session.delete(profesor);

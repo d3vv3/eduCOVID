@@ -18,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.upm.dit.isst.educovid.anotation.Secured;
+import es.upm.dit.isst.educovid.aux.Security;
 import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
 import es.upm.dit.isst.educovid.model.Clase;
@@ -57,9 +58,14 @@ public class ProfesorResource {
 	@Path("/{id}")
 	public Response updateProfesor(@PathParam("id") String id, Profesor p) {
 		Profesor pold = ProfesorDAOImpl.getInstance().readProfesorbyId(id);
-	    if ((pold == null) || (! pold.getNifNie().equals(p.getNifNie()))) {
+	    if ((pold == null)) {
 	    	return Response.notModified().build();
 	    }
+		System.out.println("UPDATING PROFESOR");
+		String salt = Security.getSalt();
+		String hash = Security.getHash(p.getNifNie(), salt);
+		p.setSalt(salt);
+		p.setHash(hash);
 	    ProfesorDAOImpl.getInstance().updateProfesor(p);
 	    return Response.ok(p, MediaType.APPLICATION_JSON).build();
 	}
