@@ -21,10 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.upm.dit.isst.educovid.anotation.Secured;
-<<<<<<< HEAD
 import es.upm.dit.isst.educovid.aux.Security;
-=======
->>>>>>> 152ba8bc4a89e5e48a5f1f4ce1be291a56aacf43
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
 import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
@@ -68,7 +65,7 @@ public class GrupoBurbujaResource {
 							confinados = true;
 						}
 					}
-					
+
 					if(confinados) {
 						//gruposFront.add(new GrupoBurbuja(clase.getNombre() + " - " + grupo.getNombre(), "alumnosconfinados", null, null, null, null));
 						Map<String,String> g = new HashMap<String,String>();
@@ -89,7 +86,7 @@ public class GrupoBurbujaResource {
 			return Response.ok(gruposFront, MediaType.APPLICATION_JSON).build();
 		}
 	}
-	
+
 	@GET
 	@Path("/alumno/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -100,11 +97,11 @@ public class GrupoBurbujaResource {
 		GrupoBurbuja gNew = new GrupoBurbuja(g.getNombre(), g.getEstadoSanitario(), null, null, null, null);
 		return Response.ok(gNew, MediaType.APPLICATION_JSON).build();
 	}
-	
+
 	//Métodos rest para gestionar centro parte de grupos
 
 	@POST
- 	//@Secured
+ 	@Secured
  	@Consumes(MediaType.APPLICATION_JSON)
  	@Path("/insert/grupoburbuja/{nombreCentro}/{nombreClase}")
  	public Response insertGrupoEnClase(GrupoBurbuja grupoNuevo, @PathParam("nombreCentro") String nombreCentro, @PathParam("nombreClase") String nombreClase) {
@@ -128,10 +125,10 @@ public class GrupoBurbujaResource {
  		}
  		return Response.ok().build();
  	}
-	
-	
+
+
 	@DELETE
-	//@Secured
+	@Secured
 	@Path("/delete/{nombreClase}/{idGrupo}")
 	public Response deleteGroup(@PathParam("nombreClase") String nombreClase, @PathParam("idGrupo") String idGrupo) {
 		GrupoBurbuja grupo = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(idGrupo);
@@ -144,29 +141,41 @@ public class GrupoBurbujaResource {
  		}
 		clase.setGruposBurbuja(grupos);
 		if (grupo == null || idGrupo == null) return Response.status(Response.Status.CONFLICT).build();
-		
+
 		GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(grupo);
 		return Response.ok(MediaType.APPLICATION_JSON).build();
 	}
-	
+
 	@PUT
-	//@Secured
+	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/{id}")
-	public Response updateGroup(@PathParam("id") String id, GrupoBurbuja g) {
-		GrupoBurbuja gOld = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(id);
-	    if (gOld == null || (! gOld.getId().equals(g.getId()))) {
+	@Path("/{nombreClase}/{idGrupo}")
+	public Response updateGroup(@PathParam("nombreClase") String nombreClase, @PathParam("idGrupo") String idGrupo, GrupoBurbuja gNew) {
+		GrupoBurbuja gOld = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(idGrupo);
+		if (gOld == null) {
 	    	return Response.notModified().build();
+	    }else {
+		    GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(gNew);
+			Clase clase = ClaseDAOImpl.getInstance().readClasebyName(nombreClase);
+			List<GrupoBurbuja> grupos = clase.getGruposBurbuja();
+		    for (GrupoBurbuja g : clase.getGruposBurbuja()) {
+	 			if (g.getId().equals(idGrupo)) {
+	 				grupos.remove(g);
+	 				grupos.add(gNew);
+	 			}
+	 		}
+		    clase.setGruposBurbuja(grupos);
+		    return Response.ok(gNew, MediaType.APPLICATION_JSON).build();
+
 	    }
-	    
-	    GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(g);
-	    return Response.ok(g, MediaType.APPLICATION_JSON).build();
-	}
-	
+		 
+
+	    	}
+
 	@GET
-	//@Secured
-	@Path("/{id}")
+	@Secured
+	@Path("/delete/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readGrpuoById(@PathParam("id") String id) {
 		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(id);
@@ -175,5 +184,5 @@ public class GrupoBurbujaResource {
 		}
 		return Response.ok(g, MediaType.APPLICATION_JSON).build();
 	}
-	
+
 }
