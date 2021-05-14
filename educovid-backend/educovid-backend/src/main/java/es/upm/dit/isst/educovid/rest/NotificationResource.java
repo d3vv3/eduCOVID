@@ -409,16 +409,19 @@ public class NotificationResource {
 	@GET
 	@Path("/subscription/exists/alumno/{userId}")
 	public Response readAlreadySubscribed(@PathParam("userId") String userId) {
-		try {
-			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyId(userId);
-			if (alumno.getAuth() != null)
-				return Response.status(Response.Status.OK).build();
-			else
-				return Response.status(Response.Status.NOT_FOUND).build();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		if (Integer.parseInt(userId) != -1) {
+			try {
+				Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyId(userId);
+				if (alumno.getAuth() != null)
+					return Response.status(Response.Status.OK).build();
+				else
+					return Response.status(Response.Status.NOT_FOUND).build();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			}
 		}
+		return Response.status(Response.Status.NOT_FOUND).build();
 	}
 
 }
