@@ -220,13 +220,16 @@ function StudentCenteredModal(props) {
               );
             } else {
               handleEdit({
-                id: existingStudent.id,
+                id: existingStudent?.id,
                 name: studentName,
                 numMat: numMat,
+                subscriptionEndpoint: existingStudent?.subscriptionEndpoint,
+                p256dh: existingStudent?.p256dh,
+                auth: existingStudent?.auth,
                 studentClass: studentClass,
                 studentBubbleGroup: studentBubbleGroup,
-                healthState: existingStudent.estadoSanitario,
-                confineDate: existingStudent.fechaConfinamiento
+                healthState: existingStudent?.estadoSanitario,
+                confineDate: existingStudent?.fechaConfinamiento
               });
             }
             props.onHide();

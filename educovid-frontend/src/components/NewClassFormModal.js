@@ -9,10 +9,11 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function ClassCenteredModal(props) {
+  const { existingClass, handleEdit, handleInsert } = props;
   const [invidClassName, setIndivClassName] = useState(
-    props?.existingClass?.nombre || ""
+    existingClass?.nombre || ""
   );
-  const [id, setId] = useState(props?.existingClass?.nifNie || "");
+  const [id, setId] = useState(existingClass?.id || "");
   const [classProfessors, setClassProfessors] = useState([]);
   const [allProfessors, setAllProfessors] = useState([]);
   const [errors, setErrors] = useState({});
@@ -35,10 +36,11 @@ function ClassCenteredModal(props) {
       }
     });
     responseData = await response.json();
-    setAllProfessors(responseData);
+    setAllProfessors(responseData.sort((a, b) => a.id - b.id));
     if (props.existingClass) {
       response = await fetch(
-        backUrl + `/professor/professors/${props.centro}/${props.existingClass.nombre}`,
+        backUrl +
+          `/professor/professors/${props.centro}/${props.existingClass.nombre}`,
         {
           method: "GET",
           headers: {
@@ -48,7 +50,7 @@ function ClassCenteredModal(props) {
         }
       );
       responseData = await response.json();
-      setClassProfessors(responseData);
+      setClassProfessors(responseData.map(p => p.id.toString()));
     }
   };
 
@@ -59,8 +61,7 @@ function ClassCenteredModal(props) {
     //console.log(name, value);
     switch (name) {
       case "indivClassName":
-        setFeedbacks({
-        });
+        setFeedbacks({});
         setErrors({});
         setIndivClassName(value);
         break;
@@ -71,7 +72,7 @@ function ClassCenteredModal(props) {
         setErrors({});
         let values = Array.prototype.slice
           .call(event.target.selectedOptions)
-          .map(item => item.value);
+          .map(item => item.value.toString());
         setClassProfessors(values);
         break;
       default:
@@ -89,7 +90,7 @@ function ClassCenteredModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          {props.existingClass ? (
+          {existingClass ? (
             <div>Propiedades de la clase</div>
           ) : (
             <div>Añadir clase</div>
@@ -115,7 +116,7 @@ function ClassCenteredModal(props) {
             <Form.Control.Feedback type="valid">Perfecto</Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="classProfessors" className="classes">
-            <Form.Label>Clases del profesor</Form.Label>
+            <Form.Label>Profesores de la clase</Form.Label>
             <Form.Control
               as="select"
               name="classProfessors"
@@ -124,15 +125,15 @@ function ClassCenteredModal(props) {
               isInvalid={!!errors.classProfessors}
             >
               {(allProfessors || []).map(professor => {
-                if (classProfessors.includes(professor)) {
+                if (classProfessors.includes(professor.id.toString())) {
                   return (
-                    <option selected key={professor.id} value={professor.nifNie}>
+                    <option selected key={professor.id} value={professor.id}>
                       {professor.nombre}
                     </option>
                   );
                 } else {
                   return (
-                    <option key={professor.id} value={professor.nifNie}>
+                    <option key={professor.id} value={professor.id}>
                       {professor.nombre}
                     </option>
                   );
@@ -146,28 +147,32 @@ function ClassCenteredModal(props) {
         <Button onClick={props.onHide}>Cancelar</Button>
         <Button
           onClick={() => {
-            if (props.existingClass) {
-              props.onInsert(
-                invidClassName,
-                classProfessors
-              );
+            if (!existingClass) {
+              handleInsert(invidClassName, classProfessors);
             } else {
-              props.onEdit(
-                invidClassName,
-                classProfessors
-              );
+              handleEdit({
+                id,
+                nombre: invidClassName,
+                burbujaPresencial: existingClass?.burbujaPresencial,
+                fechaInicioConmutacion: existingClass?.fechaInicioConmutacion,
+                tiempoConmutacion: existingClass?.tiempoConmutacion,
+                profesores: allProfessors
+                  .map(p => {
+                    if (classProfessors.includes(p.id.toString())) {
+                      return p.id;
+                    } else {
+                      return false;
+                    }
+                  })
+                  .filter(p => p),
+                gruposBurbuja: existingClass?.gruposBurbuja
+              });
             }
             props.onHide();
           }}
-          disabled={
-            invidClassName === "" || classProfessors === ""
-          }
+          disabled={invidClassName === "" || classProfessors === ""}
         >
-          {props.existingClass ? (
-            <div>Aplicar cambios </div>
-          ) : (
-            <div>Añadir</div>
-          )}
+          {existingClass ? <div>Aplicar cambios </div> : <div>Añadir</div>}
         </Button>
       </Modal.Footer>
     </Modal>

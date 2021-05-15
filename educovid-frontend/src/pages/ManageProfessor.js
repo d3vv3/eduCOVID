@@ -83,7 +83,17 @@ function ManageProfessor(props) {
     }
   };
 
-  const handleEditProfessor = async (id, name, nifNie, professorClasses) => {
+  const handleEditProfessor = async (
+    id,
+    name,
+    nifNie,
+    professorClasses,
+    estadoSanitario,
+    subscriptionEndpoint,
+    p256dh,
+    auth,
+    fechaConfinamiento
+  ) => {
     console.log("EDIT PROFE");
     // Create updated professor
     const newProfessor = {
@@ -91,12 +101,12 @@ function ManageProfessor(props) {
       nombre: name,
       hash: "",
       salt: "",
-      subscriptionEndpoint: null,
-      p256dh: null,
-      auth: null,
+      subscriptionEndpoint,
+      p256dh,
+      auth,
       nifNie,
-      estadoSanitario: "no confinado",
-      fechaConfinamiento: null
+      estadoSanitario,
+      fechaConfinamiento
     };
     try {
       // Update professor on backend

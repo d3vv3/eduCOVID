@@ -237,6 +237,24 @@ public class CentroResource {
 		}
 		return Response.ok().build();
 	}
+	
+	@PUT
+	@Secured
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/update/class/{nombreCentro}/{id}")
+	public Response updateClaseEnCentro(List<String> idProfes, @PathParam("nombreCentro") String nombreCentro, @PathParam("id") String id) {
+		Set<Profesor> profesores = new HashSet<Profesor>();
+		for (String p : idProfes) {
+			Profesor profe = ProfesorDAOImpl.getInstance().readProfesorbyId(p);
+			profesores.add(profe);
+		}
+		Clase clase = ClaseDAOImpl.getInstance().readClasebyId(id);
+		clase.setProfesores(profesores);
+		ClaseDAOImpl.getInstance().updateClase(clase);
+		return Response.ok().build();
+	}
+	
 
 	@POST
 	@Secured

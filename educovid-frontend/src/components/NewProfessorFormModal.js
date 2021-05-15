@@ -187,7 +187,17 @@ function ProfessorCenteredModal(props) {
             if (!existingProfessor) {
               handleInsert(id, professorName, nifNie, professorClasses);
             } else {
-              handleEdit(id, professorName, nifNie, professorClasses);
+              handleEdit(
+                id,
+                professorName,
+                nifNie,
+                professorClasses,
+                existingProfessor?.estadoSanitario,
+                existingProfessor?.subscriptionEndpoint,
+                existingProfessor?.p256dh,
+                existingProfessor?.auth,
+                existingProfessor?.fechaConfinamiento
+              );
             }
             props.onHide();
           }}

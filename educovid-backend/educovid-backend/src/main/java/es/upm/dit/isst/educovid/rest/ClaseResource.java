@@ -9,6 +9,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.Response;
 import es.upm.dit.isst.educovid.anotation.Secured;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
+import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.Clase;
@@ -115,7 +117,7 @@ public class ClaseResource {
 		return Response.ok(c, MediaType.APPLICATION_JSON).build();
 	}
 	
-	@POST
+	@PUT
 	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -131,12 +133,14 @@ public class ClaseResource {
 	
 	@DELETE
 	@Secured
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
 	public Response deleteClase(@PathParam("id") String id) {
 		Clase c = ClaseDAOImpl.getInstance().readClasebyId(id);
 		if (c == null)
 			return Response.notModified().build();
 		ClaseDAOImpl.getInstance().deleteClase(c);
-		return Response.ok(c, MediaType.APPLICATION_JSON).build();
+		return Response.status(Response.Status.OK).build();
 	}
 }

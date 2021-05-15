@@ -24,6 +24,7 @@ function ManageClass(props) {
   }, []);
 
   const retrieveClasses = async () => {
+    console.log("Refrescando clases");
     const token = localStorage.getItem("token") || "";
     let response;
     let responseData;
@@ -49,8 +50,7 @@ function ManageClass(props) {
     };
     try {
       const res0 = await fetch(
-        backUrl +
-        `/centro/insert/class/${userData?.centro}`,
+        backUrl + `/centro/insert/class/${userData?.centro}`,
         {
           method: "POST",
           headers: {
@@ -60,7 +60,7 @@ function ManageClass(props) {
           body: JSON.stringify(newClass)
         }
       );
-      console.log(res0);
+      // console.log(res0);
       if (!res0.ok) {
         alert(`Hubo un fallo al crear la clase`);
       } else {
@@ -69,9 +69,9 @@ function ManageClass(props) {
       classProfessors.forEach(async professor => {
         const res = await fetch(
           backUrl +
-          `/centro/insert/class/${userData?.centro}/${encodeURIComponent(
-            professor
-          )}`,
+            `/centro/insert/class/${userData?.centro}/${encodeURIComponent(
+              professor
+            )}`,
           {
             method: "POST",
             headers: {
@@ -94,25 +94,72 @@ function ManageClass(props) {
     }
   };
 
-  const onEditClass = async (name, classProfessors) => {
-    await onInsertClass(name, classProfessors);
+  const onEditClass = async ({
+    id,
+    nombre,
+    burbujaPresencial,
+    fechaInicioConmutacion,
+    tiempoConmutacion,
+    profesores,
+    gruposBurbuja
+  }) => {
+    const newClass = {
+      id,
+      nombre,
+      burbujaPresencial,
+      fechaInicioConmutacion,
+      tiempoConmutacion,
+      profesores,
+      gruposBurbuja
+    };
+    try {
+      // console.log(newClass);
+      const res = await fetch(
+        backUrl + `/centro/update/class/${userData?.centro}/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(profesores)
+        }
+      );
+      // console.log(await res.json());
+      if (!res.ok) {
+        alert(`Hubo un fallo al modificar la clase`);
+      } else {
+        setShowNewModal(false);
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      retrieveClasses();
+    }
   };
 
-  const handleDelete = async () => { // TODO
-    let pendingDeletes = selected.map(professor => {
-      return fetch(backUrl + `/professor/${professor.id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-          "Content-Type": "application/json; charset=UTF-8"
-        },
-        body: JSON.stringify(professor)
+  const handleDelete = async () => {
+    try {
+      selected.forEach(async clase => {
+        let res = await fetch(backUrl + `/clase/${clase.id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+            "Content-Type": "application/json; charset=UTF-8"
+          }
+          // body: JSON.stringify(clase)
+        });
+        console.log(await res);
+        if (!res.ok) {
+          console.log(await res.json());
+          alert(`Hubo un fallo al borrar la clase`);
+        }
       });
-    });
-    let responses = await Promise.all(pendingDeletes);
-    responses.some(response =>
-      !response.ok ? alert(`Hubo un fallo al borrar un profesor`) : null
-    );
+    } catch (e) {
+      console.log(e);
+    } finally {
+      retrieveClasses();
+    }
   };
 
   return (
@@ -151,7 +198,7 @@ function ManageClass(props) {
                 key={index}
                 onClick={e => {
                   if (selected.some(e => e.nombre === indivClass.nombre)) {
-                    var filtered = selected.filter(function (value, index, arr) {
+                    var filtered = selected.filter(function(value, index, arr) {
                       return value.nombre !== indivClass.nombre;
                     });
                     setSelected(filtered);
@@ -201,7 +248,7 @@ function ManageClass(props) {
               <Button
                 variant="primary"
                 className="nord-button red"
-                onClick={e => {
+                onClick={async e => {
                   if (selected.length > 0) {
                     handleDelete();
                     setSelected([]);
@@ -226,8 +273,8 @@ function ManageClass(props) {
             setShowEditModal(false);
             setSelected([]);
           }}
-          onInsert={onInsertClass}
-          onEdit={onEditClass}
+          handleInsert={onInsertClass}
+          handleEdit={onEditClass}
         />
       ) : null}
     </div>
