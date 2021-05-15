@@ -54,12 +54,8 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 
 	@Override
 	public Alumno readAlumnobyMatNumCenter(String numeroMatricula, String centro) {
-		List<Alumno> alumnos = new ArrayList<Alumno>();
-		Session session = SessionFactoryService.get().openSession();
-		session.beginTransaction();
-		alumnos.addAll(session.createQuery("from Alumno").list());
-		session.getTransaction().commit();
-		session.close();
+		List<Alumno> alumnos = this.readAllAlumnos();
+		System.out.println(alumnos.toString());
 		System.out.println("Centro received: " + centro.trim().toLowerCase());
 		for (Alumno alumno : alumnos) {
 			String centroAlumno = this.getNombreCentro(alumno);
@@ -79,7 +75,7 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 	public Alumno readAlumnobyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		Alumno alumno = session.get(Alumno.class, Integer.parseInt(id));
+		Alumno alumno = session.get(Alumno.class, Long.parseLong(id));
 		session.getTransaction().commit();
 		session.close();
 		return alumno;

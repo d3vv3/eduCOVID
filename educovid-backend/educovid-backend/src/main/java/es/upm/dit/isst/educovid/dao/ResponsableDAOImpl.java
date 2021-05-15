@@ -98,7 +98,7 @@ public class ResponsableDAOImpl implements ResponsableDAO{
 	public ResponsableCOVID readResponsablebyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		ResponsableCOVID responsable = session.get(ResponsableCOVID.class, Integer.parseInt(id));
+		ResponsableCOVID responsable = session.get(ResponsableCOVID.class, Long.parseLong(id));
 		session.getTransaction().commit();
 		session.close();
 		return responsable;

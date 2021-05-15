@@ -5,7 +5,7 @@ import es.upm.dit.isst.educovid.model.Usuario;
 public interface UsuarioDAO {
 
 	public Usuario createUsuario (Usuario Usuario);
-	public Usuario readUsuariobyId(Integer id);
+	public Usuario readUsuariobyId(String id);
 	public Usuario readUsuariobyName(String name);
 	public Usuario updateUsuario (Usuario Usuario);
 	public Usuario updateUsuariobyId (String id);

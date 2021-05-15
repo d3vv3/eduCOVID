@@ -409,7 +409,7 @@ public class NotificationResource {
 	@GET
 	@Path("/subscription/exists/alumno/{userId}")
 	public Response readAlreadySubscribed(@PathParam("userId") String userId) {
-		if (Integer.parseInt(userId) != -1) {
+		if (Long.parseLong(userId) != -1) {
 			try {
 				Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyId(userId);
 				if (alumno.getAuth() != null)

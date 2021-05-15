@@ -53,7 +53,7 @@ public class ClaseDAOImpl implements ClaseDAO {
 	public Clase readClasebyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		Clase clase = session.get(Clase.class, Integer.parseInt(id));
+		Clase clase = session.get(Clase.class, Long.parseLong(id));
 		session.getTransaction().commit();
 		session.close();
 		return clase;

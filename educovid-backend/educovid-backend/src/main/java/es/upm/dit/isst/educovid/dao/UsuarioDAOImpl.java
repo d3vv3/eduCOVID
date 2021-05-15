@@ -33,12 +33,12 @@ public class UsuarioDAOImpl implements UsuarioDAO{
 	}
 
 	@Override
-	public Usuario readUsuariobyId(Integer id) {
+	public Usuario readUsuariobyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
         Alumno alumno =  session.get(Alumno.class, id);
         Profesor profesor =  session.get(Profesor.class, id);
-        ResponsableCOVID responsable =  session.get(ResponsableCOVID.class, id);
+        ResponsableCOVID responsable =  session.get(ResponsableCOVID.class, Long.parseLong(id));
         if (alumno != null)
         	return (Usuario) alumno;
         if (profesor != null)

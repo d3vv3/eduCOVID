@@ -72,7 +72,7 @@ public class ClaseResource {
 			for (Clase c: clases) {
 				for (GrupoBurbuja gc : c.getGruposBurbuja()) {
 					for (Alumno al : gc.getAlumnos()) {
-						if (al.getId().equals(Integer.parseInt(alumnoId))) {
+						if (al.getId().equals(Long.parseLong(alumnoId))) {
 							datos.put("nombreClase", c.getNombre());
 							datos.put("grupoPresencial", String.valueOf(gc.getId().equals(c.getBurbujaPresencial().getId())));
 							return Response.ok(datos, MediaType.APPLICATION_JSON).build();

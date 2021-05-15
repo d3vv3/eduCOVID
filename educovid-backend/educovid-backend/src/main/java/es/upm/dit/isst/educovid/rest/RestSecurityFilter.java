@@ -67,7 +67,7 @@ public class RestSecurityFilter implements ContainerRequestFilter {
 			SecurityContext originalContext = requestContext.getSecurityContext();
 			Set<String> roles = new HashSet<>();
 			roles.add(role);
-			Authorizer authorizer = new Authorizer(roles, Integer.parseInt(userId), "admin", center,
+			Authorizer authorizer = new Authorizer(roles, Long.parseLong(userId), "admin", center,
 					originalContext.isSecure());
 			requestContext.setSecurityContext(authorizer);
 
@@ -80,12 +80,12 @@ public class RestSecurityFilter implements ContainerRequestFilter {
 	public static class Authorizer implements SecurityContext {
 
 		Set<String> roles;
-		Integer id;
+		Long id;
 		String username;
 		String center;
 		boolean isSecure;
 
-		public Authorizer(Set<String> roles, final Integer id, final String username, final String center,
+		public Authorizer(Set<String> roles, final Long id, final String username, final String center,
 				boolean isSecure) {
 			this.id = id;
 			this.roles = roles;
@@ -116,17 +116,17 @@ public class RestSecurityFilter implements ContainerRequestFilter {
 	}
 
 	public static class SecurityUser implements Principal {
-		Integer id;
+		Long id;
 		String name;
 		String center;
 
-		public SecurityUser(Integer id, String name, String center) {
+		public SecurityUser(Long id, String name, String center) {
 			this.id = id;
 			this.name = name;
 			this.center = center;
 		}
 
-		public Integer getId() {
+		public Long getId() {
 			return id;
 		}
 

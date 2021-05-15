@@ -52,7 +52,7 @@ public class ProfesorDAOImpl implements ProfesorDAO{
 	public Profesor readProfesorbyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		Profesor profesor = session.get(Profesor.class, Integer.parseInt(id));
+		Profesor profesor = session.get(Profesor.class, Long.parseLong(id));
 		session.getTransaction().commit();
 		session.close();
 		return profesor;

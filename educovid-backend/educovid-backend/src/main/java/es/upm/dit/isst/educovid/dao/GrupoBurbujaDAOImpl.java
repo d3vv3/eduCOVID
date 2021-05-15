@@ -39,7 +39,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 	public GrupoBurbuja readGrupoBurbujabyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        GrupoBurbuja grupoBurbuja = session.get(GrupoBurbuja.class, Integer.parseInt(id));
+        GrupoBurbuja grupoBurbuja = session.get(GrupoBurbuja.class, Long.parseLong(id));
         session.getTransaction().commit();
         session.close();
         return grupoBurbuja;
@@ -47,7 +47,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 	
 	@SuppressWarnings("unchecked")
 	public GrupoBurbuja readGrupoBurbujabyAlumnoId(String id) {
-		Integer idNew = Integer.parseInt(id);
+		Long idNew = Long.parseLong(id);
 		List<GrupoBurbuja> gruposBurbuja = new ArrayList<GrupoBurbuja> ();
 		System.out.println("Alumno con id " + id);
 		GrupoBurbuja grupoBurbuja = null;

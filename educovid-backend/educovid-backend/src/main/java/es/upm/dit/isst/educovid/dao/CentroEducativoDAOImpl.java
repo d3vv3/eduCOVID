@@ -89,7 +89,7 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO {
 	public CentroEducativo readCentroEducativobyId(String id) {
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
-		CentroEducativo centroEducativo = session.get(CentroEducativo.class, id);
+		CentroEducativo centroEducativo = session.get(CentroEducativo.class, Long.parseLong(id));
 		session.getTransaction().commit();
 		session.close();
 		return centroEducativo;
