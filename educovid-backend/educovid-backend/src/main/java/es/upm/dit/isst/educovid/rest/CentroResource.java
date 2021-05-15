@@ -79,6 +79,55 @@ public class CentroResource {
 		}
 		return Response.ok().build();
 	}
+	
+	
+	@PUT
+	@Secured
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/update/alumno/{nombreCentro}/{nombreClase}/{nombreGrupo}")
+	public Response updateAlumnoEnCentro(Alumno alumno, @PathParam("nombreCentro") String nombreCentro,
+			@PathParam("nombreClase") String nombreClase, @PathParam("nombreGrupo") String nombreGrupo) {
+		String salt = Security.getSalt();
+		String hash = Security.getHash(alumno.getNumeroMatricula(), salt);
+		alumno.setSalt(salt);
+		alumno.setHash(hash);
+		Alumno a = AlumnoDAOImpl.getInstance().updateAlumno(alumno);
+		CentroEducativo centro = CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(nombreCentro);
+		GrupoBurbuja grupoAlumno = null;
+		// Delete from previous group
+		GrupoBurbuja oldGrupo = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyAlumnoId(a.getId());
+		List<Alumno> updatedAlumnos = new ArrayList<>();
+		for (Alumno s : oldGrupo.getAlumnos()) {
+			if (!s.getId().equals(a.getId())) {
+				updatedAlumnos.add(s);
+			}
+		}
+		oldGrupo.setAlumnos(updatedAlumnos);
+		GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(oldGrupo);
+		// Add to selected group
+		for (Clase c : centro.getClases()) {
+			if (c.getNombre().equals(nombreClase)) {
+				for (GrupoBurbuja g : c.getGruposBurbuja()) {
+					if (g.getNombre().equals(nombreGrupo)) {
+						grupoAlumno = g;
+					}
+				}
+			}
+		}
+		if (grupoAlumno == null || a == null)
+			return Response.status(Response.Status.CONFLICT).build();
+		List<Alumno> alumnos = grupoAlumno.getAlumnos();
+		alumnos.add(a);
+		grupoAlumno.setAlumnos(alumnos);
+		try {
+			GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(grupoAlumno);
+		} catch (Exception e) {
+			AlumnoDAOImpl.getInstance().deleteAlumno(alumno);
+			return Response.status(Response.Status.CONFLICT).build();
+		}
+		return Response.ok().build();
+	}
+	
 
 	@POST
 	@Secured

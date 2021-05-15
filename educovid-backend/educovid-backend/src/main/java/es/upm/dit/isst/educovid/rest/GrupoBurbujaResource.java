@@ -94,7 +94,7 @@ public class GrupoBurbujaResource {
 	@Path("/alumno/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readGrupoAlumnobyId(@PathParam("id") String id) {
-		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyAlumnoId(id);
+		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyAlumnoId(Integer.parseInt(id));
 		if (g == null)
 			return Response.status(Response.Status.NOT_FOUND).build();
 		GrupoBurbuja gNew = new GrupoBurbuja(g.getNombre(), g.getEstadoSanitario(), null, null, null, null);

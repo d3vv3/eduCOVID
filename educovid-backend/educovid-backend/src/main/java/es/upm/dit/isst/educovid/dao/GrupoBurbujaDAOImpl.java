@@ -46,8 +46,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public GrupoBurbuja readGrupoBurbujabyAlumnoId(String id) {
-		Integer idNew = Integer.parseInt(id);
+	public GrupoBurbuja readGrupoBurbujabyAlumnoId(Integer id) {
 		List<GrupoBurbuja> gruposBurbuja = new ArrayList<GrupoBurbuja> ();
 		System.out.println("Alumno con id " + id);
 		GrupoBurbuja grupoBurbuja = null;
@@ -56,7 +55,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
         gruposBurbuja.addAll(session.createQuery("from GrupoBurbuja").list());
         for (GrupoBurbuja g : gruposBurbuja) {
         	for (Alumno a : g.getAlumnos()) {
-        		if (a.getId().equals(idNew)) {
+        		if (a.getId().equals(id)) {
         			grupoBurbuja = g;
             		session.getTransaction().commit();
                     session.close();

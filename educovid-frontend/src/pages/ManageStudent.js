@@ -66,17 +66,50 @@ function ManageStudent(props) {
     refreshStudents();
   };
 
-  const onEditStudent = async (
+  const onEditStudent = async ({
+    id,
     name,
     numMat,
     studentClass,
     studentBubbleGroup,
-    errors,
-    feedbacks,
-    setErrors,
-    setFeedbacks
-  ) => {
-    await onInsertStudent(name, numMat, studentClass, studentBubbleGroup);
+    healthState,
+    confineDate
+  }) => {
+    const newStudent = {
+      id,
+      nombre: name,
+      hash: "",
+      salt: "",
+      subscriptionEndpoint: null,
+      p256dh: null,
+      auth: null,
+      numeroMatricula: numMat,
+      estadoSanitario: healthState,
+      fechaConfinamiento: confineDate
+    };
+    try {
+      const res = await fetch(
+        backUrl +
+          `/centro/update/alumno/${userData?.centro}/${studentClass}/${studentBubbleGroup}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+          body: JSON.stringify(newStudent)
+        }
+      );
+      if (!res.ok) {
+        alert("Hubo un fallo al actualizar el alumno");
+      } else {
+        setShowNewModal(false);
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      refreshStudents();
+    }
   };
 
   const onInsertStudent = async (
@@ -120,10 +153,6 @@ function ManageStudent(props) {
     refreshStudents();
   };
 
-  const getListOnSelectedType = () => {
-    return students;
-  };
-
   const handleDelete = async () => {
     let pendingDeletes = selected.map(student => {
       return fetch(backUrl + `/alumno/${student.id}`, {
@@ -131,8 +160,8 @@ function ManageStudent(props) {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
           "Content-Type": "application/json; charset=UTF-8"
-        },
-        body: JSON.stringify(student)
+        }
+        // body: JSON.stringify(student)
       });
     });
     let responses = await Promise.all(pendingDeletes);
@@ -354,8 +383,8 @@ function ManageStudent(props) {
             setShowEditModal(false);
             setSelected([]);
           }}
-          onInsert={onInsertStudent}
-          onEdit={onEditStudent}
+          handleInsert={onInsertStudent}
+          handleEdit={onEditStudent}
         />
       ) : null}
     </div>

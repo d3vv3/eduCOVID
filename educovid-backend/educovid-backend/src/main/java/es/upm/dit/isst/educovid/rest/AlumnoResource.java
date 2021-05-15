@@ -2,11 +2,14 @@ package es.upm.dit.isst.educovid.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -60,7 +63,7 @@ public class AlumnoResource {
 		return Response.ok(a, MediaType.APPLICATION_JSON).build();
 	}
 	
-	@POST
+	@PUT
 	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -70,6 +73,10 @@ public class AlumnoResource {
 		Alumno antiguo = AlumnoDAOImpl.getInstance().readAlumnobyId(id);
 	    if ((antiguo == null) || (!antiguo.getId().equals(alumno.getId()))) 
 	    	return Response.notModified().build();
+	    String salt = Security.getSalt();
+		String hash = Security.getHash(alumno.getNumeroMatricula(), salt);
+		alumno.setSalt(salt);
+		alumno.setHash(hash);
 	    AlumnoDAOImpl.getInstance().updateAlumno(alumno);
 	    return Response.ok(alumno, MediaType.APPLICATION_JSON).build();
 	}
@@ -81,6 +88,16 @@ public class AlumnoResource {
 		Alumno a = AlumnoDAOImpl.getInstance().readAlumnobyId(id);
 		if (a == null)
 			return Response.notModified().build();
+		// Delete from groups
+		GrupoBurbuja oldGrupo = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyAlumnoId(a.getId());
+		List<Alumno> updatedAlumnos = new ArrayList<>();
+		for (Alumno s : oldGrupo.getAlumnos()) {
+			if (!s.getId().equals(a.getId())) {
+				updatedAlumnos.add(s);
+			}
+		}
+		oldGrupo.setAlumnos(updatedAlumnos);
+		GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(oldGrupo);
 		AlumnoDAOImpl.getInstance().deleteAlumno(a);
 		return Response.ok(a, MediaType.APPLICATION_JSON).build();
 	}

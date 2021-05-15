@@ -9,12 +9,9 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function StudentCenteredModal(props) {
-  const [studentName, setStudentName] = useState(
-    props?.existingStudent?.nombre || ""
-  );
-  const [numMat, setNumMat] = useState(
-    props?.existingStudent?.numeroMatricula || ""
-  );
+  const { existingStudent, handleInsert, handleEdit } = props;
+  const [studentName, setStudentName] = useState(existingStudent?.nombre || "");
+  const [numMat, setNumMat] = useState(existingStudent?.numeroMatricula || "");
   const [studentBubbleGroup, setStudentBubbleGroup] = useState("");
   const [studentClass, setStudentClass] = useState("");
   const [allClasses, setAllClasses] = useState([]);
@@ -40,32 +37,25 @@ function StudentCenteredModal(props) {
     responseData = await response.json();
     // console.log(responseData);
     setAllClasses(responseData);
-    if (props.existingStudent) {
-      response = await fetch(
-        backUrl + `/clase/alumno/${props.existingStudent.id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
+    if (existingStudent) {
+      response = await fetch(backUrl + `/clase/alumno/${existingStudent.id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         }
-      );
+      });
       responseData = await response.json();
       // console.log(responseData);
       setStudentClass(responseData.nombre);
-      response = await fetch(
-        backUrl + `/grupo/alumno/${props.existingStudent.id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
+      response = await fetch(backUrl + `/grupo/alumno/${existingStudent.id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         }
-      );
+      });
       responseData = await response.json();
-      // console.log(responseData);
       setStudentBubbleGroup(responseData.nombre);
     }
   };
@@ -121,7 +111,7 @@ function StudentCenteredModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          {props.existingStudent ? (
+          {existingStudent ? (
             <div>Propiedades del alumno </div>
           ) : (
             <div>Insertar alumno</div>
@@ -220,14 +210,27 @@ function StudentCenteredModal(props) {
       <Modal.Footer>
         <Button onClick={props.onHide}>Cancelar</Button>
         <Button
-          onClick={() =>
-            props.onInsert(
-              studentName,
-              numMat,
-              studentClass,
-              studentBubbleGroup,
-            )
-          }
+          onClick={() => {
+            if (!existingStudent) {
+              handleInsert(
+                studentName,
+                numMat,
+                studentClass,
+                studentBubbleGroup
+              );
+            } else {
+              handleEdit({
+                id: existingStudent.id,
+                name: studentName,
+                numMat: numMat,
+                studentClass: studentClass,
+                studentBubbleGroup: studentBubbleGroup,
+                healthState: existingStudent.estadoSanitario,
+                confineDate: existingStudent.fechaConfinamiento
+              });
+            }
+            props.onHide();
+          }}
           disabled={
             numMat === "" ||
             studentName === "" ||
@@ -235,11 +238,7 @@ function StudentCenteredModal(props) {
             studentClass === ""
           }
         >
-          {props.existingStudent ? (
-            <div>Aplicar cambios </div>
-          ) : (
-            <div>Insertar</div>
-          )}
+          {existingStudent ? <div>Aplicar cambios </div> : <div>Insertar</div>}
         </Button>
       </Modal.Footer>
     </Modal>
