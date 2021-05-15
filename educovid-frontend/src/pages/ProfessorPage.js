@@ -64,7 +64,7 @@ function ProfessorPage(props) {
         </Button>
       </div>
       <div className="professor-page-container">
-        <Notifications userId={professorId} role="profesor" />
+        {professorId !== -1 ? <Notifications userId={professorId} role="profesor" /> : null}
         <div className="centered-div">
           <h4>Profesor/a</h4>
           <h1>{professorName}</h1>

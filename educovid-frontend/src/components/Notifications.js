@@ -14,7 +14,11 @@ import { backUrl } from "../constants/constants";
 function Notifications(props) {
   useEffect(() => {
     const notifications = async () => {
-      if (props.userId == -1) return;
+      console.log("Mounting notifications");
+      if (props.userId === -1){
+        console.log("User not loaded");
+        return;
+      }
       // let alreadySubscribed = await fetch(backUrl + `/notification/subscription/exists/${props.role}/${props.userId}`);
       if (isPushNotificationSupported()) {
         let swRegistration = await registerServiceWorker();
@@ -77,6 +81,8 @@ function Notifications(props) {
           //   console.log("Error pushing notification");
           // }
         }
+      } else {
+        console.log("Notifications not supported");
       }
     };
 

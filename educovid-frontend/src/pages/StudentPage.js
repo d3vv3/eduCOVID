@@ -108,7 +108,7 @@ function StudentPage(props) {
         </Button>
       </div>
       <div className="student-page-container">
-        <Notifications userId={studentId} role="alumno" />
+        {studentId !== -1 ? <Notifications userId={studentId} role="alumno" /> : null }
         <div className="centered-div">
           <h4>Alumno/a</h4>
           <h1>{studentName}</h1>

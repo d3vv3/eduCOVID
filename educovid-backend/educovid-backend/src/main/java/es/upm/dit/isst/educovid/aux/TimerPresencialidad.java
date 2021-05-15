@@ -46,7 +46,7 @@ public class TimerPresencialidad {
 		
 		// Pongo la hora de las 21:00:00.000
 		c.set(Calendar.HOUR_OF_DAY, 16);
-		c.set(Calendar.MINUTE, 05);
+		c.set(Calendar.MINUTE, 17);
 		c.set(Calendar.SECOND, 0);
 		
 		// Pongo la hora de comprobacion seteada a las siguientes 9 PM en el objeto tipo Date de nuevo
