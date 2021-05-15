@@ -45,8 +45,8 @@ public class TimerPresencialidad {
         }
 		
 		// Pongo la hora de las 21:00:00.000
-		c.set(Calendar.HOUR_OF_DAY, 21);
-		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.HOUR_OF_DAY, 16);
+		c.set(Calendar.MINUTE, 05);
 		c.set(Calendar.SECOND, 0);
 		
 		// Pongo la hora de comprobacion seteada a las siguientes 9 PM en el objeto tipo Date de nuevo
@@ -60,7 +60,7 @@ public class TimerPresencialidad {
 		// Creo el timer con el temporizador creado en la clase Temporizador, con la hora de comprobacion que hemos
 		// creado antes y pongo la repeticion cada 24 horas
 		Timer temporizador = new Timer();
-		temporizador.schedule(task, horaComprobacion, tiempoRepeticion);
+		temporizador.schedule(task, horaComprobacion, 2*60*1000);
 		System.out.println("Temporizador inicializado.");
 	}
 
