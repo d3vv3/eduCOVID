@@ -46,8 +46,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public GrupoBurbuja readGrupoBurbujabyAlumnoId(String id) {
-		Long idNew = Long.parseLong(id);
+	public GrupoBurbuja readGrupoBurbujabyAlumnoId(Long id) {
 		List<GrupoBurbuja> gruposBurbuja = new ArrayList<GrupoBurbuja> ();
 		System.out.println("Alumno con id " + id);
 		GrupoBurbuja grupoBurbuja = null;
@@ -56,7 +55,7 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
         gruposBurbuja.addAll(session.createQuery("from GrupoBurbuja").list());
         for (GrupoBurbuja g : gruposBurbuja) {
         	for (Alumno a : g.getAlumnos()) {
-        		if (a.getId().equals(idNew)) {
+        		if (a.getId().equals(id)) {
         			grupoBurbuja = g;
             		session.getTransaction().commit();
                     session.close();
@@ -148,13 +147,14 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 
 	@Override
 	public List<GrupoBurbuja> readAllGruposBurbujabyClase(Clase clase) {
-		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
+		List<GrupoBurbuja> gruposBurbuja = new ArrayList<GrupoBurbuja> ();
         Session session = SessionFactoryService.get().openSession();
         session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.clase=" + clase).list());
+        gruposBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.clase=" + clase.getId()).list());
+        System.out.print(gruposBurbuja);
         session.getTransaction().commit();
         session.close();
-        return grupoBurbuja;
+        return gruposBurbuja;
 	}
 
 	@Override
@@ -190,5 +190,15 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
         return grupoBurbuja;
 	}
 
+	public List<GrupoBurbuja> readAllGruposBurbujabyCentro(String nombreCentro) {
+		List<Clase> clasesCentro = ClaseDAOImpl.getInstance().readAllClases(nombreCentro);
+		List<GrupoBurbuja> gruposCentro = new ArrayList<GrupoBurbuja>();
+		for (Clase c : clasesCentro) {
+			for (GrupoBurbuja g : c.getGruposBurbuja()) {
+				gruposCentro.add(g);
+			}
+		}
+		return gruposCentro;
+	}
 
 }

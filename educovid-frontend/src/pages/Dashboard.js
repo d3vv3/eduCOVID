@@ -15,7 +15,7 @@ function Dashboard(props) {
   const [responsibleCenter, setResponsibleCenter] = useState("");
 
   useEffect(() => {
-    if(userData){
+    if (userData) {
       setResponsibleId(userData.id);
       setResponsibleName(userData.nombre);
       setResponsibleCenter(userData.centro);
@@ -44,7 +44,10 @@ function Dashboard(props) {
                   En esta sección podrá gestionar los alumnos.
                 </Card.Text>
               </Card.Body>
-              <LinkContainer className="container-dashboard" to="/manage/student">
+              <LinkContainer
+                className="container-dashboard"
+                to="/manage/student"
+              >
                 <Button type="submit" variant="primary" className="nord-button">
                   Alumnos
                 </Button>
@@ -52,31 +55,30 @@ function Dashboard(props) {
             </Card>
             <Card>
               <Card.Body>
-                <Card.Title>Gestionar docencia</Card.Title>
+                <Card.Title>Profesores</Card.Title>
                 <Card.Text>
-                  En esta sección podrá crear distintos grupos burbuja por clase
-                  o modificar los existentes, además de gestionar la alternancia
-                  entre docencia presencial y online.
+                  En esta sección podrá gestionar los profesores.
                 </Card.Text>
               </Card.Body>
-              <LinkContainer className="container-dashboard" to="/teaching">
+              <LinkContainer
+                className="container-dashboard"
+                to="/manage/professor"
+              >
                 <Button type="submit" variant="primary" className="nord-button">
-                  Ir a docencia
+                  Profesores
                 </Button>
               </LinkContainer>
             </Card>
             <Card>
               <Card.Body>
-                <Card.Title>Gestionar centro</Card.Title>
+                <Card.Title>Clases</Card.Title>
                 <Card.Text>
-                  En esta sección podrá consultar y gestionar los datos del
-                  centro en la plataforma, así como modificar, eliminar o añadir
-                  alumnos y profesores.
+                  En esta sección podrá gestionar las clases.
                 </Card.Text>
               </Card.Body>
-              <LinkContainer className="container-dashboard" to="/center">
+              <LinkContainer className="container-dashboard" to="/manage/class">
                 <Button type="submit" variant="primary" className="nord-button">
-                  Ir a centro
+                  Clases
                 </Button>
               </LinkContainer>
             </Card>

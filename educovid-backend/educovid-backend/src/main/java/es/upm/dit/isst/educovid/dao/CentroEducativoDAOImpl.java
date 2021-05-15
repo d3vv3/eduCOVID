@@ -141,6 +141,7 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO {
 //		Set<Integer> idAlumnoGruposBurbuja = new HashSet<Integer>();
 //		Set<String> nombreClases = new HashSet<String>();
 //		List<Clase> clases = centroEducativo.getClases();
+//		System.out.println(clases.toString());
 //		for (Clase clase : clases) {
 //			for (GrupoBurbuja grupo : clase.getGruposBurbuja()) {
 //				for (Alumno alumno : grupo.getAlumnos()) {
@@ -166,6 +167,8 @@ public class CentroEducativoDAOImpl implements CentroEducativoDAO {
 		try {
 			session.saveOrUpdate(centroEducativo);
 		} catch (Exception e) {
+			System.out.println("Failed updating");
+			e.printStackTrace();
 			centroEducativo = null;
 		}
 		session.getTransaction().commit();

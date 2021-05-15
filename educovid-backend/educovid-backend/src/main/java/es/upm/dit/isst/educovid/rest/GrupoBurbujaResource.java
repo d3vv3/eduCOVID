@@ -18,6 +18,7 @@ import es.upm.dit.isst.educovid.anotation.Secured;
 import es.upm.dit.isst.educovid.aux.Security;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
 import es.upm.dit.isst.educovid.dao.CentroEducativoDAOImpl;
+import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.dao.ProfesorDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;
@@ -28,6 +29,15 @@ import es.upm.dit.isst.educovid.model.Profesor;
 
 @Path("/grupo")
 public class GrupoBurbujaResource {
+	
+	@GET
+	@Secured
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response readAllClases() {
+		List<GrupoBurbuja> grupos = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbuja();
+		return Response.ok(grupos, MediaType.APPLICATION_JSON).build();
+	}
 
 	@GET
 	@Secured
@@ -84,10 +94,22 @@ public class GrupoBurbujaResource {
 	@Path("/alumno/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readGrupoAlumnobyId(@PathParam("id") String id) {
-		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyAlumnoId(id);
+		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyAlumnoId(Long.parseLong(id));
 		if (g == null)
 			return Response.status(Response.Status.NOT_FOUND).build();
 		GrupoBurbuja gNew = new GrupoBurbuja(g.getNombre(), g.getEstadoSanitario(), null, null, null);
 		return Response.ok(gNew, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@GET
+	@Path("/clase/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response readGroupsByClaseId(@PathParam("id") String id) {
+		Clase c = ClaseDAOImpl.getInstance().readClasebyId(id);
+		if (c == null) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		List<GrupoBurbuja> gruposClase = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbujabyClase(c);
+		return Response.status(Response.Status.OK).entity(gruposClase).build();
 	}
 }

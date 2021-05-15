@@ -185,7 +185,7 @@ export const students = [
   }
 ];
 
-export const bubbleGroups = [
+export const gruposBurbuja = [
   {
     name: "Grupo 1",
     state: "Confinado",
@@ -229,5 +229,84 @@ export const responsables = [
     password: "elvira21",
     center: "IES Gran Capitán",
     name: "Elvira Dávila Ortiz"
+  }
+];
+
+export const clases = [
+  {
+    id: 1,
+    nombre: "6ºA",
+    fechaInicio: "12/05/2021",
+    tiempoConmutacion: "15",
+    groups: [
+      {
+        name: "Grupo 1",
+        healthState: "Confinado",
+        teachingState: "Online"
+      },
+      {
+        name: "Grupo 3",
+        healthState: "No Confinado",
+        teachingState: "Presencial"
+      },
+      {
+        name: "Grupo 4",
+        healthState: "No Confinado",
+        teachingState: "Presencial"
+      },
+      {
+        name: "Grupo 5",
+        healthState: "Confinado",
+        teachingState: "Online"
+      }
+    ]
+  },
+
+  {
+    id: 2,
+    nombre: "6ºB",
+    fechaInicio: "12/05/2021",
+    tiempoConmutacion: "15",
+    groups: [
+      {
+        name: "Grupo 6",
+        healthState: "Confinado",
+        teachingState: "Online"
+      },
+      {
+        name: "Grupo 7",
+        healthState: "No Confinado",
+        teachingState: "Presencial"
+      },
+      {
+        name: "Grupo 8",
+        healthState: "No Confinado",
+        teachingState: "Presencial"
+      },
+      {
+        name: "Grupo 9",
+        healthState: "Confinado",
+        teachingState: "Online"
+      }
+    ]
+  },
+
+  {
+    id: 3,
+    nombre: "6ºB",
+    fechaInicio: "12/05/2021",
+    tiempoConmutacion: "15",
+    groups: [
+      {
+        name: "Grupo 10",
+        healthState: "Confinado",
+        teachingState: "Online"
+      },
+      {
+        name: "Grupo 11",
+        healthState: "No Confinado",
+        teachingState: "Presencial"
+      }
+    ]
   }
 ];

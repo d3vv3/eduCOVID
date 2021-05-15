@@ -60,15 +60,12 @@ public class ClaseDAOImpl implements ClaseDAO {
 	}
 
 	@Override
-	public Clase readClasebyName(String name) {
-		Session session = SessionFactoryService.get().openSession();
-		session.beginTransaction();
+	public Clase readClasebyName(String name, String centro) {
+		List<Clase> clasesCentro = this.readAllClases(centro);
 		Clase clase = null;
-		Object object = session.createQuery("from Clase c where c.nombre='" + name + "'").uniqueResult();
-		if (object != null)
-			clase = (Clase) object;
-		session.getTransaction().commit();
-		session.close();
+		for (Clase c : clasesCentro) {
+			if (c.getNombre().equals(name)) clase = c;
+		}
 		return clase;
 	}
 
@@ -85,6 +82,21 @@ public class ClaseDAOImpl implements ClaseDAO {
 	@Override
 	public Clase deleteClase(Clase clase) {
 		Session session = SessionFactoryService.get().openSession();
+		List<GrupoBurbuja> grupos = clase.getGruposBurbuja();
+		GrupoBurbuja grupoPresencial = clase.getBurbujaPresencial();
+		List<GrupoBurbuja> empty = null;
+		clase.setGruposBurbuja(empty);
+		clase.setBurbujaPresencial(null);
+		updateClase(clase);
+		try {
+			GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(grupoPresencial);
+		} catch (Exception e) {
+			System.out.println("La burbuja presencial ya estaba borrada");
+		}
+		
+		for (GrupoBurbuja g : grupos) {
+			GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(g);
+		}
 		session.beginTransaction();
 		session.delete(clase);
 		session.getTransaction().commit();
@@ -101,6 +113,11 @@ public class ClaseDAOImpl implements ClaseDAO {
 		session.getTransaction().commit();
 		session.close();
 		return clases;
+	}
+	
+	@Override
+	public List<Clase> readAllClases(String nombreCentro) {
+		return CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(nombreCentro).getClases();
 	}
 
 	public Clase updatePresencialGroup(Clase clase) {

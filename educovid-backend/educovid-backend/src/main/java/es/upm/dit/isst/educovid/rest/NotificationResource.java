@@ -70,11 +70,13 @@ public class NotificationResource {
 	@POST
 	@Path("/subscription/students/{userId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response testreadSubscriptionAlumno(@PathParam("userId") String userId, String JSONBodyString) {
+	public Response readSubscriptionAlumno(@PathParam("userId") String userId, String JSONBodyString) {
 		try {
 			JSONObject jsonBody = new JSONObject(JSONBodyString);
 			String confineMessage = jsonBody.getString("confineMessage");
+			System.out.println("Mensaje de confinado: " + confineMessage);
 			String unconfineMessage = jsonBody.getString("unconfineMessage");
+			System.out.println("Mensaje de desconfinado: " + unconfineMessage);
 			Alumno alumno = AlumnoDAOImpl.getInstance().readAlumnobyId(userId);
 			System.out.println("Usuario obtenido: " + alumno.getNombre());
 			String subscriptionEndpoint = alumno.getSubscriptionEndpoint();
@@ -84,6 +86,7 @@ public class NotificationResource {
 			System.out.println("Subscription Endpoint: " + subscriptionEndpoint);
 			System.out.println("Auth: " + auth);
 			System.out.println("p256dh: " + p256dh);
+			if (subscriptionEndpoint == null || auth == null || p256dh == null) return Response.status(Response.Status.PRECONDITION_REQUIRED).build();
 
 			URI endpointURI = URI.create(subscriptionEndpoint);
 			URL url = new URL(subscriptionEndpoint);

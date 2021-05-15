@@ -138,9 +138,9 @@ public class RegisterResource {
 
 	@POST
 	// @Consumes("text/csv")
-	@Path("/professors")
+	@Path("/professors/{centerName}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response registerProfessors(String CSVString) throws URISyntaxException {
+	public Response registerProfessors(@PathParam("centerName") String centerName, String CSVString) throws URISyntaxException {
 
 		Map<String, Set<Profesor>> configuration = new HashMap<String, Set<Profesor>>();
 
@@ -177,7 +177,8 @@ public class RegisterResource {
 
 			// Update classes with its teachers
 			for (String key : configuration.keySet()) {
-				Clase oldClase = ClaseDAOImpl.getInstance().readClasebyName(key);
+				// Clase oldClase = ClaseDAOImpl.getInstance().readClasebyName(key);
+				Clase oldClase = ClaseDAOImpl.getInstance().readClasebyName(key, centerName);
 				oldClase.setProfesores(configuration.get(key));
 				ClaseDAOImpl.getInstance().updateClase(oldClase);
 

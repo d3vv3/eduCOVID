@@ -9,7 +9,7 @@ function ActionBar(props) {
         <Navbar.Brand>
           <img
             alt=""
-            src={process.env.PUBLIC_URL + "logo512.png"}
+            src="/logo512.png"
             width="30"
             height="30"
             className="d-inline-block align-top"
@@ -21,11 +21,11 @@ function ActionBar(props) {
         <LinkContainer to="/manage/student">
           <Nav.Link>Alumnos</Nav.Link>
         </LinkContainer>
-        <LinkContainer to="/teaching">
-          <Nav.Link>Docencia</Nav.Link>
+        <LinkContainer to="/manage/professor">
+          <Nav.Link>Profesores</Nav.Link>
         </LinkContainer>
-        <LinkContainer to="/center">
-          <Nav.Link>Centro</Nav.Link>
+        <LinkContainer to="/manage/class">
+          <Nav.Link>Clases</Nav.Link>
         </LinkContainer>
       </Nav>
       <Button
@@ -33,7 +33,7 @@ function ActionBar(props) {
         variant="primary"
         onClick={() => {
           props.onLogOut();
-          localStorage.removeItem('token');
+          localStorage.removeItem("token");
         }}
       >
         Cerrar sesión

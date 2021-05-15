@@ -155,20 +155,22 @@ function Register({ history }) {
         }),
         headers: { "Content-Type": "application/json" }
       });
+      if (!response.ok) alert("No se pudo completar el registro.");
       // setResponsibleResponse(await response.json());
       response = await fetch(`${backUrl}/register/students/${centerName}`, {
         method: "post",
         body: studentCSV,
         headers: { "Content-Type": "text/csv" }
       });
+      if (!response.ok) alert("No se pudo completar el registro.");
       // setStudentCSVResponse(await response.json());
-      response = await fetch(`${backUrl}/register/professors`, {
+      response = await fetch(`${backUrl}/register/professors/${centerName}`, {
         method: "post",
         body: professorCSV,
         headers: { "Content-Type": "text/csv" }
       });
       // setProfessorCSVResponse(await response.json());
-
+      if (!response.ok) alert("No se pudo completar el registro.");
       history.push("/");
       return true;
     }

@@ -14,8 +14,9 @@ import { backUrl } from "../constants/constants";
 function Notifications(props) {
   useEffect(() => {
     const notifications = async () => {
-      let alreadySubscribed = await fetch(backUrl + `/notification/subscription/exists/${props.role}/${props.userId}`);
-      if (isPushNotificationSupported() && !alreadySubscribed.ok) {
+      if (props.userId == -1) return;
+      // let alreadySubscribed = await fetch(backUrl + `/notification/subscription/exists/${props.role}/${props.userId}`);
+      if (isPushNotificationSupported()) {
         let swRegistration = await registerServiceWorker();
         let response = await askUserPermission(); // granted, default or denied
         console.log("NOTIFICATIONS:", response);

@@ -130,6 +130,18 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		session.close();
 		return alumnos;
 	}
+	
+	public List<Alumno> readAllAlumnos(String nombreCentro) {
+		List<Alumno> alumnosCentro = new ArrayList<Alumno>();
+		CentroEducativo centro = CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(nombreCentro);
+		List<GrupoBurbuja> gruposCentro = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbujabyCentro(nombreCentro);
+		for (GrupoBurbuja g : gruposCentro) {
+			for (Alumno a : g.getAlumnos()) {
+				alumnosCentro.add(a);
+			}
+		}
+		return alumnosCentro;
+	}
 
 //	@SuppressWarnings("unchecked")
 //	@Override

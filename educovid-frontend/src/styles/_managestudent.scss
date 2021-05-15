@@ -1,0 +1,159 @@
+.manage-student-container {
+    height: 95.8vh;
+    @include flexCenter(row);
+
+    flex-wrap: nowrap;
+
+    // This is for phone sized displays
+    @media only screen and (max-width: 520px) {
+        @include flexCenter(column);
+        // flex-wrap: nowrap;
+        overflow: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+        .right-options::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .left-menu {
+        @include flexCenter(column);
+        align-content: center;
+        width: 100%;
+        height: 100%;
+        background-color: $white900;
+        color: $dark900;
+        flex: 3;
+        // This is for phone sized displays
+        @media only screen and (max-width: 520px) {
+            flex-wrap: nowrap;
+            overflow-y: scroll;
+        }
+    }
+
+    .selector {
+        width: 100%;
+        @include flexCenter(column);
+        flex: 1;
+        margin-left: 8px;
+        margin-right: 8px;
+
+        Form {
+            padding: 10px;
+            padding-bottom: 0px;
+            width: 100%;
+        }
+    }
+
+    .list-container {
+        @include flexCenter(column);
+        justify-content: flex-start;
+        align-items: center;
+        //flex: 3;
+        width: 100%;
+        overflow-y: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+        .list-container::-webkit-scrollbar {
+            display: none;
+        }
+        flex: 23;
+        //display: inline-block;
+    }
+
+    .right-options {
+        overflow-y: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+        .right-options::-webkit-scrollbar {
+            display: none;
+        }
+        flex: 5;
+        height: 100%;
+        @include flexCenter(column);
+
+        h2 {
+            flex: 1;
+            @include flexCenter(row);
+
+            // This is for phone sized displays
+            @media only screen and (max-width: 520px) {
+                padding-top: 10px;
+                font-size: 2em;
+
+            }
+        }
+        .seleccionados {
+            flex: 14;
+            width: 100%;
+            overflow-y: scroll;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+            @include flexCenter(column);
+            justify-content: flex-start;
+        }
+        .seleccionados::-webkit-scrollbar {
+            display: none;
+          }
+    }
+
+    .person-card {
+        @include flexCenter(column);
+        margin: 8px;
+        margin-left: 9px;
+        width: 90%;
+        border-radius: 20px;
+        background-color: $white500;
+        text-align: center;
+        h5 {
+            margin: 8px;
+            // This is for phone sized displays
+            @media only screen and (max-width: 520px) {
+                font-size: 1em;
+
+            }
+
+        }
+        h8 {
+            margin-bottom: 8px;
+            // This is for phone sized displays
+            @media only screen and (max-width: 520px) {
+                font-size: 0.9em;
+
+            }
+        }
+
+    }
+
+    .green {
+        background-color: $success;
+    }
+
+    .red {
+        background-color: $warning;
+    }
+    .buttons-container {
+        flex: 2;
+        @include flexCenter(column);
+        @include nordButton();
+        transform: translateY(35px);
+        .red {
+            background-color: $warning;
+        }
+        .padded {
+            width: 95%;
+        }
+        .nord-button {
+            width: 95%;
+        }
+
+        // This is for phone sized displays
+        @media only screen and (max-width: 520px) {
+            flex: 1;
+            transform: translateY(0px);
+
+        }
+
+}
+
+}

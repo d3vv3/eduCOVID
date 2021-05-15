@@ -24,5 +24,6 @@ public interface GrupoBurbujaDAO {
 	public List<GrupoBurbuja> readAllGruposBurbujabyFechaConfinamiento(Date fechaConfinamiento);
 	// public List<GrupoBurbuja> readAllGruposBurbujabyFechaUltimaConmutacion(Date fechaUltConmutacion);
 	public List<GrupoBurbuja> readAllGruposBurbujabyPrioridad(Integer prioridad);
+	public List<GrupoBurbuja> readAllGruposBurbujabyCentro(String nombreCentro);
 		
 }
