@@ -82,6 +82,7 @@ function ManageStudent(props) {
   const [notificationModalShow, setNotificationModalShow] = React.useState(false);
   const [students, setStudents] = useState([]);
   const [bubbleGroups, setBubbleGroups] = useState([]);
+  const [indivClasses, setIndivClasses] = useState([]);
   const [selected, setSelected] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("*");
 
@@ -95,8 +96,15 @@ function ManageStudent(props) {
 
   const refreshStudents = async () => {
     let response, responseData;
+    if (userData === null) return;
     if (selectedFilter === "*") {
-      response = await fetch(backUrl + "/manage/students", {
+      // response = await fetch(backUrl + "/manage/students", {
+      //   method: "GET",
+      //   headers: {
+      //     Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+      //   }
+      // });
+      response = await fetch(backUrl + `/centro/${userData?.centro}/students`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token") || ""}`
@@ -119,7 +127,14 @@ function ManageStudent(props) {
   const initComponent = async () => {
     let response;
     let responseData;
-    response = await fetch(backUrl + "/manage/bubblegroups", {
+    if (userData === null) return;
+    // response = await fetch(backUrl + "/manage/bubblegroups", {
+    //   method: "GET",
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+    //   }
+    // });
+    response = await fetch(backUrl + `/centro/${userData?.centro}/bubblegroups`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token") || ""}`
@@ -127,6 +142,15 @@ function ManageStudent(props) {
     });
     responseData = await response.json();
     setBubbleGroups(responseData);
+    response = await fetch(backUrl + `/centro/${userData?.centro}/classes`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+      }
+    });
+    responseData = await response.json();
+    // console.log(responseData);
+    setIndivClasses(responseData);
     refreshStudents();
   };
 
@@ -331,7 +355,7 @@ function ManageStudent(props) {
                   </option>
                   {(bubbleGroups || []).map((group, index) => (
                     <option key={index} value={group.id}>
-                      {group.nombre}
+                      {indivClasses.find(indivClass => indivClass.gruposBurbuja.map(grupoBurbuja => grupoBurbuja.id).indexOf(group.id) !== -1)?.nombre} - {group.nombre}
                     </option>
                   ))}
                 </Form.Control>
