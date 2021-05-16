@@ -42,7 +42,6 @@ function ManageClass(props) {
     const newGroup = {
       nombre: name,
       estadoSanitario: null,
-      fechaConfinamiento: null,
       prioridad: null,
       alumnos: groupStudents
     };

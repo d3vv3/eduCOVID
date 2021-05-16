@@ -287,23 +287,37 @@ public class CentroResource {
 	}
 
 	@GET
+	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{nombreCentro}/students")
 	public Response students(@PathParam("nombreCentro") String nombreCentro) throws URISyntaxException {
-		List<Alumno> alumnos = AlumnoDAOImpl.getInstance().readAllAlumnos(nombreCentro);
-		return Response.ok(alumnos, MediaType.APPLICATION_JSON).build();
-
+		try {
+			List<Alumno> alumnos = AlumnoDAOImpl.getInstance().readAllAlumnos(nombreCentro);
+			if (alumnos.isEmpty())
+				return Response.status(Response.Status.NO_CONTENT).build();
+			return Response.status(Response.Status.OK).entity(alumnos).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.CONFLICT).build();
+		}
 	}
 
 	@GET
+	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{nombreCentro}/professors")
 	public Response teachers(@PathParam("nombreCentro") String nombreCentro) throws URISyntaxException {
-		List<Profesor> profesores = ProfesorDAOImpl.getInstance().readAllProfesores(nombreCentro);
-		return Response.status(Response.Status.OK).entity(profesores).build();
+		try {
+			List<Profesor> profesores = ProfesorDAOImpl.getInstance().readAllProfesores(nombreCentro);
+			if (profesores.isEmpty())
+				return Response.status(Response.Status.NO_CONTENT).build();
+			return Response.status(Response.Status.OK).entity(profesores).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.CONFLICT).build();
+		}
 	}
 
 	@GET
+	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{nombreCentro}/classes")
 	public Response classes(@PathParam("nombreCentro") String nombreCentro) throws URISyntaxException {
@@ -318,10 +332,17 @@ public class CentroResource {
 	}
 
 	@GET
+	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{nombreCentro}/bubblegroups")
 	public Response bubblegroups(@PathParam("nombreCentro") String nombreCentro) throws URISyntaxException {
-		List<GrupoBurbuja> gruposBurbuja = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbujabyCentro(nombreCentro);
-		return Response.ok(gruposBurbuja, MediaType.APPLICATION_JSON).build();
+		try {
+			List<GrupoBurbuja> gruposBurbuja = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbujabyCentro(nombreCentro);
+			if (gruposBurbuja.isEmpty())
+				return Response.status(Response.Status.NO_CONTENT).build();
+			return Response.status(Response.Status.OK).entity(gruposBurbuja).build();
+		} catch (Exception e) {
+			return Response.status(Response.Status.CONFLICT).build();
+		}
 	}
 }

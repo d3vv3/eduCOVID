@@ -27,7 +27,6 @@ public class GrupoBurbuja implements Serializable {
 	private String nombre;
 	@Column(nullable = false)
 	private String estadoSanitario;
-	private Date fechaConfinamiento;
 	private Integer prioridad;
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "fk_id_grupo")
@@ -43,7 +42,6 @@ public class GrupoBurbuja implements Serializable {
 		super();
 		this.nombre = nombre;
 		this.estadoSanitario = estadoSanitario;
-		this.fechaConfinamiento = fechaConfinamiento;
 		this.prioridad = prioridad;
 		this.alumnos = alumnos;
 	}
@@ -70,14 +68,6 @@ public class GrupoBurbuja implements Serializable {
 
 	public void setEstadoSanitario(String estadoSanitario) {
 		this.estadoSanitario = estadoSanitario;
-	}
-
-	public Date getFechaConfinamiento() {
-		return fechaConfinamiento;
-	}
-
-	public void setFechaConfinamiento(Date fechaConfinamiento) {
-		this.fechaConfinamiento = fechaConfinamiento;
 	}
 
 	public Integer getPrioridad() {

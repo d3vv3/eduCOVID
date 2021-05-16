@@ -228,7 +228,7 @@ public class NotificationResource {
 //	}
 
 	@POST
-	@Path("/subscription/profesor/{userId}")
+	@Path("/subscription/profesor/{userId}") // Cuidado que se envía a professor no profesor desde front
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createSubscriptionProfesor(@PathParam("userId") String userId, String JSONBodyString) {
 

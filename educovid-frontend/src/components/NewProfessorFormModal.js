@@ -100,7 +100,8 @@ function ProfessorCenteredModal(props) {
   return (
     <Modal
       className="professor-modal-container"
-      {...props}
+      onHide={props.onHide}
+      show={props.show}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered

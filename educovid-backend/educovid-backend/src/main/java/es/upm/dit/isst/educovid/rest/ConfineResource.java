@@ -171,7 +171,7 @@ public class ConfineResource {
 	public Response students() throws URISyntaxException {
 		//TODO design an endpoint that changes the health status of the people or groups selected into not confine
 		List<Alumno> alumnos = AlumnoDAOImpl.getInstance().readAllAlumnos();
-		System.out.print(alumnos);
+//		System.out.print(alumnos);
 		return Response.ok(alumnos, MediaType.APPLICATION_JSON).build();
 
 	}

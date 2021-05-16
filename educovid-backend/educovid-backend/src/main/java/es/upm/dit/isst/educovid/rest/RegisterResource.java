@@ -92,7 +92,7 @@ public class RegisterResource {
 				System.out.println(Arrays.toString(student));
 				String salt = Security.getSalt();
 				String hash = Security.getHash(student[2].trim(), salt);
-				Alumno newStudent = new Alumno(student[1].trim(), hash, salt, student[2].trim(), "no confinado", null);
+				Alumno newStudent = new Alumno(student[1].trim(), hash, salt, student[2].trim(), "no confinado");
 				AlumnoDAOImpl.getInstance().createAlumno(newStudent);
 
 				try {
@@ -153,7 +153,7 @@ public class RegisterResource {
 				String salt = Security.getSalt();
 				String hash = Security.getHash(professor[2].trim(), salt);
 				Profesor newProfessor = new Profesor(professor[1].trim(), hash, salt, professor[2].trim(),
-						"no confinado", null);
+						"no confinado");
 				Profesor existingProfessor = ProfesorDAOImpl.getInstance().readProfesorbyNIFNIE(professor[2].trim());
 				if (existingProfessor == null) {
 					ProfesorDAOImpl.getInstance().createProfesor(newProfessor);

@@ -84,7 +84,7 @@ function ClassCenteredModal(props) {
     <Modal
       className="class-modal-container"
       onHide={onHide}
-      show
+      show={show}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered

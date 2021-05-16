@@ -50,8 +50,7 @@ function ManageProfessor(props) {
       p256dh: null,
       auth: null,
       nifNie: nifNie,
-      estadoSanitario: "no confinado",
-      fechaConfinamiento: null
+      estadoSanitario: "no confinado"
     };
     try {
       professorClasses.forEach(async clase => {

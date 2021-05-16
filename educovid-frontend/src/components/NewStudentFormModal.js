@@ -104,7 +104,8 @@ function StudentCenteredModal(props) {
   return (
     <Modal
       className="student-modal-container"
-      {...props}
+      onHide={props.onHide}
+      show={props.show}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -161,7 +162,6 @@ function StudentCenteredModal(props) {
             <Form.Control
               as="select"
               name="studentClass"
-              defaultValue={studentClass}
               value={studentClass}
               isInvalid={!!errors.studentClass}
               onChange={updateFormState}
@@ -184,7 +184,6 @@ function StudentCenteredModal(props) {
             <Form.Control
               as="select"
               name="studentBubbleGroup"
-              defaultValue={studentBubbleGroup}
               value={studentBubbleGroup}
               isInvalid={!!errors.studentClass}
               onChange={updateFormState}

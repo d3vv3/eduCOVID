@@ -16,18 +16,16 @@ public class Profesor extends Usuario implements Serializable {
 	private String nifNie;
 	@Column(nullable = false)
 	private String estadoSanitario;
-	private Date fechaConfinamiento;
 	private static final long serialVersionUID = 1L;
 	
 	public Profesor() {
 		super();
 	}
 	
-	public Profesor(String nombre, String hash, String salt, String nifNie, String estadoSanitario, Date fechaConfinamiento) {
+	public Profesor(String nombre, String hash, String salt, String nifNie, String estadoSanitario) {
 		super(nombre, hash, salt);
 		this.nifNie = nifNie;
 		this.estadoSanitario = estadoSanitario;
-		this.fechaConfinamiento = fechaConfinamiento;
 	}
 	
 	public String getNifNie() {
@@ -44,14 +42,6 @@ public class Profesor extends Usuario implements Serializable {
 	
 	public void setEstadoSanitario(String estadoSanitario) {
 		this.estadoSanitario = estadoSanitario;
-	}
-	
-	public Date getFechaConfinamiento() {
-		return fechaConfinamiento;
-	}
-
-	public void setFechaConfinamiento(Date fechaConfinamiento) {
-		this.fechaConfinamiento = fechaConfinamiento;
 	}
 
 	public static long getSerialversionuid() {
