@@ -115,7 +115,7 @@ public class RegisterResource {
 			configuration.keySet().forEach((key) -> {
 				String[] names = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 				String name = "GRUPO " + names[(int) Math.floor(Math.random()*names.length)] + names[(int) Math.floor(Math.random()*names.length)];
-				GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", null, null,
+				GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", null,
 						configuration.get(key));
 				GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(newBubbleGroup);
 				List<GrupoBurbuja> bubbleGroups = new ArrayList<>();

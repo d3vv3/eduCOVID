@@ -24,19 +24,15 @@ public class ClaseDAOImpl implements ClaseDAO {
 
 	@Override
 	public Clase createClase(Clase clase) {
-		// Validate:
-		// 1. Numero de matricula unique per alumno per center
-		// 2. Alumno unique per Grupo Burbuja
-		Set<String> nombresGrupoBurbuja = new HashSet<String>();
-		List<GrupoBurbuja> grupos = clase.getGruposBurbuja();
-		for (GrupoBurbuja grupo : clase.getGruposBurbuja()) {
-			if (nombresGrupoBurbuja.contains(clase.getNombre())) {
-				System.out.println("There cannot be two GrupoBurbuja with the same nombre in the same Clase");
-				return null;
-			} else {
-				nombresGrupoBurbuja.add(clase.getNombre());
-			}
-		}
+		/*
+		 * // Validate: // 1. Numero de matricula unique per alumno per center // 2.
+		 * Alumno unique per Grupo Burbuja Set<String> nombresGrupoBurbuja = new
+		 * HashSet<String>(); List<GrupoBurbuja> grupos = clase.getGruposBurbuja(); for
+		 * (GrupoBurbuja grupo : clase.getGruposBurbuja()) { if
+		 * (nombresGrupoBurbuja.contains(clase.getNombre())) { System.out.
+		 * println("There cannot be two GrupoBurbuja with the same nombre in the same Clase"
+		 * ); return null; } else { nombresGrupoBurbuja.add(clase.getNombre()); } }
+		 */
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
 		try {
@@ -81,14 +77,14 @@ public class ClaseDAOImpl implements ClaseDAO {
 
 	@Override
 	public Clase deleteClase(Clase clase) {
+
+		/*
+		 * List<GrupoBurbuja> grupos = clase.getGruposBurbuja(); List<GrupoBurbuja>
+		 * empty = null; clase.setGruposBurbuja(empty); updateClase(clase); for
+		 * (GrupoBurbuja g : grupos) {
+		 * GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(g); }
+		 */
 		Session session = SessionFactoryService.get().openSession();
-		List<GrupoBurbuja> grupos = clase.getGruposBurbuja();
-		List<GrupoBurbuja> empty = null;
-		clase.setGruposBurbuja(empty);
-		updateClase(clase);
-		for (GrupoBurbuja g : grupos) {
-			GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(g);
-		}
 		session.beginTransaction();
 		session.delete(clase);
 		session.getTransaction().commit();

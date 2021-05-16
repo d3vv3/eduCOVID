@@ -2,6 +2,7 @@ package es.upm.dit.isst.educovid.epics.test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +22,7 @@ public class ConsultaProfesorTest {
   public void setUp() {
 	System.setProperty("webdriver.chrome.driver", "chromedriver");
     driver = new ChromeDriver();
+    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
   }

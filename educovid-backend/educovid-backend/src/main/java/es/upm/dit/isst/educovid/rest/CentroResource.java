@@ -219,7 +219,7 @@ public class CentroResource {
 					"S", "T", "U", "V", "W", "X", "Y", "Z" };
 			String name = " GRUPO " + names[(int) Math.floor(Math.random() * names.length)]
 					+ names[(int) Math.floor(Math.random() * names.length)];
-			GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", null, null, new ArrayList<Alumno>());
+			GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", null, new ArrayList<Alumno>());
 			GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(newBubbleGroup);
 			List<GrupoBurbuja> bubbleGroups = new ArrayList<>();
 			bubbleGroups.add(newBubbleGroup);
