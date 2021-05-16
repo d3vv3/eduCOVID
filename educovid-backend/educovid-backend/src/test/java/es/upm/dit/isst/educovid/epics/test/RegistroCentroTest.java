@@ -15,13 +15,15 @@ public class RegistroCentroTest {
   private WebDriver driver;
   private Map<String, Object> vars;
   JavascriptExecutor js;
+  
   @Before
   public void setUp() {
-	System.setProperty("webdriver.chrome.driver", "/home/kali/isst/eduCOVID/educovid-backend/educovid-backend/chromedriver");
+	System.setProperty("webdriver.chrome.driver", "chromedriver");
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
   }
+  
   @After
   public void tearDown() {
     driver.quit();

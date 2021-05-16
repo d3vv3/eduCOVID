@@ -19,7 +19,7 @@ public class ConsultaProfesorTest {
   JavascriptExecutor js;
   @Before
   public void setUp() {
-	System.setProperty("webdriver.chrome.driver", "/home/kali/isst/eduCOVID/educovid-backend/educovid-backend/chromedriver");
+	System.setProperty("webdriver.chrome.driver", "chromedriver");
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
