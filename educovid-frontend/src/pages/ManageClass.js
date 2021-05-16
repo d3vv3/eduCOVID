@@ -112,16 +112,16 @@ function ManageClass(props) {
       gruposBurbuja
     };
     try {
-      // console.log(newClass);
+      console.log(newClass);
       const res = await fetch(
-        backUrl + `/centro/update/class/${userData?.centro}/${id}`,
+        backUrl + `/centro/update/class/${userData?.centro}`,
         {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
             "Content-Type": "application/json; charset=UTF-8"
           },
-          body: JSON.stringify(profesores)
+          body: JSON.stringify(newClass)
         }
       );
       // console.log(await res.json());
@@ -157,7 +157,7 @@ function ManageClass(props) {
     } catch (e) {
       console.log(e);
     } finally {
-      retrieveClasses();
+      setTimeout(() => retrieveClasses(), 100);
     }
   };
 

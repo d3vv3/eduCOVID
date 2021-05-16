@@ -17,7 +17,7 @@ public class ConsultaAlumnoTest {
   JavascriptExecutor js;
   @Before
   public void setUp() {
-	System.setProperty("webdriver.chrome.driver", "chromedriver");
+	System.setProperty("webdriver.chrome.driver", "chromedriverMac");
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();

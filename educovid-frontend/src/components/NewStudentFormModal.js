@@ -37,6 +37,8 @@ function StudentCenteredModal(props) {
     responseData = await response.json();
     // console.log(responseData);
     setAllClasses(responseData);
+    setStudentClass(responseData[0]?.nombre);
+    setStudentBubbleGroup(responseData[0]?.gruposBurbuja[0]?.nombre);
     if (existingStudent) {
       response = await fetch(backUrl + `/clase/alumno/${existingStudent.id}`, {
         method: "GET",
@@ -189,8 +191,9 @@ function StudentCenteredModal(props) {
               onChange={updateFormState}
             >
               {(
-                allClasses.filter(clase => clase.nombre === studentClass)[0]
-                  ?.gruposBurbuja || []
+                (allClasses || []).filter(
+                  clase => clase.nombre === studentClass
+                )[0]?.gruposBurbuja || []
               ).map(grupo => {
                 return (
                   <option key={grupo.id} value={grupo.nombre}>
@@ -227,8 +230,7 @@ function StudentCenteredModal(props) {
                 auth: existingStudent?.auth,
                 studentClass: studentClass,
                 studentBubbleGroup: studentBubbleGroup,
-                healthState: existingStudent?.estadoSanitario,
-                confineDate: existingStudent?.fechaConfinamiento
+                healthState: existingStudent?.estadoSanitario
               });
             }
             props.onHide();

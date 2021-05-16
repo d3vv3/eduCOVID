@@ -160,7 +160,7 @@ function ClassCenteredModal(props) {
                 profesores: allProfessors
                   .map(p => {
                     if (classProfessors.includes(p.id.toString())) {
-                      return p.id;
+                      return p;
                     } else {
                       return false;
                     }

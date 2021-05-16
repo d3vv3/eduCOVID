@@ -86,7 +86,8 @@ public class NotificationResource {
 			System.out.println("Subscription Endpoint: " + subscriptionEndpoint);
 			System.out.println("Auth: " + auth);
 			System.out.println("p256dh: " + p256dh);
-			if (subscriptionEndpoint == null || auth == null || p256dh == null) return Response.status(Response.Status.PRECONDITION_REQUIRED).build();
+			if (subscriptionEndpoint == null || auth == null || p256dh == null)
+				return Response.status(Response.Status.PRECONDITION_REQUIRED).build();
 
 			URI endpointURI = URI.create(subscriptionEndpoint);
 			URL url = new URL(subscriptionEndpoint);
@@ -149,7 +150,7 @@ public class NotificationResource {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	
+
 //	@GET
 //	@Path("/subscription/students/{userId}")
 //	public Response readSubscriptionAlumno(@PathParam("userId") String userId) {
@@ -422,15 +423,17 @@ public class NotificationResource {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	
+
 	@GET
 	@Path("/subscription/bubbleGroups/{presencialidad}/{groupId}")
-	public Response readSubscriptionGrupo(@PathParam("presencialidad") String presencialidad, @PathParam("groupId") String groupId) {
+	public Response readSubscriptionGrupo(@PathParam("presencialidad") String presencialidad,
+			@PathParam("groupId") String groupId) {
 		try {
 			GrupoBurbuja grupo = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(groupId);
 			for (Alumno alumno : grupo.getAlumnos()) {
 				try {
-					if (alumno.getAuth() == null) continue;
+					if (alumno.getAuth() == null)
+						continue;
 					System.out.println("Usuario obtenido: " + alumno.getNombre());
 					String subscriptionEndpoint = alumno.getSubscriptionEndpoint();
 					String auth = alumno.getAuth();

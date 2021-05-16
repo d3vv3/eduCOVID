@@ -80,11 +80,11 @@ public class RegistroCentroYConsultaTest {
     driver.findElement(By.id("formBasicPassword")).sendKeys("11858734A");
     driver.findElement(By.cssSelector(".nord-button:nth-child(2)")).click();
     driver.findElement(By.cssSelector(".nord-button")).click();
-//    {
-//      WebElement element = driver.findElement(By.cssSelector(".nord-button"));
-//      Actions builder = new Actions(driver);
-//      builder.moveToElement(element).perform();
-//    }
+    {
+      WebElement element = driver.findElement(By.cssSelector(".nord-button"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
 //    driver.findElement(By.linkText("Atrás")).click();
   }
 }
