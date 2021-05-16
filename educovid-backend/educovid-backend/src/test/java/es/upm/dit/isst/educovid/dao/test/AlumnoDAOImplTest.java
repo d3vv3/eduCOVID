@@ -17,7 +17,6 @@ import es.upm.dit.isst.educovid.dao.ClaseDAO;
 import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAO;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
-import es.upm.dit.isst.educovid.dao.SessionFactoryService;
 import es.upm.dit.isst.educovid.model.Alumno;
 import es.upm.dit.isst.educovid.model.CentroEducativo;
 import es.upm.dit.isst.educovid.model.Clase;
