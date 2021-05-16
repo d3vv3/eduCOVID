@@ -19,8 +19,10 @@ import javax.ws.rs.core.Response;
 import es.upm.dit.isst.educovid.anotation.Secured;
 import es.upm.dit.isst.educovid.aux.Security;
 import es.upm.dit.isst.educovid.dao.AlumnoDAOImpl;
+import es.upm.dit.isst.educovid.dao.ClaseDAOImpl;
 import es.upm.dit.isst.educovid.dao.GrupoBurbujaDAOImpl;
 import es.upm.dit.isst.educovid.model.Alumno;
+import es.upm.dit.isst.educovid.model.Clase;
 import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 
 @Path("/alumno")
@@ -61,6 +63,16 @@ public class AlumnoResource {
 		if (a == null)
 			return Response.status(Response.Status.NOT_FOUND).build();
 		return Response.ok(a, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@GET
+	@Secured
+	@Path("/clase/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response readAlumnosbyClase(@PathParam("id") String id) {
+		Clase c = ClaseDAOImpl.getInstance().readClasebyId(id);
+		List<Alumno> alumnos = AlumnoDAOImpl.getInstance().readAllAlumnosByClase(c);
+		return Response.ok(alumnos, MediaType.APPLICATION_JSON).build();
 	}
 	
 	@PUT

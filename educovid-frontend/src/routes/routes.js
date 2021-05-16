@@ -2,7 +2,12 @@ import React, { useEffect } from "react";
 
 // Redux related
 import { connect } from "react-redux";
-import { logIn, logOut, changeConfineMessage, changeUnconfineMessage } from "../redux/actions";
+import {
+  logIn,
+  logOut,
+  changeConfineMessage,
+  changeUnconfineMessage
+} from "../redux/actions";
 
 // Constants
 import { backUrl } from "../constants/constants";
@@ -26,7 +31,7 @@ import ManageStudent from "../pages/ManageStudent";
 import Dashboard from "../pages/Dashboard";
 import ManageProfessor from "../pages/ManageProfessor";
 import Center from "../pages/Center";
-import ManageClass from "../pages/ManageClass";
+import ManageTeaching from "../pages/ManageTeaching";
 
 function Routes(props) {
   // Create the history of the user (to go back and forth from the browser or
@@ -104,7 +109,7 @@ function Routes(props) {
         </Route>
         <Route exact path="/manage/class">
           {!loggedIn ? <Redirect to={`/login`} /> : null}
-          <ManageClass
+          <ManageTeaching
             userData={userData}
             onLogOut={() => {
               props.dispatch(logOut());
@@ -166,7 +171,6 @@ function Routes(props) {
           />
         </Route>
         <Route exact path="/center">
-         
           <Center />
         </Route>
       </Switch>

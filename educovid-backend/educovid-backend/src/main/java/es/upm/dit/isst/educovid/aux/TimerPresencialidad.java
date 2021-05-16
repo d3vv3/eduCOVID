@@ -60,7 +60,7 @@ public class TimerPresencialidad {
 		// Creo el timer con el temporizador creado en la clase Temporizador, con la hora de comprobacion que hemos
 		// creado antes y pongo la repeticion cada 24 horas
 		Timer temporizador = new Timer();
-		temporizador.schedule(task, horaComprobacion, 2*60*1000);
+		temporizador.schedule(task, horaComprobacion, 1*60*1000);
 		System.out.println("Temporizador inicializado.");
 	}
 

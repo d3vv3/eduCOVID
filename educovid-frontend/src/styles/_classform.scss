@@ -1,0 +1,9 @@
+.class-modal-container {
+    @include nordButton();
+    .classes {
+        height: 300px;
+        select.form-control[size], select.form-control[multiple] {
+            height: 80%;
+        }
+    }
+}

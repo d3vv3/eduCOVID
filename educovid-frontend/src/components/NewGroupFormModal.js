@@ -8,27 +8,32 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-function ClassCenteredModal(props) {
-  const { existingClass, handleEdit, handleInsert, onHide, show } = props;
-  const [invidClassName, setIndivClassName] = useState(
-    existingClass?.nombre || ""
-  );
-  const [id, setId] = useState(existingClass?.id || "");
-  const [classProfessors, setClassProfessors] = useState([]);
-  const [allProfessors, setAllProfessors] = useState([]);
+function GroupCenteredModal(props) {
+  const {
+    parentClass,
+    existingGroup,
+    handleEdit,
+    handleInsert,
+    onHide,
+    show
+  } = props;
+  const [groupName, setGroupName] = useState(existingGroup?.nombre || "");
+  const [id, setId] = useState(existingGroup?.id || "");
+  const [groupStudents, setGroupStudents] = useState([]);
+  const [allStudents, setAllStudents] = useState([]);
   const [errors, setErrors] = useState({});
   const [feedbacks, setFeedbacks] = useState({
     classes: ""
   });
 
   useEffect(() => {
-    retrieveProfessors();
+    retrieveStudents();
   }, []);
 
-  const retrieveProfessors = async () => {
+  const retrieveStudents = async () => {
     const token = localStorage.getItem("token") || "";
     let response, responseData;
-    response = await fetch(backUrl + `/centro/${props.centro}/professors`, {
+    response = await fetch(backUrl + `/centro/${props.centro}/students`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -36,21 +41,19 @@ function ClassCenteredModal(props) {
       }
     });
     responseData = await response.json();
-    setAllProfessors(responseData.sort((a, b) => a.id - b.id));
-    if (props.existingClass) {
-      response = await fetch(
-        backUrl +
-          `/professor/professors/${props.centro}/${props.existingClass.nombre}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
+    console.log(responseData);
+    setAllStudents(responseData.sort((a, b) => a.id - b.id));
+    if (existingGroup) {
+      response = await fetch(backUrl + `/alumno/clase/${parentClass?.id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
         }
-      );
+      });
       responseData = await response.json();
-      setClassProfessors(responseData.map(p => p.id.toString()));
+      console.log(responseData);
+      setGroupStudents(responseData.map(p => p.id.toString()));
     }
   };
 
@@ -60,20 +63,23 @@ function ClassCenteredModal(props) {
     const { name, value } = event.target;
     //console.log(name, value);
     switch (name) {
-      case "indivClassName":
+      case "groupName":
         setFeedbacks({});
         setErrors({});
-        setIndivClassName(value);
-        break;
-      case "classProfessors":
+        setGroupName(value);
         setFeedbacks({
-          classProfessors: ""
+          groupName: ""
+        });
+        break;
+      case "groupStudents":
+        setFeedbacks({
+          groupStudents: ""
         });
         setErrors({});
         let values = Array.prototype.slice
           .call(event.target.selectedOptions)
           .map(item => item.value.toString());
-        setClassProfessors(values);
+        setGroupStudents(values);
         break;
       default:
         return;
@@ -82,16 +88,16 @@ function ClassCenteredModal(props) {
 
   return (
     <Modal
-      className="class-modal-container"
-      onHide={onHide}
+      className="group-modal-container"
       show
+      onHide={onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          {existingClass ? (
+          {existingGroup ? (
             <div>Propiedades de la clase</div>
           ) : (
             <div>Añadir clase</div>
@@ -100,42 +106,42 @@ function ClassCenteredModal(props) {
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Group controlId="formIndivClassName">
-            <Form.Label>Nombre de la clase</Form.Label>
+          <Form.Group controlId="formGroupName">
+            <Form.Label>Nombre del grupo</Form.Label>
             <Form.Control
               required
               type="text"
               placeholder="Introduzca el nombre de la clase"
-              name="indivClassName"
+              name="groupName"
               onChange={updateFormState}
-              value={invidClassName}
-              isInvalid={!!errors.indivClassName}
+              value={groupName}
+              isInvalid={!!errors.groupName}
             />
             <Form.Control.Feedback type="invalid">
-              Nombre de clase inválido
+              Nombre de grupo inválido
             </Form.Control.Feedback>
             <Form.Control.Feedback type="valid">Perfecto</Form.Control.Feedback>
           </Form.Group>
-          <Form.Group controlId="classProfessors" className="classes">
-            <Form.Label>Profesores de la clase</Form.Label>
+          <Form.Group controlId="groupStudents" className="classes">
+            <Form.Label>Alumnos del grupo</Form.Label>
             <Form.Control
               as="select"
-              name="classProfessors"
+              name="groupStudents"
               multiple
               onChange={updateFormState}
-              isInvalid={!!errors.classProfessors}
+              isInvalid={!!errors.groupStudents}
             >
-              {(allProfessors || []).map(professor => {
-                if (classProfessors.includes(professor.id.toString())) {
+              {(allStudents || []).map(student => {
+                if (groupStudents.includes(student.id.toString())) {
                   return (
-                    <option selected key={professor.id} value={professor.id}>
-                      {professor.nombre}
+                    <option selected key={student.id} value={student.id}>
+                      {student.nombre}
                     </option>
                   );
                 } else {
                   return (
-                    <option key={professor.id} value={professor.id}>
-                      {professor.nombre}
+                    <option key={student.id} value={student.id}>
+                      {student.nombre}
                     </option>
                   );
                 }
@@ -148,36 +154,36 @@ function ClassCenteredModal(props) {
         <Button onClick={props.onHide}>Cancelar</Button>
         <Button
           onClick={() => {
-            if (!existingClass) {
-              handleInsert(invidClassName, classProfessors);
+            if (!existingGroup) {
+              handleInsert(groupName, groupStudents);
             } else {
               handleEdit({
                 id,
-                nombre: invidClassName,
-                burbujaPresencial: existingClass?.burbujaPresencial,
-                fechaInicioConmutacion: existingClass?.fechaInicioConmutacion,
-                tiempoConmutacion: existingClass?.tiempoConmutacion,
-                profesores: allProfessors
+                nombre: groupName,
+                burbujaPresencial: existingGroup?.burbujaPresencial,
+                fechaInicioConmutacion: existingGroup?.fechaInicioConmutacion,
+                tiempoConmutacion: existingGroup?.tiempoConmutacion,
+                profesores: allStudents
                   .map(p => {
-                    if (classProfessors.includes(p.id.toString())) {
+                    if (groupStudents.includes(p.id.toString())) {
                       return p.id;
                     } else {
                       return false;
                     }
                   })
                   .filter(p => p),
-                gruposBurbuja: existingClass?.gruposBurbuja
+                gruposBurbuja: existingGroup?.gruposBurbuja
               });
             }
             props.onHide();
           }}
-          disabled={invidClassName === "" || classProfessors === ""}
+          disabled={groupName === "" || groupStudents === []}
         >
-          {existingClass ? <div>Aplicar cambios </div> : <div>Añadir</div>}
+          {existingGroup ? <div>Aplicar cambios </div> : <div>Añadir</div>}
         </Button>
       </Modal.Footer>
     </Modal>
   );
 }
 
-export default ClassCenteredModal;
+export default GroupCenteredModal;

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -91,6 +93,7 @@ public class GrupoBurbujaResource {
 	}
 	
 	@GET
+	@Secured
 	@Path("/alumno/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readGrupoAlumnobyId(@PathParam("id") String id) {
@@ -102,14 +105,63 @@ public class GrupoBurbujaResource {
 	}
 	
 	@GET
+	@Secured
 	@Path("/clase/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response readGroupsByClaseId(@PathParam("id") String id) {
 		Clase c = ClaseDAOImpl.getInstance().readClasebyId(id);
 		if (c == null) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		List<GrupoBurbuja> gruposClase = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbujabyClase(c);
-		return Response.status(Response.Status.OK).entity(gruposClase).build();
+		return Response.ok(gruposClase, MediaType.APPLICATION_JSON).build();
+	}
+	
+	@DELETE
+	@Secured
+	@Path("/delete/{groupId}/{classId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteGrupoById(@PathParam("groupId") String groupId, @PathParam("classId") String classId) {
+		Clase c = ClaseDAOImpl.getInstance().readClasebyId(classId);
+		// If there is only one group, it cant be deleted
+		if (c.getGruposBurbuja().size() == 1) return Response.status(Response.Status.EXPECTATION_FAILED).build();
+		// Remove group from class groups
+		List<GrupoBurbuja> newGroups = new ArrayList<>();
+		for (GrupoBurbuja g : c.getGruposBurbuja()) {
+			if (!g.getId().toString().equals(groupId)) {
+				newGroups.add(g);
+			}
+		}
+		c.setGruposBurbuja(newGroups);
+		// Read the group and proceed if it exists
+		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(groupId);
+		if (g == null ) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		// If the group is set to be the presential group
+		if (c.getBurbujaPresencial().getId().equals(g.getId())) {
+			// Get next priority
+			Integer prioridadSiguiente = (c.getBurbujaPresencial().getPrioridad() % (c.getGruposBurbuja().size() + 1)) + 1;
+			System.out.println("Siguiente prioridad: " + prioridadSiguiente);
+			for (GrupoBurbuja b : c.getGruposBurbuja()) {
+				if (b.getPrioridad() == prioridadSiguiente) {
+					System.out.println("Estableciendo grupo presencial " + b.getNombre() + " con " + prioridadSiguiente);
+					c.setBurbujaPresencial(b);
+					GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(b);
+				}
+			}
+		}
+		ClaseDAOImpl.getInstance().updateClase(c);
+		GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(g);
+		for (GrupoBurbuja b : c.getGruposBurbuja()) {
+			if (b.getPrioridad() > g.getPrioridad()) {
+				System.out.println("Cambiando prioridad de " + b.getNombre() + " de " + b.getPrioridad() + " a " + (b.getPrioridad() - 1));
+				b.setPrioridad(b.getPrioridad() - 1);
+				GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(b);
+			}
+		}
+		ClaseDAOImpl.getInstance().updateClase(c);
+		return Response.ok(g, MediaType.APPLICATION_JSON).build();
 	}
 }

@@ -142,6 +142,18 @@ public class AlumnoDAOImpl implements AlumnoDAO {
 		}
 		return alumnosCentro;
 	}
+	
+	public List<Alumno> readAllAlumnosByClase(Clase c) {
+		List<Alumno> alumnosCentro = new ArrayList<Alumno>();
+		List<GrupoBurbuja> gruposClase = c.getGruposBurbuja();
+		for (GrupoBurbuja g : gruposClase) {
+			for (Alumno a : g.getAlumnos()) {
+				alumnosCentro.add(a);
+			}
+		}
+		return alumnosCentro;
+	}
+	
 
 //	@SuppressWarnings("unchecked")
 //	@Override

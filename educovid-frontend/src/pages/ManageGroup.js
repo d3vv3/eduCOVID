@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 
 // Local components
-import ClassCenteredModal from "../components/NewClassFormModal";
+import GroupCenteredModal from "../components/NewGroupFormModal";
 
 // Constants
 import { backUrl } from "../constants/constants";
@@ -11,23 +11,23 @@ import { backUrl } from "../constants/constants";
 import Button from "react-bootstrap/Button";
 
 function ManageClass(props) {
-  const { userData, setPage, setSelectedClass } = props;
+  const { userData, setPage, setSelectedClass, selectedClass } = props;
 
-  const [classes, setClasses] = useState([]);
+  const [groups, setGroups] = useState([]);
   const [selected, setSelected] = useState([]);
   const [showNewModal, setShowNewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
   useEffect(() => {
-    retrieveClasses();
+    retrieveGroups();
   }, []);
 
-  const retrieveClasses = async () => {
-    console.log("Refrescando clases");
+  const retrieveGroups = async () => {
+    console.log("Refrescando grupos");
     const token = localStorage.getItem("token") || "";
     let response;
     let responseData;
-    response = await fetch(backUrl + `/centro/${userData?.centro}/classes`, {
+    response = await fetch(backUrl + `/grupo/clase/${selectedClass.id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -35,28 +35,27 @@ function ManageClass(props) {
       }
     });
     responseData = await response.json();
-    setClasses(responseData);
+    setGroups(responseData);
   };
 
-  const onInsertClass = async (name, classProfessors) => {
-    const newClass = {
+  const onInsertGroup = async (name, groupStudents) => {
+    const newGroup = {
       nombre: name,
-      burbujaPresencial: null,
-      fechaInicioConmutacion: null,
-      tiempoConmutacion: null,
-      profesores: null,
-      gruposBurbuja: null
+      estadoSanitario: null,
+      fechaConfinamiento: null,
+      prioridad: null,
+      alumnos: groupStudents
     };
     try {
       const res0 = await fetch(
-        backUrl + `/centro/insert/class/${userData?.centro}`,
+        backUrl + `/centro/insert/group/${userData?.centro}`,
         {
           method: "POST",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
             "Content-Type": "application/json; charset=UTF-8"
           },
-          body: JSON.stringify(newClass)
+          body: JSON.stringify(newGroup)
         }
       );
       // console.log(res0);
@@ -65,7 +64,7 @@ function ManageClass(props) {
       } else {
         setShowNewModal(false);
       }
-      classProfessors.forEach(async professor => {
+      groupStudents.forEach(async professor => {
         const res = await fetch(
           backUrl +
             `/centro/insert/class/${userData?.centro}/${encodeURIComponent(
@@ -77,7 +76,7 @@ function ManageClass(props) {
               Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
               "Content-Type": "application/json; charset=UTF-8"
             },
-            body: JSON.stringify(newClass)
+            body: JSON.stringify(newGroup)
           }
         );
         if (!res.ok) {
@@ -89,11 +88,11 @@ function ManageClass(props) {
     } catch (e) {
       console.log(e);
     } finally {
-      retrieveClasses();
+      retrieveGroups();
     }
   };
 
-  const onEditClass = async ({
+  const onEditGroup = async ({
     id,
     nombre,
     burbujaPresencial,
@@ -102,7 +101,7 @@ function ManageClass(props) {
     profesores,
     gruposBurbuja
   }) => {
-    const newClass = {
+    const newGroup = {
       id,
       nombre,
       burbujaPresencial,
@@ -133,21 +132,24 @@ function ManageClass(props) {
     } catch (e) {
       console.log(e);
     } finally {
-      retrieveClasses();
+      retrieveGroups();
     }
   };
 
   const handleDelete = async () => {
     try {
-      selected.forEach(async clase => {
-        let res = await fetch(backUrl + `/clase/${clase.id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-            "Content-Type": "application/json; charset=UTF-8"
+      selected.forEach(async grupo => {
+        let res = await fetch(
+          backUrl + `/grupo/delete/${grupo.id}/${selectedClass.id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+              "Content-Type": "application/json; charset=UTF-8"
+            }
+            // body: JSON.stringify(clase)
           }
-          // body: JSON.stringify(clase)
-        });
+        );
         console.log(await res);
         if (!res.ok) {
           console.log(await res.json());
@@ -157,7 +159,7 @@ function ManageClass(props) {
     } catch (e) {
       console.log(e);
     } finally {
-      retrieveClasses();
+      await retrieveGroups();
     }
   };
 
@@ -166,7 +168,7 @@ function ManageClass(props) {
       <div className="manage-classes-container">
         <div className="left-menu">
           <div className="list-container">
-            {(classes ?? []).map((item, index) => (
+            {(groups ?? []).map((item, index) => (
               <div
                 key={index}
                 onClick={e => {
@@ -176,7 +178,7 @@ function ManageClass(props) {
                 }}
                 className={
                   "person-card green" +
-                  (classes.some(e => e === item) ? "" : " selected")
+                  (groups.some(e => e === item) ? "" : " selected")
                 }
               >
                 <h5>{item.nombre}</h5>
@@ -200,7 +202,7 @@ function ManageClass(props) {
                 }}
                 className={
                   "person-card green" +
-                  (classes.some(e => e === indivClass) ? " selected" : "")
+                  (groups.some(e => e === indivClass) ? " selected" : "")
                 }
               >
                 {indivClass.nombre.includes("Grupo") ? (
@@ -229,20 +231,6 @@ function ManageClass(props) {
                 >
                   Propiedades
                 </Button>
-                <Button
-                  variant="primary"
-                  className="nord-button"
-                  onClick={e => {
-                    if (selected.length === 1) {
-                      setPage("groups");
-                      setSelectedClass(selected[0]);
-                    } else {
-                      alert("Seleccione una sola clase para esta acción");
-                    }
-                  }}
-                >
-                  Ver grupos
-                </Button>
               </>
             ) : null}
             <Button
@@ -252,7 +240,17 @@ function ManageClass(props) {
                 setShowNewModal(true);
               }}
             >
-              Añadir clase
+              Añadir grupo
+            </Button>
+            <Button
+              variant="primary"
+              className="nord-button"
+              onClick={e => {
+                setPage("class");
+                setSelectedClass({});
+              }}
+            >
+              Volver
             </Button>
             {selected.length > 0 ? (
               <Button
@@ -274,17 +272,18 @@ function ManageClass(props) {
         </div>
       </div>
       {showNewModal || showEditModal ? (
-        <ClassCenteredModal
+        <GroupCenteredModal
           centro={userData.centro}
-          existingClass={showEditModal ? selected[0] : null}
+          existingGroup={showEditModal ? selected[0] : null}
+          parentClass={selectedClass}
           show={showNewModal || showEditModal}
           onHide={() => {
             setShowNewModal(false);
             setShowEditModal(false);
             setSelected([]);
           }}
-          handleInsert={onInsertClass}
-          handleEdit={onEditClass}
+          handleInsert={onInsertGroup}
+          handleEdit={onEditGroup}
         />
       ) : null}
     </div>
