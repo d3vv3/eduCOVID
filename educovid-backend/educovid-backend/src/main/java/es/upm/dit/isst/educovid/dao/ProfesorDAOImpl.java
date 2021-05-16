@@ -129,19 +129,6 @@ public class ProfesorDAOImpl implements ProfesorDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Profesor> readAllProfesorbyFechaConfinamiento(Date fechaConfinamiento) {
-		List<Profesor> profesor = new ArrayList<Profesor>();
-		Session session = SessionFactoryService.get().openSession();
-		session.beginTransaction();
-		profesor.addAll(session.createQuery("from Profesor p where profesores.fechaConfinamiento=" + fechaConfinamiento)
-				.list());
-		session.getTransaction().commit();
-		session.close();
-		return profesor;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
 	public List<Profesor> readAllProfesorbyClase(Clase clase) {
 		List<Profesor> profesor = new ArrayList<Profesor>();
 		Session session = SessionFactoryService.get().openSession();

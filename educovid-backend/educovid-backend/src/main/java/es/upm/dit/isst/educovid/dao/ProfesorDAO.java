@@ -17,7 +17,7 @@ public interface ProfesorDAO {
 	public Profesor updateProfesorbyClase (Clase clase);
 	public Profesor deleteProfesor (Profesor Profesor);
 	public List<Profesor> readAllProfesorbyEstadoSanitario(String estadoSanitario);
-	public List<Profesor> readAllProfesorbyFechaConfinamiento(Date fechaConfinamiento);
+	//public List<Profesor> readAllProfesorbyFechaConfinamiento(Date fechaConfinamiento);
 	public List<Profesor> readAllProfesorbyClase(Clase clase);
 	public List<Profesor> readAllProfesores();
 	public List<Profesor> readAllProfesores(String nombreCentro);
