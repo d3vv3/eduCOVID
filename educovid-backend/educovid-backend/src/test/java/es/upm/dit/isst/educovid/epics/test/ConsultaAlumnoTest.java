@@ -17,7 +17,7 @@ public class ConsultaAlumnoTest {
   JavascriptExecutor js;
   @Before
   public void setUp() {
-	System.setProperty("webdriver.chrome.driver", "/home/kali/isst/eduCOVID/educovid-backend/educovid-backend/chromedriver");
+	System.setProperty("webdriver.chrome.driver", "chromedriver");
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
     vars = new HashMap<String, Object>();
@@ -31,7 +31,7 @@ public class ConsultaAlumnoTest {
     driver.get("http://localhost:3000/");
     driver.manage().window().setSize(new Dimension(1920, 918));
     driver.findElement(By.linkText("Accede")).click();
-    driver.findElement(By.id("formCenter")).sendKeys("IES Gran Capitán");
+    driver.findElement(By.id("formCenter")).sendKeys("Mi Centro Favorito");
     driver.findElement(By.id("formUsername")).click();
     driver.findElement(By.id("formUsername")).sendKeys("mtAAAAA");
     driver.findElement(By.id("formBasicPassword")).click();

@@ -247,11 +247,16 @@ public class NotificationResource {
 		return Response.status(Response.Status.OK).build();
 	}
 
-	@GET
+	@POST
 	@Path("/subscription/professors/{userId}")
-	public Response readSubscriptionProfesor(@PathParam("userId") String userId) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response readSubscriptionProfesor(@PathParam("userId") String userId, String JSONBodyString) {
 		try {
-
+			JSONObject jsonBody = new JSONObject(JSONBodyString);
+			String confineMessage = jsonBody.getString("confineMessage");
+			System.out.println("Mensaje de confinado: " + confineMessage);
+			String unconfineMessage = jsonBody.getString("unconfineMessage");
+			System.out.println("Mensaje de desconfinado: " + unconfineMessage);
 			Profesor profesor = ProfesorDAOImpl.getInstance().readProfesorbyId(userId);
 			System.out.println("Usuario obtenido: " + profesor);
 			String subscriptionEndpoint = profesor.getSubscriptionEndpoint();
@@ -261,6 +266,7 @@ public class NotificationResource {
 			System.out.println("Subscription Endpoint: " + subscriptionEndpoint);
 			System.out.println("Auth: " + auth);
 			System.out.println("p256dh: " + p256dh);
+			if (subscriptionEndpoint == null || auth == null || p256dh == null) return Response.status(Response.Status.PRECONDITION_REQUIRED).build();
 
 			URI endpointURI = URI.create(subscriptionEndpoint);
 			URL url = new URL(subscriptionEndpoint);
@@ -281,9 +287,9 @@ public class NotificationResource {
 			ObjectMapper objectMapper = new ObjectMapper();
 			String msg = "";
 			if (profesor.getEstadoSanitario().equals("confinado")) {
-				msg = "Has sido confinado";
+				msg = confineMessage;;
 			} else {
-				msg = "Has sido desconfinado";
+				msg = unconfineMessage;
 			}
 			byte[] body = cryptoService.encrypt(objectMapper.writeValueAsString(new PushMessage("eduCOVID", msg)),
 					p256dh, auth, 0);
@@ -347,6 +353,7 @@ public class NotificationResource {
 					System.out.println("Subscription Endpoint: " + subscriptionEndpoint);
 					System.out.println("Auth: " + auth);
 					System.out.println("p256dh: " + p256dh);
+					if (subscriptionEndpoint == null || auth == null || p256dh == null) return Response.status(Response.Status.PRECONDITION_REQUIRED).build();
 
 					URI endpointURI = URI.create(subscriptionEndpoint);
 					URL url = new URL(subscriptionEndpoint);
