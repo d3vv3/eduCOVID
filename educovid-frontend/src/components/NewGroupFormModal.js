@@ -184,7 +184,7 @@ function GroupCenteredModal(props) {
             }
             props.onHide();
           }}
-          disabled={groupName === "" || groupStudents === []}
+          disabled={groupName === "" || groupStudents.length === 0}
         >
           {existingGroup ? <div>Aplicar cambios </div> : <div>Añadir</div>}
         </Button>

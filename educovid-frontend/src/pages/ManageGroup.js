@@ -8,15 +8,90 @@ import GroupCenteredModal from "../components/NewGroupFormModal";
 import { backUrl } from "../constants/constants";
 
 // Bootstrap imports
+import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+
+function NotificationModal(props) {
+  const [confinedText, setConfinedText] = useState(
+    "Tu grupo ha sido confinado"
+  );
+  const [unconfinedText, setUnconfinedText] = useState(
+    "Tu grupo ha sido desconfinado"
+  );
+
+  const { onHide, handleFinish, show, action } = props;
+
+  return (
+    <Modal
+      onHide={onHide}
+      show={show}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Mensaje explicativo
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          {action === "confine" ? (
+            <Form.Group controlId="formConfinedText">
+              <Form.Label>Mensaje para alumnos del grupo a confinar</Form.Label>
+              <Form.Control
+                placeholder="Introduzca el mensaje"
+                onChange={e => {
+                  setConfinedText(e.target.value);
+                  // handleChangeConfineMessage(e.target.value);
+                }}
+                value={confinedText}
+              />
+            </Form.Group>
+          ) : null}
+          {action === "unconfine" ? (
+            <Form.Group controlId="formUnconfinedText">
+              <Form.Label>
+                Mensaje para alumnos del grupo a desconfinar
+              </Form.Label>
+              <Form.Control
+                placeholder="Introduzca el mensaje"
+                onChange={e => {
+                  setUnconfinedText(e.target.value);
+                  // handleChangeUnconfineMessage(e.target.value);
+                }}
+                value={unconfinedText}
+              />
+            </Form.Group>
+          ) : null}
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={onHide}>Cancelar</Button>
+        <Button
+          onClick={() => {
+            handleFinish(confinedText, unconfinedText);
+            setConfinedText("Tu grupo ha sido confinado");
+            setUnconfinedText("Tu grupo ha sido desconfinado");
+          }}
+        >
+          Finalizar
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
 
 function ManageClass(props) {
   const { userData, setPage, setSelectedClass, selectedClass } = props;
 
+  const [action, setAction] = useState("");
   const [groups, setGroups] = useState([]);
   const [selected, setSelected] = useState([]);
   const [showNewModal, setShowNewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [notificationModalShow, setNotificationModalShow] = useState(false);
 
   useEffect(() => {
     retrieveGroups();
@@ -127,6 +202,44 @@ function ManageClass(props) {
     }
   };
 
+  const handleAction = async (action, confinedText, unconfinedText) => {
+    await fetch(backUrl + `/manage/${action}/bubbleGroups`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+      },
+      body: JSON.stringify(selected)
+    });
+    await retrieveGroups();
+    // notify everyone
+    selected.forEach(async value => {
+      try {
+        console.log(value);
+        await fetch(
+          backUrl + `/notification/subscription/bubbleGroups/` + value.id,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+            },
+            body: JSON.stringify({
+              confineMessage: confinedText,
+              unconfineMessage: unconfinedText
+            })
+          }
+        );
+      } catch (e) {
+        console.log("Error pushing notification");
+      }
+    });
+  };
+
+  const handleNotification = async () => {
+    setNotificationModalShow(true);
+  };
+
   return (
     <div>
       <div className="manage-classes-container">
@@ -146,6 +259,15 @@ function ManageClass(props) {
                 }
               >
                 <h5>{item.nombre}</h5>
+                <h6>
+                  {item.estadoSanitario.charAt(0).toUpperCase() +
+                    item.estadoSanitario.slice(1)}
+                </h6>
+                <h6>
+                  {item.id === selectedClass.burbujaPresencial.id
+                    ? "Presencial"
+                    : "No presencial"}
+                </h6>
               </div>
             ))}
           </div>
@@ -153,27 +275,32 @@ function ManageClass(props) {
         <div className="right-options">
           <h2>Seleccionados</h2>
           <div className="seleccionados">
-            {(selected || []).map((indivClass, index) => (
+            {(selected || []).map((group, index) => (
               <div
                 key={index}
                 onClick={e => {
-                  if (selected.some(e => e.nombre === indivClass.nombre)) {
+                  if (selected.some(e => e.nombre === group.nombre)) {
                     var filtered = selected.filter(function(value, index, arr) {
-                      return value.nombre !== indivClass.nombre;
+                      return value.nombre !== group.nombre;
                     });
                     setSelected(filtered);
                   }
                 }}
                 className={
                   "person-card green" +
-                  (groups.some(e => e === indivClass) ? " selected" : "")
+                  (groups.some(e => e === group) ? " selected" : "")
                 }
               >
-                {indivClass.nombre.includes("Grupo") ? (
-                  <h5>{indivClass.nombre}</h5>
-                ) : (
-                  <h5>{indivClass.nombre}</h5>
-                )}
+                <h5>{group.nombre}</h5>
+                <h6>
+                  {group.estadoSanitario.charAt(0).toUpperCase() +
+                    group.estadoSanitario.slice(1)}
+                </h6>
+                <h6>
+                  {group.id === selectedClass.burbujaPresencial.id
+                    ? "Presencial"
+                    : "No presencial"}
+                </h6>
               </div>
             ))}
           </div>
@@ -217,24 +344,78 @@ function ManageClass(props) {
               Volver
             </Button>
             {selected.length > 0 ? (
-              <Button
-                variant="primary"
-                className="nord-button red"
-                onClick={async e => {
-                  if (selected.length > 0) {
-                    handleDelete();
-                    setSelected([]);
-                  } else {
-                    alert("Seleccione clases para ejecutar esta acción");
-                  }
-                }}
-              >
-                Borrar
-              </Button>
+              <>
+                <Button
+                  variant="primary"
+                  className="nord-button"
+                  onClick={e => {
+                    if (selected.length > 0) {
+                      setAction("confine");
+                      handleNotification();
+                    } else {
+                      alert("Seleccione las personas a confinar");
+                    }
+                  }}
+                >
+                  Confinar
+                </Button>
+                <Button
+                  variant="primary"
+                  className="nord-button"
+                  onClick={e => {
+                    // if (selected != null) {
+                    // let x = selected;
+                    // let confined = x.forEach(e =>
+                    //   e.estadoSanitario === "confinado"
+                    //     ? (e.estadoSanitario = "no confinado")
+                    //     : (e.estadoSanitario = "confinado")
+                    // );
+                    //handleConfine();
+                    //setSelected([]);
+                    if (selected.length > 0) {
+                      setAction("unconfine");
+                      handleNotification();
+                      //handleAction("unconfine");
+                      //setSelected([]);
+                    } else {
+                      alert("Seleccione las personas a confinar");
+                    }
+                  }}
+                >
+                  Desconfinar
+                </Button>
+                <Button
+                  variant="primary"
+                  className="nord-button red"
+                  onClick={async e => {
+                    if (selected.length > 0) {
+                      handleDelete();
+                      setSelected([]);
+                    } else {
+                      alert("Seleccione clases para ejecutar esta acción");
+                    }
+                  }}
+                >
+                  Borrar
+                </Button>
+              </>
             ) : null}
           </div>
         </div>
       </div>
+      {notificationModalShow ? (
+        <NotificationModal
+          show={notificationModalShow}
+          action={action}
+          onHide={() => setNotificationModalShow(false)}
+          handleFinish={(confinedText, unconfinedText) => {
+            // handleConfine();
+            handleAction(action, confinedText, unconfinedText);
+            setSelected([]);
+            setNotificationModalShow(false);
+          }}
+        />
+      ) : null}
       {showNewModal || showEditModal ? (
         <GroupCenteredModal
           centro={userData.centro}

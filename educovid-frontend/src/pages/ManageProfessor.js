@@ -78,7 +78,7 @@ function ManageProfessor(props) {
     } catch (e) {
       console.log(e);
     } finally {
-      await retrieveProfessors();
+      setTimeout(() => retrieveProfessors(), 20);
     }
   };
 

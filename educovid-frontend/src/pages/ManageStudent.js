@@ -38,7 +38,7 @@ function NotificationModal(props) {
               <Form.Label>Mensaje para alumnos a confinar</Form.Label>
               <Form.Control
                 placeholder="Introduzca el mensaje"
-                onChange={(e) => {
+                onChange={e => {
                   setConfinedText(e.target.value);
                   // handleChangeConfineMessage(e.target.value);
                 }}
@@ -51,7 +51,7 @@ function NotificationModal(props) {
               <Form.Label>Mensaje para alumnos a desconfinar</Form.Label>
               <Form.Control
                 placeholder="Introduzca el mensaje"
-                onChange={(e) => {
+                onChange={e => {
                   setUnconfinedText(e.target.value);
                   // handleChangeUnconfineMessage(e.target.value);
                 }}
@@ -63,11 +63,15 @@ function NotificationModal(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onHide}>Cancelar</Button>
-        <Button onClick={() => {
-          handleFinish(confinedText, unconfinedText);
-          setConfinedText("Has sido confinado");
-          setUnconfinedText("Has sido desconfinado");
-        }}>Finalizar</Button>
+        <Button
+          onClick={() => {
+            handleFinish(confinedText, unconfinedText);
+            setConfinedText("Has sido confinado");
+            setUnconfinedText("Has sido desconfinado");
+          }}
+        >
+          Finalizar
+        </Button>
       </Modal.Footer>
     </Modal>
   );
@@ -79,7 +83,7 @@ function ManageStudent(props) {
   const [action, setAction] = useState("");
   const [showNewModal, setShowNewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [notificationModalShow, setNotificationModalShow] = React.useState(false);
+  const [notificationModalShow, setNotificationModalShow] = useState(false);
   const [students, setStudents] = useState([]);
   const [bubbleGroups, setBubbleGroups] = useState([]);
   const [indivClasses, setIndivClasses] = useState([]);
@@ -87,12 +91,17 @@ function ManageStudent(props) {
   const [selectedFilter, setSelectedFilter] = useState("*");
 
   useEffect(() => {
-    refreshStudents();
+    updateAll();
   }, [selectedFilter]);
 
   useEffect(() => {
-    initComponent();
+    retrieveGlobalState();
   }, []);
+
+  const updateAll = async () => {
+    await refreshStudents();
+    await retrieveGlobalState();
+  };
 
   const refreshStudents = async () => {
     let response, responseData;
@@ -124,7 +133,7 @@ function ManageStudent(props) {
     }
   };
 
-  const initComponent = async () => {
+  const retrieveGlobalState = async () => {
     let response;
     let responseData;
     if (userData === null) return;
@@ -134,12 +143,15 @@ function ManageStudent(props) {
     //     Authorization: `Bearer ${localStorage.getItem("token") || ""}`
     //   }
     // });
-    response = await fetch(backUrl + `/centro/${userData?.centro}/bubblegroups`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+    response = await fetch(
+      backUrl + `/centro/${userData?.centro}/bubblegroups`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+        }
       }
-    });
+    );
     responseData = await response.json();
     setBubbleGroups(responseData);
     response = await fetch(backUrl + `/centro/${userData?.centro}/classes`, {
@@ -151,7 +163,6 @@ function ManageStudent(props) {
     responseData = await response.json();
     // console.log(responseData);
     setIndivClasses(responseData);
-    refreshStudents();
   };
 
   const handleEditStudent = async ({
@@ -181,7 +192,7 @@ function ManageStudent(props) {
     try {
       const res = await fetch(
         backUrl +
-        `/centro/update/alumno/${userData?.centro}/${studentClass}/${studentBubbleGroup}`,
+          `/centro/update/alumno/${userData?.centro}/${studentClass}/${studentBubbleGroup}`,
         {
           method: "PUT",
           headers: {
@@ -199,7 +210,7 @@ function ManageStudent(props) {
     } catch (e) {
       console.log(e);
     } finally {
-      refreshStudents();
+      updateAll();
     }
   };
 
@@ -222,7 +233,7 @@ function ManageStudent(props) {
     try {
       const res = await fetch(
         backUrl +
-        `/centro/insert/alumno/${userData?.centro}/${studentClass}/${studentBubbleGroup}`,
+          `/centro/insert/alumno/${userData?.centro}/${studentClass}/${studentBubbleGroup}`,
         {
           method: "POST",
           headers: {
@@ -240,44 +251,8 @@ function ManageStudent(props) {
     } catch (e) {
       // Nothing to do
     }
-    refreshStudents();
+    updateAll();
   };
-
-  // const handleConfine = async () => {
-  //   console.log("MENSAJE CONFINAR: " + confineMessage);
-  //   console.log("MENSAJE DESCONFINAR: " + unconfineMessage);
-  //   console.log(JSON.stringify(selected));
-  //   console.log(JSON.stringify({ "confineMessage": confineMessage, "unconfineMessage": unconfineMessage }));
-  //   selected.every(e => console.log(e.estadoSanitario.toLowerCase()));
-  //   if (selected.every(e => e.estadoSanitario.toLowerCase() === "confinado")) {
-  //     await fetch(backUrl + `/manage/unconfine/students`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
-  //       body: JSON.stringify(selected)
-  //     });
-  //     // await refreshStudents();
-  //   } else if (
-  //     selected.every(e => e.estadoSanitario.toLowerCase() === "no confinado")
-  //   ) {
-  //     await fetch(backUrl + `/manage/confine/students`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
-  //       body: JSON.stringify(selected)
-  //     });
-  //     // await refreshStudents();
-  //   } else {
-  //     await fetch(backUrl + `/manage/switch/students`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
-  //       body: JSON.stringify(selected)
-  //     });
-  //   }
-  //   // let responses = await Promise.all(pendingDeletes);
-  //   // responses.some(response =>
-  //   //   !response.ok ? alert(`Hubo un fallo al borrar un profesor`) : null
-  //   // );
-  //   refreshStudents();
-  // };
 
   const handleDelete = async () => {
     let pendingDeletes = selected.map(student => {
@@ -294,7 +269,7 @@ function ManageStudent(props) {
     responses.some(response =>
       !response.ok ? alert(`Hubo un fallo al borrar un profesor`) : null
     );
-    await refreshStudents();
+    await updateAll();
   };
 
   const handleAction = async (action, confinedText, unconfinedText) => {
@@ -312,12 +287,19 @@ function ManageStudent(props) {
       try {
         console.log(value);
         const notificationRes = await fetch(
-          backUrl +
-          `/notification/subscription/students/` + value.id, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
-          body: JSON.stringify({ "confineMessage": confinedText, "unconfineMessage": unconfinedText })
-        });
+          backUrl + `/notification/subscription/students/` + value.id,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token") || ""}`
+            },
+            body: JSON.stringify({
+              confineMessage: confinedText,
+              unconfineMessage: unconfinedText
+            })
+          }
+        );
       } catch (e) {
         console.log("Error pushing notification");
       }
@@ -326,7 +308,7 @@ function ManageStudent(props) {
 
   const handleNotification = async () => {
     setNotificationModalShow(true);
-  }
+  };
 
   return (
     <div>
@@ -354,7 +336,15 @@ function ManageStudent(props) {
                   </option>
                   {(bubbleGroups || []).map((group, index) => (
                     <option key={index} value={group.id}>
-                      {indivClasses.find(indivClass => indivClass.gruposBurbuja.map(grupoBurbuja => grupoBurbuja.id).indexOf(group.id) !== -1)?.nombre} - {group.nombre}
+                      {
+                        indivClasses.find(
+                          indivClass =>
+                            indivClass.gruposBurbuja
+                              .map(grupoBurbuja => grupoBurbuja.id)
+                              .indexOf(group.id) !== -1
+                        )?.nombre
+                      }{" "}
+                      - {group.nombre}
                     </option>
                   ))}
                 </Form.Control>
@@ -377,15 +367,28 @@ function ManageStudent(props) {
                   (students.some(e => e === item) ? "" : " selected")
                 }
               >
-                {item?.nombre?.includes("Grupo") ? (
-                  <h5>{item.nombre}</h5>
-                ) : (
-                  <h5>{item.nombre}</h5>
-                )}
+                <h5>{item.nombre}</h5>
                 <h6>
                   {item.estadoSanitario === "no confinado"
                     ? "No confinado"
                     : "Confinado"}
+                </h6>
+                <h6>
+                  {indivClasses
+                    .map(clase => {
+                      if (
+                        clase?.burbujaPresencial?.alumnos
+                          .map(a => a.id)
+                          .includes(item.id)
+                      ) {
+                        return true; // Presencial
+                      } else {
+                        return false; // No presencial
+                      }
+                    })
+                    .some(i => i === true)
+                    ? "Presencial"
+                    : "No presencial"}
                 </h6>
               </div>
             ))}
@@ -399,7 +402,7 @@ function ManageStudent(props) {
                 key={index}
                 onClick={e => {
                   if (selected.some(e => e.nombre === person.nombre)) {
-                    var filtered = selected.filter(function (value, index, arr) {
+                    var filtered = selected.filter(function(value, index, arr) {
                       return value.nombre !== person.nombre;
                     });
                     setSelected(filtered);
@@ -411,15 +414,28 @@ function ManageStudent(props) {
                   (students.some(e => e === person) ? " selected" : "")
                 }
               >
-                {person.nombre.includes("Grupo") ? (
-                  <h5>{person.nombre}</h5>
-                ) : (
-                  <h5>{person.nombre}</h5>
-                )}
+                <h5>{person.nombre}</h5>
                 <h6>
                   {person.estadoSanitario === "no confinado"
                     ? "No confinado"
                     : "Confinado"}
+                </h6>
+                <h6>
+                  {indivClasses
+                    .map(clase => {
+                      if (
+                        clase?.burbujaPresencial?.alumnos
+                          .map(a => a.id)
+                          .includes(person.id)
+                      ) {
+                        return true; // Presencial
+                      } else {
+                        return false; // No presencial
+                      }
+                    })
+                    .some(i => i === true)
+                    ? "Presencial"
+                    : "No presencial"}
                 </h6>
               </div>
             ))}
@@ -516,17 +532,19 @@ function ManageStudent(props) {
         </div>
       </div>
 
-      {notificationModalShow ? <NotificationModal
-        show={notificationModalShow}
-        action={action}
-        onHide={() => setNotificationModalShow(false)}
-        handleFinish={(confinedText, unconfinedText) => {
-          // handleConfine();
-          handleAction(action, confinedText, unconfinedText);
-          setSelected([]);
-          setNotificationModalShow(false);
-        }}
-      /> : null}
+      {notificationModalShow ? (
+        <NotificationModal
+          show={notificationModalShow}
+          action={action}
+          onHide={() => setNotificationModalShow(false)}
+          handleFinish={(confinedText, unconfinedText) => {
+            // handleConfine();
+            handleAction(action, confinedText, unconfinedText);
+            setSelected([]);
+            setNotificationModalShow(false);
+          }}
+        />
+      ) : null}
 
       {showNewModal || showEditModal ? (
         <StudentCenteredModal

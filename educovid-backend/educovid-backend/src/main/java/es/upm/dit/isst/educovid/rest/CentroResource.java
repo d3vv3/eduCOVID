@@ -206,7 +206,6 @@ public class CentroResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/insert/class/{nombreCentro}")
 	public Response insertClaseEnCentro(Clase newClass, @PathParam("nombreCentro") String nombreCentro) {
-		// Coger profesor y añadirlo
 		CentroEducativo centro = CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(nombreCentro);
 		if (centro == null)
 			return Response.status(Response.Status.CONFLICT).build();
@@ -241,16 +240,16 @@ public class CentroResource {
 	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/update/class/{nombreCentro}/{id}")
-	public Response updateClaseEnCentro(List<String> idProfes, @PathParam("nombreCentro") String nombreCentro,
-			@PathParam("id") String id) {
+	@Path("/update/class/{nombreCentro}")
+	public Response updateClaseEnCentro(Clase updatedClass, @PathParam("nombreCentro") String nombreCentro) {
 		Set<Profesor> profesores = new HashSet<Profesor>();
-		for (String p : idProfes) {
-			Profesor profe = ProfesorDAOImpl.getInstance().readProfesorbyId(p);
+		for (Profesor p : updatedClass.getProfesores()) {
+			Profesor profe = ProfesorDAOImpl.getInstance().readProfesorbyId(p.getId().toString());
 			profesores.add(profe);
 		}
-		Clase clase = ClaseDAOImpl.getInstance().readClasebyId(id);
+		Clase clase = ClaseDAOImpl.getInstance().readClasebyId(updatedClass.getId().toString());
 		clase.setProfesores(profesores);
+		clase.setNombre(updatedClass.getNombre());
 		ClaseDAOImpl.getInstance().updateClase(clase);
 		return Response.ok().build();
 	}

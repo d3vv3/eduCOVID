@@ -11,7 +11,6 @@ import { backUrl } from "../constants/constants";
 import Notifications from "../components/Notifications";
 
 function StudentPage(props) {
-
   const { history, userData, onLogOut } = props;
 
   const [studentId, setStudentId] = useState(-1);
@@ -21,7 +20,7 @@ function StudentPage(props) {
   const [studentClass, setStudentClass] = useState();
 
   useEffect(() => {
-    if(userData){
+    if (userData) {
       setStudentId(userData.id);
       setStudentName(userData.nombre);
       setStudentEstadoSanitario(userData.estadoSanitario);
@@ -29,17 +28,17 @@ function StudentPage(props) {
   }, [userData]);
 
   useEffect(async () => {
-    if(studentId != -1){
+    if (studentId != -1) {
       try {
-        const token =localStorage.getItem('token') || "";
+        const token = localStorage.getItem("token") || "";
         const groupRes = await fetch(backUrl + "/grupo/alumno/" + studentId, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            Authorization: `Bearer ${token}`
           }
         });
         const classRes = await fetch(backUrl + "/clase/alumno/" + studentId, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            Authorization: `Bearer ${token}`
           }
         });
         let groupData = await groupRes.json();
@@ -101,31 +100,48 @@ function StudentPage(props) {
           variant="primary"
           onClick={() => {
             onLogOut();
-            localStorage.removeItem('token');
+            localStorage.removeItem("token");
           }}
         >
           Cerrar sesión
         </Button>
       </div>
       <div className="student-page-container">
-        {studentId !== -1 ? <Notifications userId={studentId} role="alumno" /> : null }
+        {studentId !== -1 ? (
+          <Notifications userId={studentId} role="alumno" />
+        ) : null}
         <div className="centered-div">
           <h4>Alumno/a</h4>
           <h1>{studentName}</h1>
-          <h2 className={studentState?.toLowerCase() === "confinado" ? "bad" : "good"}>
-          {studentState?.toLowerCase() === "confinado" ? "Confinado" : "No confinado"}
+          <h2
+            className={
+              studentState?.toLowerCase() === "confinado" ? "bad" : "good"
+            }
+          >
+            {studentState?.toLowerCase() === "confinado"
+              ? "Confinado"
+              : "No confinado"}
           </h2>
-              <p className="description">
-               {studentGroup?.estadoSanitario.toLowerCase() === "confinado" ||
-                  studentClass?.grupoPresencial === "false" ||
-                  studentState?.toLowerCase() === "confinado"
-                  ? "Debe recibir clase de manera online" : "Debe recibir clase de manera presencial"}
-              </p>
+          <p className="description">
+            {studentGroup?.estadoSanitario.toLowerCase() === "confinado" ||
+            studentClass?.grupoPresencial === "false" ||
+            studentState?.toLowerCase() === "confinado"
+              ? "Debe recibir clase de manera online"
+              : "Debe recibir clase de manera presencial"}
+          </p>
 
-              <Card className={studentGroup?.estadoSanitario.toLowerCase() === "confinado" || studentClass?.grupoPresencial === "false"
-                 ? "card-header-bad" : "card-header-good"} as={Card.Header}>
-                    {studentClass?.nombreClase} - {studentGroup?.nombre} - Docencia: {studentClass?.grupoPresencial == "true" ? "Presencial" : "Online"}
-              </Card>
+          <Card
+            className={
+              studentGroup?.estadoSanitario.toLowerCase() === "confinado" ||
+              studentClass?.grupoPresencial === "false"
+                ? "card-header-bad"
+                : "card-header-good"
+            }
+            as={Card.Header}
+          >
+            {studentClass?.nombreClase} - {studentGroup?.nombre} - Docencia:{" "}
+            {studentClass?.grupoPresencial === "true" ? "Presencial" : "Online"}
+          </Card>
         </div>
       </div>
     </div>

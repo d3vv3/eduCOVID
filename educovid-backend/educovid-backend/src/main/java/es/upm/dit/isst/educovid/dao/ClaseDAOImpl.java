@@ -83,17 +83,9 @@ public class ClaseDAOImpl implements ClaseDAO {
 	public Clase deleteClase(Clase clase) {
 		Session session = SessionFactoryService.get().openSession();
 		List<GrupoBurbuja> grupos = clase.getGruposBurbuja();
-		GrupoBurbuja grupoPresencial = clase.getBurbujaPresencial();
 		List<GrupoBurbuja> empty = null;
 		clase.setGruposBurbuja(empty);
-		clase.setBurbujaPresencial(null);
 		updateClase(clase);
-		try {
-			GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(grupoPresencial);
-		} catch (Exception e) {
-			System.out.println("La burbuja presencial ya estaba borrada");
-		}
-		
 		for (GrupoBurbuja g : grupos) {
 			GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(g);
 		}
