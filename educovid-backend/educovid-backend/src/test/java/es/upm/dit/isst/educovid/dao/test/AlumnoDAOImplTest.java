@@ -30,7 +30,7 @@ class AlumnoDAOImplTest {
 	static CentroEducativoDAO centrodao = CentroEducativoDAOImpl.getInstance();
 	
 	@BeforeAll
-	static void createObjects() {
+	static void fillDataBase() {
 		String salt1 = Security.getSalt();
 		String salt2 = Security.getSalt();
 		String salt3 = Security.getSalt();
@@ -93,7 +93,7 @@ class AlumnoDAOImplTest {
 	}
 	
 	@Test
-	void testGetNombreCentro() {
+	void testAlumnoDAO() {
 		Alumno a1 = alumnodao.readAlumnobyMatNumCenter("S01546", "Colegio");
 		Alumno a2 = alumnodao.readAlumnobyMatNumCenter("S01547", "Colegio");
 		Alumno a3 = alumnodao.readAlumnobyMatNumCenter("S01548", "Colegio");
