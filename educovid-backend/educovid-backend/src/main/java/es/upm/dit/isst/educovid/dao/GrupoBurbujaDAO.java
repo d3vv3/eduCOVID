@@ -18,12 +18,13 @@ public interface GrupoBurbujaDAO {
 	public GrupoBurbuja updateGrupoBurbujabyPrioridad(Integer prioridad);
 	public GrupoBurbuja deleteGrupoBurbuja (GrupoBurbuja GrupoBurbuja);
 	public List<GrupoBurbuja> readAllGruposBurbuja();
-	public List<GrupoBurbuja> readAllGruposBurbujabyEstadoSanitario(String estadoSanitario);
+	public GrupoBurbuja readGrupoBurbujabyAlumnoId(Long id);
+	//public List<GrupoBurbuja> readAllGruposBurbujabyEstadoSanitario(String estadoSanitario);
 	//public List<GrupoBurbuja> readAllGruposBurbujabyEstadoDocencia(String estadoDocencia);
 	public List<GrupoBurbuja> readAllGruposBurbujabyClase(Clase clase);
-	public List<GrupoBurbuja> readAllGruposBurbujabyFechaConfinamiento(Date fechaConfinamiento);
+	//public List<GrupoBurbuja> readAllGruposBurbujabyFechaConfinamiento(Date fechaConfinamiento);
 	// public List<GrupoBurbuja> readAllGruposBurbujabyFechaUltimaConmutacion(Date fechaUltConmutacion);
-	public List<GrupoBurbuja> readAllGruposBurbujabyPrioridad(Integer prioridad);
+	//public List<GrupoBurbuja> readAllGruposBurbujabyPrioridad(Integer prioridad);
 	public List<GrupoBurbuja> readAllGruposBurbujabyCentro(String nombreCentro);
 		
 }

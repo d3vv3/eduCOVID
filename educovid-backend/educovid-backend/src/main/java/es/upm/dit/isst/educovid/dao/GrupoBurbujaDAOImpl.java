@@ -123,17 +123,16 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
         return grupoBurbuja;
 	}
 
-	@Override
-	public List<GrupoBurbuja> readAllGruposBurbujabyEstadoSanitario(String estadoSanitario) {
-		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
-        Session session = SessionFactoryService.get().openSession();
-        session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.estadoSanitario=" + estadoSanitario).list());
-        session.getTransaction().commit();
-        session.close();
-        return grupoBurbuja;
-	}
-
+	/*
+	 * @Override public List<GrupoBurbuja>
+	 * readAllGruposBurbujabyEstadoSanitario(String estadoSanitario) {
+	 * List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> (); Session
+	 * session = SessionFactoryService.get().openSession();
+	 * session.beginTransaction(); grupoBurbuja.addAll(session.
+	 * createQuery("from GrupoBurbuja a where GrupoBurbuja.estadoSanitario=" +
+	 * estadoSanitario).list()); session.getTransaction().commit(); session.close();
+	 * return grupoBurbuja; }
+	 */
 	/*
 	 * @Override public List<GrupoBurbuja>
 	 * readAllGruposBurbujabyEstadoDocencia(String estadoDocencia) {
@@ -151,17 +150,6 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
         return c.getGruposBurbuja();
 	}
 
-	@Override
-	public List<GrupoBurbuja> readAllGruposBurbujabyFechaConfinamiento(Date fechaConfinamiento) {
-		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
-        Session session = SessionFactoryService.get().openSession();
-        session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.fechaConfinamiento=" + fechaConfinamiento).list());
-        session.getTransaction().commit();
-        session.close();
-        return grupoBurbuja;
-	}
-
 	/*
 	 * @Override public List<GrupoBurbuja>
 	 * readAllGruposBurbujabyFechaUltimaConmutacion(Date fechaUltConmutacion) {
@@ -173,16 +161,15 @@ public class GrupoBurbujaDAOImpl implements GrupoBurbujaDAO{
 	 * session.close(); return grupoBurbuja; }
 	 */
 
-	@Override
-	public List<GrupoBurbuja> readAllGruposBurbujabyPrioridad(Integer prioridad) {
-		List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja> ();
-        Session session = SessionFactoryService.get().openSession();
-        session.beginTransaction();
-        grupoBurbuja.addAll(session.createQuery("from GrupoBurbuja a where GrupoBurbuja.prioridad=" + prioridad).list());
-        session.getTransaction().commit();
-        session.close();
-        return grupoBurbuja;
-	}
+	/*
+	 * @Override public List<GrupoBurbuja> readAllGruposBurbujabyPrioridad(Integer
+	 * prioridad) { List<GrupoBurbuja> grupoBurbuja = new ArrayList<GrupoBurbuja>
+	 * (); Session session = SessionFactoryService.get().openSession();
+	 * session.beginTransaction(); grupoBurbuja.addAll(session.
+	 * createQuery("from GrupoBurbuja a where GrupoBurbuja.prioridad=" +
+	 * prioridad).list()); session.getTransaction().commit(); session.close();
+	 * return grupoBurbuja; }
+	 */
 
 	public List<GrupoBurbuja> readAllGruposBurbujabyCentro(String nombreCentro) {
 		List<Clase> clasesCentro = ClaseDAOImpl.getInstance().readAllClases(nombreCentro);

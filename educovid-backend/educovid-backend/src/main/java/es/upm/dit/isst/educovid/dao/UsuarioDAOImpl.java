@@ -32,23 +32,23 @@ public class UsuarioDAOImpl implements UsuarioDAO{
        return usuario;
 	}
 
-	@Override
-	public Usuario readUsuariobyId(String id) {
-		Session session = SessionFactoryService.get().openSession();
-        session.beginTransaction();
-        Alumno alumno =  session.get(Alumno.class, id);
-        Profesor profesor =  session.get(Profesor.class, id);
-        ResponsableCOVID responsable =  session.get(ResponsableCOVID.class, Long.parseLong(id));
-        if (alumno != null)
-        	return (Usuario) alumno;
-        if (profesor != null)
-        	return (Usuario) profesor;
-        if (responsable != null)
-        	return (Usuario) responsable;
-        session.getTransaction().commit();
-        session.close();
-        return null;
-	}
+//	@Override
+//	public Usuario readUsuariobyId(String id) {
+//		Session session = SessionFactoryService.get().openSession();
+//        session.beginTransaction();
+//        Alumno alumno =  session.get(Alumno.class, id);
+//        Profesor profesor =  session.get(Profesor.class, id);
+//        ResponsableCOVID responsable =  session.get(ResponsableCOVID.class, Long.parseLong(id));
+//        if (alumno != null)
+//        	return (Usuario) alumno;
+//        if (profesor != null)
+//        	return (Usuario) profesor;
+//        if (responsable != null)
+//        	return (Usuario) responsable;
+//        session.getTransaction().commit();
+//        session.close();
+//        return null;
+//	}
 
 	@Override
 	public Usuario readUsuariobyName(String name) {
