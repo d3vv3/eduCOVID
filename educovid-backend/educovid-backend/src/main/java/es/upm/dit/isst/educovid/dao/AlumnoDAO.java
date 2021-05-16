@@ -16,6 +16,7 @@ public interface AlumnoDAO {
 	public Alumno deleteAlumno (Alumno Alumno);
 	public List<Alumno> readAllAlumnos();
 	public List<Alumno> readAllAlumnos(String centro);
+	public String getNombreCentro(Alumno alumno);
 //	public List<Alumno> readAllAlumnosbyGroup(String grupoBurbuja);
 //	public List<Alumno> readAllAlumnosbyEstadoSanitario(String estadoSanitario);
 //	public List<Alumno> readAllAlumnosbyFechaConfinamiento(Date fechaConfinamiento);

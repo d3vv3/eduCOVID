@@ -38,7 +38,7 @@ public class GrupoBurbuja implements Serializable {
 		super();
 	}
 
-	public GrupoBurbuja(String nombre, String estadoSanitario, Date fechaConfinamiento, Integer prioridad, List<Alumno> alumnos) {
+	public GrupoBurbuja(String nombre, String estadoSanitario, Integer prioridad, List<Alumno> alumnos) {
 		super();
 		this.nombre = nombre;
 		this.estadoSanitario = estadoSanitario;

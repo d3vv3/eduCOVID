@@ -97,7 +97,7 @@ public class GrupoBurbujaResource {
 		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyAlumnoId(Long.parseLong(id));
 		if (g == null)
 			return Response.status(Response.Status.NOT_FOUND).build();
-		GrupoBurbuja gNew = new GrupoBurbuja(g.getNombre(), g.getEstadoSanitario(), null, null, null);
+		GrupoBurbuja gNew = new GrupoBurbuja(g.getNombre(), g.getEstadoSanitario(), null, null);
 		return Response.ok(gNew, MediaType.APPLICATION_JSON).build();
 	}
 	
