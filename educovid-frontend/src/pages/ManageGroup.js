@@ -265,8 +265,8 @@ function ManageClass(props) {
                 </h6>
                 <h6>
                   {item.id === selectedClass.burbujaPresencial.id
-                    ? "Presencial"
-                    : "No presencial"}
+                    ? "Turno:  presencial"
+                    : "Turno:  no presencial"}
                 </h6>
               </div>
             ))}
@@ -298,8 +298,8 @@ function ManageClass(props) {
                 </h6>
                 <h6>
                   {group.id === selectedClass.burbujaPresencial.id
-                    ? "Presencial"
-                    : "No presencial"}
+                    ? "Turno: presencial"
+                    : "Turno: no presencial"}
                 </h6>
               </div>
             ))}
