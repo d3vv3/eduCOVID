@@ -31,7 +31,7 @@ public class Clase implements Serializable {
 //			@JoinColumn(name = "clase_id", referencedColumnName = "id", unique = true) }, inverseJoinColumns = {
 //					@JoinColumn(name = "grupo_id", referencedColumnName = "id", unique = true) })
 //	private GrupoBurbuja burbujaPresencial;
-	@OneToOne
+	@OneToOne(optional = false)
 	private GrupoBurbuja burbujaPresencial;
 	private Date fechaInicioConmutacion;
 	private Integer tiempoConmutacion; // In school days
