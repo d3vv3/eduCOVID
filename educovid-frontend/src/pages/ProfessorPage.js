@@ -81,7 +81,7 @@ function ProfessorPage(props) {
           {professorGroups.map((group, index) =>
             <Card>
               <Card.Header className={group.grupoPresencial.toLowerCase() === "true" ? "card-header-good" : "card-header-bad"}>
-                {group.nombre} - {group.grupoPresencial.toLowerCase() === "false" ? "Docencia Online" : "Docencia Presencial"}
+                {group.nombre} - {group.grupoPresencial.toLowerCase() === "false" ? "Docencia: Online" : "Docencia: Presencial"}
               </Card.Header>
               {group.grupoPresencial.toLowerCase() === "true" ? (
                 <Card.Body>
