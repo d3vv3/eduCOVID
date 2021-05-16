@@ -32,7 +32,6 @@ import es.upm.dit.isst.educovid.model.Profesor;
 public class ClaseResource {
 	
 	@GET
-	@Secured
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readAllClases() {
@@ -42,7 +41,6 @@ public class ClaseResource {
 
 
 	@GET
-	@Secured
 	@Path("/profesor/{profesorId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readClaseByProfesor(@PathParam("profesorId") String profesorId) {
@@ -67,7 +65,6 @@ public class ClaseResource {
 	}
 	
 	@GET
-	@Secured
 	@Path("/alumno/{alumnoId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readClaseByAlumno(@PathParam("alumnoId") String alumnoId) {
@@ -97,7 +94,6 @@ public class ClaseResource {
 	}
 	
 	@POST
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createClase(Clase claseNueva) throws URISyntaxException {
@@ -110,7 +106,6 @@ public class ClaseResource {
 	}
 	
 	@GET
-	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readClasebyId(@PathParam("id") String id) {
@@ -121,7 +116,6 @@ public class ClaseResource {
 	}
 	
 	@PUT
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
@@ -135,7 +129,6 @@ public class ClaseResource {
 	}
 	
 	@DELETE
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")

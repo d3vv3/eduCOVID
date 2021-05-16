@@ -208,6 +208,7 @@ function ManageStudent(props) {
   };
 
   const handleAction = async (action, confinedText, unconfinedText) => {
+    console.log(JSON.stringify(selected))
     await fetch(backUrl + `/manage/${action}/students`, {
       method: "POST",
       headers: {

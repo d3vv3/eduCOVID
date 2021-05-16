@@ -45,7 +45,6 @@ public class CentroResource {
 	}
 
 	@POST
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/insert/alumno/{nombreCentro}/{nombreClase}/{nombreGrupo}")
 	public Response insertAlumnoEnCentro(Alumno alumnoNuevo, @PathParam("nombreCentro") String nombreCentro,
@@ -81,7 +80,6 @@ public class CentroResource {
 	}
 
 	@PUT
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/update/alumno/{nombreCentro}/{nombreClase}/{nombreGrupo}")
 	public Response updateAlumnoEnCentro(Alumno alumno, @PathParam("nombreCentro") String nombreCentro,
@@ -128,7 +126,6 @@ public class CentroResource {
 	}
 
 	@POST
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/insert/professor/{nombreCentro}/{nombreClase}")
 	public Response insertProfesorEnCentro(Profesor profesorNuevo, @PathParam("nombreCentro") String nombreCentro,
@@ -164,7 +161,6 @@ public class CentroResource {
 	}
 
 	@PUT
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/update/professor/{nombreCentro}/{nifNie}")
 	public Response updateProfesorEnCentro(@PathParam("nifNie") String nifNie,
@@ -202,7 +198,6 @@ public class CentroResource {
 	}
 
 	@POST
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/insert/class/{nombreCentro}")
 	public Response insertClaseEnCentro(Clase newClass, @PathParam("nombreCentro") String nombreCentro) {
@@ -237,7 +232,6 @@ public class CentroResource {
 	}
 
 	@PUT
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/update/class/{nombreCentro}")
@@ -255,7 +249,6 @@ public class CentroResource {
 	}
 
 	@POST
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/insert/class/{nombreCentro}/{profesorid}")
 	public Response insertProfEnClase(Clase newClass, @PathParam("nombreCentro") String nombreCentro,
@@ -286,7 +279,6 @@ public class CentroResource {
 	}
 	
 	@POST
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/insert/group/{nombreCentro}/{classId}")
 	public Response insertGrupoEnClase(GrupoBurbuja newGrupo, @PathParam("nombreCentro") String nombreCentro,
@@ -308,7 +300,6 @@ public class CentroResource {
 	}
 	
 	@PUT
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/update/group/{nombreCentro}/{groupId}")
 	public Response updateGrupoEnClase(GrupoBurbuja newGrupo, @PathParam("nombreCentro") String nombreCentro,
@@ -325,7 +316,6 @@ public class CentroResource {
 	}
 
 	@GET
-	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{nombreCentro}/students")
 	public Response students(@PathParam("nombreCentro") String nombreCentro) throws URISyntaxException {
@@ -340,7 +330,6 @@ public class CentroResource {
 	}
 
 	@GET
-	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{nombreCentro}/professors")
 	public Response teachers(@PathParam("nombreCentro") String nombreCentro) throws URISyntaxException {
@@ -355,7 +344,6 @@ public class CentroResource {
 	}
 
 	@GET
-	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{nombreCentro}/classes")
 	public Response classes(@PathParam("nombreCentro") String nombreCentro) throws URISyntaxException {
@@ -370,7 +358,6 @@ public class CentroResource {
 	}
 
 	@GET
-	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{nombreCentro}/bubblegroups")
 	public Response bubblegroups(@PathParam("nombreCentro") String nombreCentro) throws URISyntaxException {

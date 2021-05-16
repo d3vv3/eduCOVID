@@ -28,21 +28,20 @@ import es.upm.dit.isst.educovid.model.GrupoBurbuja;
 @Path("/alumno")
 public class AlumnoResource {
 
-	@POST
-	@Secured
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createAlumno(Alumno alumnoNuevo) throws URISyntaxException {
-		String salt = Security.getSalt();
-		String hash = Security.getHash(alumnoNuevo.getNumeroMatricula(), salt);
-		alumnoNuevo.setSalt(salt);
-		alumnoNuevo.setHash(hash);
-		Alumno a = AlumnoDAOImpl.getInstance().createAlumno(alumnoNuevo);
-	    if (a != null) {
-	            URI uri = new URI("/educovid-backend/rest/alumno/" + a.getId());
-	            return Response.created(uri).build();
-	    }
-	    return Response.status(Response.Status.CONFLICT).build();
-	}
+//	@POST
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Response createAlumno(Alumno alumnoNuevo) throws URISyntaxException {
+//		String salt = Security.getSalt();
+//		String hash = Security.getHash(alumnoNuevo.getNumeroMatricula(), salt);
+//		alumnoNuevo.setSalt(salt);
+//		alumnoNuevo.setHash(hash);
+//		Alumno a = AlumnoDAOImpl.getInstance().createAlumno(alumnoNuevo);
+//	    if (a != null) {
+//	            URI uri = new URI("/educovid-backend/rest/alumno/" + a.getId());
+//	            return Response.created(uri).build();
+//	    }
+//	    return Response.status(Response.Status.CONFLICT).build();
+//	}
 	
 //	@GET
 //	@Path("mat/{numeroMatricula}")
@@ -55,7 +54,6 @@ public class AlumnoResource {
 //	}
 	
 	@GET
-	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readAlumnobyId(@PathParam("id") String id) {
@@ -66,7 +64,6 @@ public class AlumnoResource {
 	}
 	
 	@GET
-	@Secured
 	@Path("/clase/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readAlumnosbyClase(@PathParam("id") String id) {
@@ -75,26 +72,24 @@ public class AlumnoResource {
 		return Response.ok(alumnos, MediaType.APPLICATION_JSON).build();
 	}
 	
-	@PUT
-	@Secured
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/{id}")
-	public Response updateAlumno(@PathParam("id") String id, Alumno alumno) {
-		//System.out.println("Update request for " + id + " " + alumno.toString());
-		Alumno antiguo = AlumnoDAOImpl.getInstance().readAlumnobyId(id);
-	    if ((antiguo == null) || (!antiguo.getId().equals(alumno.getId()))) 
-	    	return Response.notModified().build();
-	    String salt = Security.getSalt();
-		String hash = Security.getHash(alumno.getNumeroMatricula(), salt);
-		alumno.setSalt(salt);
-		alumno.setHash(hash);
-	    AlumnoDAOImpl.getInstance().updateAlumno(alumno);
-	    return Response.ok(alumno, MediaType.APPLICATION_JSON).build();
-	}
+//	@PUT
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("/{id}")
+//	public Response updateAlumno(@PathParam("id") String id, Alumno alumno) {
+//		//System.out.println("Update request for " + id + " " + alumno.toString());
+//		Alumno antiguo = AlumnoDAOImpl.getInstance().readAlumnobyId(id);
+//	    if ((antiguo == null) || (!antiguo.getId().equals(alumno.getId()))) 
+//	    	return Response.notModified().build();
+//	    String salt = Security.getSalt();
+//		String hash = Security.getHash(alumno.getNumeroMatricula(), salt);
+//		alumno.setSalt(salt);
+//		alumno.setHash(hash);
+//	    AlumnoDAOImpl.getInstance().updateAlumno(alumno);
+//	    return Response.ok(alumno, MediaType.APPLICATION_JSON).build();
+//	}
 	
 	@DELETE
-	// @Secured
 	@Path("/{id}")
 	public Response deleteAlumno(@PathParam("id") String id) {
 		Alumno a = AlumnoDAOImpl.getInstance().readAlumnobyId(id);
@@ -115,14 +110,12 @@ public class AlumnoResource {
 	}
 	
 //	@GET
-//	@Secured
 //	@Produces(MediaType.APPLICATION_JSON)
 //	public List<Alumno> readAllAlumnos() {
 //		return AlumnoDAOImpl.getInstance().readAllAlumnos();
 //	}
 	
 	@GET
-	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/grupo/{grupoBurbujaId}")
 	public Response readAllAlumnosbyGroup(@PathParam("grupoBurbujaId") String grupoBurbujaId) {

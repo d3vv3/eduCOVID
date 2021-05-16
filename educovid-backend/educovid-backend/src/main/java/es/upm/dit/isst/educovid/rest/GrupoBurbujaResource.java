@@ -33,7 +33,6 @@ import es.upm.dit.isst.educovid.model.Profesor;
 public class GrupoBurbujaResource {
 	
 	@GET
-	@Secured
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readAllClases() {
@@ -42,7 +41,6 @@ public class GrupoBurbujaResource {
 	}
 
 	@GET
-	@Secured
 	@Path("/{profesorId}/{nombreCentro}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readGroupsByProfesorAndCenter(@PathParam("profesorId") String profesorId, @PathParam("nombreCentro") String nombreCentro) {
@@ -93,7 +91,6 @@ public class GrupoBurbujaResource {
 	}
 	
 	@GET
-	@Secured
 	@Path("/alumno/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readGrupoAlumnobyId(@PathParam("id") String id) {
@@ -105,7 +102,6 @@ public class GrupoBurbujaResource {
 	}
 	
 	@GET
-	@Secured
 	@Path("/clase/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -119,7 +115,6 @@ public class GrupoBurbujaResource {
 	}
 	
 	@DELETE
-	@Secured
 	@Path("/delete/{classId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteGrupoById(List<GrupoBurbuja> gruposABorrar, @PathParam("classId") String classId) {

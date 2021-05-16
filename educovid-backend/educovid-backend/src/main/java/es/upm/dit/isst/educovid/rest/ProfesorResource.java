@@ -28,7 +28,6 @@ import es.upm.dit.isst.educovid.model.Profesor;
 public class ProfesorResource {
 	
 	@POST
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createProfesor(Profesor newProfesor) throws URISyntaxException{
 		Profesor p = ProfesorDAOImpl.getInstance().createProfesor(newProfesor);
@@ -40,7 +39,6 @@ public class ProfesorResource {
 	}
 	
 	@GET
-	@Secured
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response readProfesorByNIFNIE(@PathParam("id") String id) {
@@ -52,7 +50,6 @@ public class ProfesorResource {
 	}
 	
 	@PUT
-	@Secured
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
@@ -71,7 +68,6 @@ public class ProfesorResource {
 	}
 	
 	@DELETE
-	@Secured
 	@Path("/{id}")
 	public Response deleteProfesor(@PathParam("id") String id) {
 		Profesor p = ProfesorDAOImpl.getInstance().readProfesorbyId(id);
@@ -83,7 +79,6 @@ public class ProfesorResource {
 	}
 	
 	@GET
-	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/estadoSanitario/{estadoSanitario}")
 	public List<Profesor> readAllProfesorbyEstadoSanitario(@PathParam("estadoSanitario") String estadoSanitario) {
@@ -91,7 +86,6 @@ public class ProfesorResource {
 	}
 	
 	@GET
-	@Secured
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/professors/{nombreCentro}/{nombreClase}")
 	public Set<Profesor> readAllProfesorbyClase(@PathParam("nombreCentro") String nombreCentro, @PathParam("nombreClase") String nombreClase) {

@@ -170,6 +170,7 @@ function ManageProfessor(props) {
 
   const handleHealthState = async (action, confinedText, unconfinedText) => {
     const token = localStorage.getItem("token") || "";
+    console.log(JSON.stringify(selected))
     await fetch(backUrl + `/manage/${action}/professors`, {
       method: "POST",
       headers: {

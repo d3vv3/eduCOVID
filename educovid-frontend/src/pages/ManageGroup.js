@@ -203,6 +203,7 @@ function ManageClass(props) {
   };
 
   const handleAction = async (action, confinedText, unconfinedText) => {
+    console.log(JSON.stringify(selected))
     await fetch(backUrl + `/manage/${action}/bubbleGroups`, {
       method: "POST",
       headers: {
