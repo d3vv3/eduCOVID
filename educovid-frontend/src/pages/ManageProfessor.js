@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 // Local components
 import ActionBar from "../components/ActionBar";
 import ProfessorCenteredModal from "../components/NewProfessorFormModal";
+import NotificationModal from "../components/NotificationModal";
 
 // Constants
 import { backUrl } from "../constants/constants";
@@ -14,10 +15,13 @@ import Button from "react-bootstrap/Button";
 function ManageProfessor(props) {
   const { onLogOut, userData } = props;
 
+  const [action, setAction] = useState("");
   const [professors, setProfessors] = useState([]);
   const [selected, setSelected] = useState([]);
   const [showNewModal, setShowNewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [notificationModalShow, setNotificationModalShow] = React.useState(false);
+
 
   useEffect(() => {
     retrieveProfessors();
@@ -164,7 +168,7 @@ function ManageProfessor(props) {
     });
   };
 
-  const handleHealthState = async action => {
+  const handleHealthState = async (action, confinedText, unconfinedText) => {
     const token = localStorage.getItem("token") || "";
     await fetch(backUrl + `/manage/${action}/professors`, {
       method: "POST",
@@ -179,21 +183,22 @@ function ManageProfessor(props) {
     // notify everyone
     selected.forEach(async value => {
       try {
-        await fetch(
-          backUrl + `/notification/subscription/professor/` + value.id,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json"
-            }
-          }
-        );
+        const notificationRes = await fetch(
+          backUrl +
+          `/notification/subscription/professors/` + value.id, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", 'Authorization': `Bearer ${localStorage.getItem('token') || ""}` },
+          body: JSON.stringify({ "confineMessage": confinedText, "unconfineMessage": unconfinedText })
+        });
       } catch (e) {
         console.log("Error pushing notification");
       }
     });
   };
+
+  const handleNotification = async () => {
+    setNotificationModalShow(true);
+  }
 
   return (
     <div>
@@ -269,8 +274,10 @@ function ManageProfessor(props) {
                 className="nord-button"
                 onClick={e => {
                   if (selected.length > 0) {
-                    handleHealthState("confine");
-                    setSelected([]);
+                    setAction("confine");
+                    handleNotification();
+                    //handleHealthState("confine");
+                    //setSelected([]);
                   } else {
                     alert("Seleccione las personas a confinar");
                   }
@@ -283,8 +290,10 @@ function ManageProfessor(props) {
                 className="nord-button"
                 onClick={e => {
                   if (selected != null) {
-                    handleHealthState("unconfine");
-                    setSelected([]);
+                    setAction("unconfine");
+                    handleNotification();
+                    //handleHealthState("unconfine");
+                    //setSelected([]);
                   } else {
                     alert("Seleccione las personas a confinar");
                   }
@@ -338,6 +347,19 @@ function ManageProfessor(props) {
           </div>
         </div>
       </div>
+
+      {notificationModalShow ? <NotificationModal
+        show={notificationModalShow}
+        action={action}
+        onHide={() => setNotificationModalShow(false)}
+        handleFinish={(confinedText, unconfinedText) => {
+          // handleConfine();
+          handleHealthState(action, confinedText, unconfinedText);
+          setSelected([]);
+          setNotificationModalShow(false);
+        }}
+      /> : null}
+
       {showNewModal || showEditModal ? (
         <ProfessorCenteredModal
           existingProfessor={showEditModal ? selected[0] : null}
