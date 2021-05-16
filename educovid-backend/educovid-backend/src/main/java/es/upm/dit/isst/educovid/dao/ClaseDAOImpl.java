@@ -27,16 +27,14 @@ public class ClaseDAOImpl implements ClaseDAO {
 		// Validate:
 		// 1. Numero de matricula unique per alumno per center
 		// 2. Alumno unique per Grupo Burbuja
-		Set<String> nombresGrupoBurbuja = new HashSet<String>();
-		List<GrupoBurbuja> grupos = clase.getGruposBurbuja();
-		for (GrupoBurbuja grupo : clase.getGruposBurbuja()) {
-			if (nombresGrupoBurbuja.contains(clase.getNombre())) {
-				System.out.println("There cannot be two GrupoBurbuja with the same nombre in the same Clase");
-				return null;
-			} else {
-				nombresGrupoBurbuja.add(clase.getNombre());
-			}
-		}
+		/*
+		 * Set<String> nombresGrupoBurbuja = new HashSet<String>(); List<GrupoBurbuja>
+		 * grupos = clase.getGruposBurbuja(); for (GrupoBurbuja grupo :
+		 * clase.getGruposBurbuja()) { if
+		 * (nombresGrupoBurbuja.contains(clase.getNombre())) { System.out.
+		 * println("There cannot be two GrupoBurbuja with the same nombre in the same Clase"
+		 * ); return null; } else { nombresGrupoBurbuja.add(clase.getNombre()); } }
+		 */
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
 		try {
