@@ -38,16 +38,18 @@ function ManageClass(props) {
     setGroups(responseData);
   };
 
-  const onInsertGroup = async (name, groupStudents) => {
+  const onInsertGroup = async ({ name, groupStudents }) => {
     const newGroup = {
       nombre: name,
-      estadoSanitario: null,
+      estadoSanitario: "no confinado",
       prioridad: null,
       alumnos: groupStudents
     };
+    console.log(newGroup);
     try {
       const res0 = await fetch(
-        backUrl + `/centro/insert/group/${userData?.centro}`,
+        backUrl +
+          `/centro/insert/group/${userData?.centro}/${selectedClass.id}`,
         {
           method: "POST",
           headers: {
@@ -59,31 +61,10 @@ function ManageClass(props) {
       );
       // console.log(res0);
       if (!res0.ok) {
-        alert(`Hubo un fallo al crear la clase`);
+        alert(`Hubo un fallo al crear el grupo`);
       } else {
         setShowNewModal(false);
       }
-      groupStudents.forEach(async professor => {
-        const res = await fetch(
-          backUrl +
-            `/centro/insert/class/${userData?.centro}/${encodeURIComponent(
-              professor
-            )}`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-              "Content-Type": "application/json; charset=UTF-8"
-            },
-            body: JSON.stringify(newGroup)
-          }
-        );
-        if (!res.ok) {
-          alert(`Hubo un fallo al crear la clase`);
-        } else {
-          setShowNewModal(false);
-        }
-      });
     } catch (e) {
       console.log(e);
     } finally {
@@ -91,40 +72,29 @@ function ManageClass(props) {
     }
   };
 
-  const onEditGroup = async ({
-    id,
-    nombre,
-    burbujaPresencial,
-    fechaInicioConmutacion,
-    tiempoConmutacion,
-    profesores,
-    gruposBurbuja
-  }) => {
-    const newGroup = {
-      id,
-      nombre,
-      burbujaPresencial,
-      fechaInicioConmutacion,
-      tiempoConmutacion,
-      profesores,
-      gruposBurbuja
+  const onEditGroup = async ({ id, name, groupStudents }) => {
+    const updatedGroup = {
+      nombre: name,
+      estadoSanitario: null,
+      prioridad: null,
+      alumnos: groupStudents
     };
     try {
       // console.log(newClass);
       const res = await fetch(
-        backUrl + `/centro/update/class/${userData?.centro}/${id}`,
+        backUrl + `/centro/update/group/${userData?.centro}/${id}`,
         {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
             "Content-Type": "application/json; charset=UTF-8"
           },
-          body: JSON.stringify(profesores)
+          body: JSON.stringify(updatedGroup)
         }
       );
       // console.log(await res.json());
       if (!res.ok) {
-        alert(`Hubo un fallo al modificar la clase`);
+        alert(`Hubo un fallo al modificar el grupo`);
       } else {
         setShowNewModal(false);
       }
@@ -137,24 +107,19 @@ function ManageClass(props) {
 
   const handleDelete = async () => {
     try {
-      selected.forEach(async grupo => {
-        let res = await fetch(
-          backUrl + `/grupo/delete/${grupo.id}/${selectedClass.id}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
-              "Content-Type": "application/json; charset=UTF-8"
-            }
-            // body: JSON.stringify(clase)
-          }
-        );
-        console.log(await res);
-        if (!res.ok) {
-          console.log(await res.json());
-          alert(`Hubo un fallo al borrar la clase`);
-        }
+      let res = await fetch(backUrl + `/grupo/delete/${selectedClass.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+          "Content-Type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify(selected)
       });
+      console.log(await res);
+      if (!res.ok) {
+        console.log(await res.json());
+        alert(`Hubo un fallo al borrar un grupo`);
+      }
     } catch (e) {
       console.log(e);
     } finally {

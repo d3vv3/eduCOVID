@@ -41,10 +41,10 @@ function GroupCenteredModal(props) {
       }
     });
     responseData = await response.json();
-    console.log(responseData);
+    // console.log(responseData);
     setAllStudents(responseData.sort((a, b) => a.id - b.id));
     if (existingGroup) {
-      response = await fetch(backUrl + `/alumno/clase/${parentClass?.id}`, {
+      response = await fetch(backUrl + `/alumno/grupo/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ function GroupCenteredModal(props) {
         }
       });
       responseData = await response.json();
-      console.log(responseData);
+      // console.log(responseData);
       setGroupStudents(responseData.map(p => p.id.toString()));
     }
   };
@@ -155,24 +155,31 @@ function GroupCenteredModal(props) {
         <Button
           onClick={() => {
             if (!existingGroup) {
-              handleInsert(groupName, groupStudents);
-            } else {
-              handleEdit({
-                id,
-                nombre: groupName,
-                burbujaPresencial: existingGroup?.burbujaPresencial,
-                fechaInicioConmutacion: existingGroup?.fechaInicioConmutacion,
-                tiempoConmutacion: existingGroup?.tiempoConmutacion,
-                profesores: allStudents
+              handleInsert({
+                name: groupName,
+                groupStudents: allStudents
                   .map(p => {
                     if (groupStudents.includes(p.id.toString())) {
-                      return p.id;
+                      return p;
                     } else {
                       return false;
                     }
                   })
-                  .filter(p => p),
-                gruposBurbuja: existingGroup?.gruposBurbuja
+                  .filter(p => p)
+              });
+            } else {
+              handleEdit({
+                id,
+                name: groupName,
+                groupStudents: allStudents
+                  .map(p => {
+                    if (groupStudents.includes(p.id.toString())) {
+                      return p;
+                    } else {
+                      return false;
+                    }
+                  })
+                  .filter(p => p)
               });
             }
             props.onHide();

@@ -120,22 +120,23 @@ public class GrupoBurbujaResource {
 	
 	@DELETE
 	@Secured
-	@Path("/delete/{groupId}/{classId}")
+	@Path("/delete/{classId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteGrupoById(@PathParam("groupId") String groupId, @PathParam("classId") String classId) {
+	public Response deleteGrupoById(List<GrupoBurbuja> gruposABorrar, @PathParam("classId") String classId) {
 		Clase c = ClaseDAOImpl.getInstance().readClasebyId(classId);
+		for (GrupoBurbuja grupoABorrar : gruposABorrar) {
 		// If there is only one group, it cant be deleted
 		if (c.getGruposBurbuja().size() == 1) return Response.status(Response.Status.EXPECTATION_FAILED).build();
 		// Remove group from class groups
 		List<GrupoBurbuja> newGroups = new ArrayList<>();
 		for (GrupoBurbuja g : c.getGruposBurbuja()) {
-			if (!g.getId().toString().equals(groupId)) {
+			if (!g.getId().toString().equals(grupoABorrar.getId().toString())) {
 				newGroups.add(g);
 			}
 		}
 		c.setGruposBurbuja(newGroups);
 		// Read the group and proceed if it exists
-		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(groupId);
+		GrupoBurbuja g = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(grupoABorrar.getId().toString());
 		if (g == null ) {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
@@ -162,6 +163,7 @@ public class GrupoBurbujaResource {
 			}
 		}
 		ClaseDAOImpl.getInstance().updateClase(c);
-		return Response.ok(g, MediaType.APPLICATION_JSON).build();
+		}
+		return Response.ok().build();
 	}
 }

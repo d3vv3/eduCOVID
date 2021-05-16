@@ -285,6 +285,45 @@ public class CentroResource {
 		}
 		return Response.ok().build();
 	}
+	
+	@POST
+	@Secured
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/insert/group/{nombreCentro}/{classId}")
+	public Response insertGrupoEnClase(GrupoBurbuja newGrupo, @PathParam("nombreCentro") String nombreCentro,
+			@PathParam("classId") String classId) {
+		List<Alumno> newStudents = new ArrayList<>();
+		for (Alumno student : newGrupo.getAlumnos()) {
+			newStudents.add(AlumnoDAOImpl.getInstance().readAlumnobyId(student.getId().toString()));
+		}
+		newGrupo.setAlumnos(newStudents);
+		Clase clase = ClaseDAOImpl.getInstance().readClasebyId(classId);
+		List<GrupoBurbuja> gruposClase = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbujabyClase(clase);
+		Integer lastMaximumPriority = gruposClase.get(gruposClase.size() - 1).getPrioridad();
+		newGrupo.setPrioridad(lastMaximumPriority + 1);
+		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(newGrupo);
+		gruposClase.add(newGrupo);
+		clase.setGruposBurbuja(gruposClase);
+		ClaseDAOImpl.getInstance().updateClase(clase);
+		return Response.ok().build();
+	}
+	
+	@PUT
+	@Secured
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/update/group/{nombreCentro}/{groupId}")
+	public Response updateGrupoEnClase(GrupoBurbuja newGrupo, @PathParam("nombreCentro") String nombreCentro,
+			@PathParam("groupId") String groupId) {
+		GrupoBurbuja oldGrupo = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyId(groupId);
+		List<Alumno> newStudents = new ArrayList<>();
+		for (Alumno student : newGrupo.getAlumnos()) {
+			newStudents.add(AlumnoDAOImpl.getInstance().readAlumnobyId(student.getId().toString()));
+		}
+		oldGrupo.setAlumnos(newStudents);
+		oldGrupo.setNombre(newGrupo.getNombre());
+		GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(oldGrupo);
+		return Response.ok().build();
+	}
 
 	@GET
 	@Secured
