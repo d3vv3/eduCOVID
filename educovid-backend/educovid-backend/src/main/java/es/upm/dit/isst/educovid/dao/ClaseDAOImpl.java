@@ -76,21 +76,21 @@ public class ClaseDAOImpl implements ClaseDAO {
 	}
 
 	@Override
-    public Clase deleteClase(Clase clase) {
-        Session session = SessionFactoryService.get().openSession();
-        List<GrupoBurbuja> grupos = clase.getGruposBurbuja();
-        List<GrupoBurbuja> empty = null;
-        clase.setGruposBurbuja(empty);
-        updateClase(clase);
-        for (GrupoBurbuja g : grupos) {
-            GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(g);
-        }
-        session.beginTransaction();
-        session.delete(clase);
-        session.getTransaction().commit();
-        session.close();
-        return clase;
-    }
+	public Clase deleteClase(Clase clase) {
+
+		/*
+		 * List<GrupoBurbuja> grupos = clase.getGruposBurbuja(); List<GrupoBurbuja>
+		 * empty = null; clase.setGruposBurbuja(empty); updateClase(clase); for
+		 * (GrupoBurbuja g : grupos) {
+		 * GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(g); }
+		 */
+		Session session = SessionFactoryService.get().openSession();
+		session.beginTransaction();
+		session.delete(clase);
+		session.getTransaction().commit();
+		session.close();
+		return clase;
+	}
 
 	@Override
 	public List<Clase> readAllClases() {

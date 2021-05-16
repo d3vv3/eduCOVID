@@ -31,6 +31,11 @@ class ClaseDAOImplTest {
 	
 	@BeforeAll
 	static void fillDataBase() {
+		
+	}
+	
+	@Test
+	void testClaseDAO() {
 		List<Alumno> alumnos1 = new ArrayList<Alumno>();
 		List<Alumno> alumnos2 = new ArrayList<Alumno>();
 		List<Alumno> alumnos3 = new ArrayList<Alumno>();
@@ -59,72 +64,31 @@ class ClaseDAOImplTest {
 		grupos2.add(burbuja4);
 		grupos2.add(burbuja5);
 		
-		Clase clase = new Clase("1ºA", grupos.get(0), null, null, null, grupos);
+		Clase clase1 = new Clase("1ºA", grupos.get(0), null, null, null, grupos);
 		Clase clase2 = new Clase("2ºA", grupos2.get(0), null, null, null, grupos2);
 		
-		assertNotNull(clasedao.createClase(clase), "Clase 1 no creado.");
-		assertNotNull(clasedao.createClase(clase2), "Clase 2 no creado.");
-	}
-	
-	@Test
-	void testClaseDAO() {
-		List<Clase> clases = clasedao.readAllClases();
-		Clase clase1 = null;
-		Clase clase2 = null;
-		for (Clase c: clases) {
-			if (c.getNombre() == "1ºA") {
-				clase1 = c;
-			} else if (c.getNombre() == "2ºA") {
-				clase2 = c;
-			} else {
-				fail("Problema en las clases.");
-			}
-		}
-		
-		List<GrupoBurbuja> gruposABorrar = clase2.getGruposBurbuja();
-		GrupoBurbuja grupoABorrar1 = gruposABorrar.get(0);
-		GrupoBurbuja grupoABorrar2 = gruposABorrar.get(1);
-		
-		GrupoBurbuja presencial1 = clase1.getBurbujaPresencial();
-		GrupoBurbuja presencial2 = null;
-		GrupoBurbuja presencial3 = null;
-
-		for (GrupoBurbuja g : clase1.getGruposBurbuja()) {
-			switch (g.getPrioridad().intValue()) {
-			case 1:
-				break;
-			case 2:
-				presencial2 = g;
-				break;
-			case 3:
-				presencial3 = g;
-				break;
-			default:
-				break;
-			}
-		}
-
 		clasedao.updatePresencialGroup(clase1);
 		clase1 = clasedao.readClasebyId(clase1.getId().toString());
-		assertEquals(presencial2.getId(), clase1.getBurbujaPresencial().getId());
+		assertEquals(burbuja2.getId(), clase1.getBurbujaPresencial().getId());
 		
 		clasedao.updatePresencialGroup(clase1);
 		clase1 = clasedao.readClasebyId(clase1.getId().toString());
-		assertEquals(presencial3.getId(), clase1.getBurbujaPresencial().getId());
+		assertEquals(burbuja3.getId(), clase1.getBurbujaPresencial().getId());
 		
 		clasedao.updatePresencialGroup(clase1);
 		clase1 = clasedao.readClasebyId(clase1.getId().toString());
-		assertEquals(presencial1.getId(), clase1.getBurbujaPresencial().getId());
+		assertEquals(burbuja1.getId(), clase1.getBurbujaPresencial().getId());
 		
 		clasedao.deleteClase(clase2);
-		clases = clasedao.readAllClases();
-		for (Clase c: clases)
+		
+		List<Clase> clases = clasedao.readAllClases();
+		for (Clase c : clases)
 			if (c.getId() == clase2.getId())
 				fail("La clase no se borró.");
-		
-		List<GrupoBurbuja> grupos = burbujadao.readAllGruposBurbuja();
-		for (GrupoBurbuja g: grupos)
-			if (g.getId() == grupoABorrar1.getId() || g.getId() == grupoABorrar2.getId())
+
+		List<GrupoBurbuja> gruposNow = burbujadao.readAllGruposBurbuja();
+		for (GrupoBurbuja g : gruposNow)
+			if (g.getId() == burbuja4.getId() || g.getId() == burbuja5.getId())
 				fail("El grupo " + g.getNombre() + " no se borró.");
 	}
 
