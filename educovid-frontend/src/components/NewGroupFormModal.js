@@ -98,9 +98,9 @@ function GroupCenteredModal(props) {
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
           {existingGroup ? (
-            <div>Propiedades de la clase</div>
+            <div>Propiedades del grupo</div>
           ) : (
-            <div>Añadir clase</div>
+            <div>Añadir grupo</div>
           )}
         </Modal.Title>
       </Modal.Header>

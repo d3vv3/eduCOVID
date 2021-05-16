@@ -264,7 +264,7 @@ function ManageStudent(props) {
                   onChange={e => {
                     setSelected([]);
                     setSelectedFilter(e.target.value);
-                    refreshStudents();
+                    retrieveGlobalState();
                   }}
                 >
                   <option key="0" value="*">
