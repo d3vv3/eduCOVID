@@ -15,18 +15,16 @@ public class Alumno extends Usuario implements Serializable {
 	private String numeroMatricula;
 	@Column(nullable = false)
 	private String estadoSanitario;
-	private Date fechaConfinamiento;
 	private static final long serialVersionUID = 1L;
 	
 	public Alumno() {
 		super();
 	}
 	
-	public Alumno(String nombre, String hash, String salt, String numeroMatricula, String estadoSanitario, Date fechaConfinamiento) {
+	public Alumno(String nombre, String hash, String salt, String numeroMatricula, String estadoSanitario) {
 		super(nombre, hash, salt);
 		this.numeroMatricula = numeroMatricula;
 		this.estadoSanitario = estadoSanitario;
-		this.fechaConfinamiento = fechaConfinamiento;
 	}
 	
 	public String getNumeroMatricula() {
@@ -40,12 +38,6 @@ public class Alumno extends Usuario implements Serializable {
 	}
 	public void setEstadoSanitario(String estadoSanitario) {
 		this.estadoSanitario = estadoSanitario;
-	}
-	public Date getFechaConfinamiento() {
-		return fechaConfinamiento;
-	}
-	public void setFechaConfinamiento(Date fechaConfinamiento) {
-		this.fechaConfinamiento = fechaConfinamiento;
 	}
 
 	public static long getSerialversionuid() {

@@ -217,8 +217,7 @@ function ManageStudent(props) {
       p256dh: null,
       auth: null,
       numeroMatricula: numMat,
-      estadoSanitario: "no confinado",
-      fechaConfinamiento: null
+      estadoSanitario: "no confinado"
     };
     try {
       const res = await fetch(

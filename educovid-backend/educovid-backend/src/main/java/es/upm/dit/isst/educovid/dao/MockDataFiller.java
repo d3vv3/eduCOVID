@@ -19,9 +19,9 @@ public class MockDataFiller {
 
 	public static void main(String[] args) {
 		String salt = Security.getSalt();
-		Profesor profesor = new Profesor("Xavier", Security.getHash("00000000A", salt), salt, "00000000A", "no confinado", null);
-		Profesor profesor2 = new Profesor("Logan", Security.getHash("00000001B", salt), salt, "00000001B", "no confinado", null);
-		Profesor profesor3 = new Profesor("Mr. Potato", Security.getHash("00000002D", salt), salt, "00000002D", "confinado", null);
+		Profesor profesor = new Profesor("Xavier", Security.getHash("00000000A", salt), salt, "00000000A", "no confinado");
+		Profesor profesor2 = new Profesor("Logan", Security.getHash("00000001B", salt), salt, "00000001B", "no confinado");
+		Profesor profesor3 = new Profesor("Mr. Potato", Security.getHash("00000002D", salt), salt, "00000002D", "confinado");
 		ProfesorDAOImpl.getInstance().createProfesor(profesor);
 		ProfesorDAOImpl.getInstance().createProfesor(profesor2);
 		ProfesorDAOImpl.getInstance().createProfesor(profesor3);
@@ -31,15 +31,15 @@ public class MockDataFiller {
 		profesores2.add(profesor2);
 		profesores1.add(profesor3);
 
-		Alumno alumno1 = new Alumno("Pepe", Security.getHash("S01546", salt), salt, "S01546", "no confinado", null);
-		Alumno alumno2 = new Alumno("Bob Esponja", Security.getHash("S01547", salt), salt, "S01547", "confinado", null);
-		Alumno alumno3 = new Alumno("Urdangarín", Security.getHash("S01548", salt), salt, "S01548", "no confinado", null);
-		Alumno alumno4 = new Alumno("Bill Gates", Security.getHash("S01549", salt), salt, "S01549", "no confinado", null);
-		Alumno alumno5 = new Alumno("Patricio Estrella", Security.getHash("S01550", salt), salt, "S01550", "confinado", null);
-		Alumno alumno6 = new Alumno("Doraemon", Security.getHash("S01551", salt), salt, "S01551", "no confinado", null);
-		Alumno alumno7 = new Alumno("Nobita", Security.getHash("S01552", salt), salt, "S01552", "no confinado", null);
-		Alumno alumno8 = new Alumno("Suneo", Security.getHash("S01553", salt), salt, "S01553", "no confinado", null);
-		Alumno alumno9 = new Alumno("Bart Simpson", Security.getHash("S01554", salt), salt, "S01554", "confinado", null);
+		Alumno alumno1 = new Alumno("Pepe", Security.getHash("S01546", salt), salt, "S01546", "no confinado");
+		Alumno alumno2 = new Alumno("Bob Esponja", Security.getHash("S01547", salt), salt, "S01547", "confinado");
+		Alumno alumno3 = new Alumno("Urdangarín", Security.getHash("S01548", salt), salt, "S01548", "no confinado");
+		Alumno alumno4 = new Alumno("Bill Gates", Security.getHash("S01549", salt), salt, "S01549", "no confinado");
+		Alumno alumno5 = new Alumno("Patricio Estrella", Security.getHash("S01550", salt), salt, "S01550", "confinado");
+		Alumno alumno6 = new Alumno("Doraemon", Security.getHash("S01551", salt), salt, "S01551", "no confinado");
+		Alumno alumno7 = new Alumno("Nobita", Security.getHash("S01552", salt), salt, "S01552", "no confinado");
+		Alumno alumno8 = new Alumno("Suneo", Security.getHash("S01553", salt), salt, "S01553", "no confinado");
+		Alumno alumno9 = new Alumno("Bart Simpson", Security.getHash("S01554", salt), salt, "S01554", "confinado");
 		AlumnoDAOImpl.getInstance().createAlumno(alumno1);
 		AlumnoDAOImpl.getInstance().createAlumno(alumno2);
 		AlumnoDAOImpl.getInstance().createAlumno(alumno3);
