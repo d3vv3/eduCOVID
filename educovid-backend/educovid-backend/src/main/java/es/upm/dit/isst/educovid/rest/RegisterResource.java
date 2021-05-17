@@ -4,8 +4,12 @@ package es.upm.dit.isst.educovid.rest;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -110,6 +114,11 @@ public class RegisterResource {
 				// mtAAAAA]
 				// [Clase, Nombre, Numero de matricula]
 			});
+			Date date = Calendar.getInstance().getTime();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+			String strDate = dateFormat.format(date);
+			System.out.println("Fecha actual " + strDate);
+			java.sql.Date fechaInicio = java.sql.Date.valueOf(strDate);
 			// Save classes with one BubbleGroup and classes to center
 			List<Clase> classes = new ArrayList<Clase>();
 			configuration.keySet().forEach((key) -> {
@@ -120,7 +129,7 @@ public class RegisterResource {
 				GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(newBubbleGroup);
 				List<GrupoBurbuja> bubbleGroups = new ArrayList<>();
 				bubbleGroups.add(newBubbleGroup);
-				Clase newClass = new Clase(key, bubbleGroups.get(0), null, null, null, bubbleGroups);
+				Clase newClass = new Clase(key, bubbleGroups.get(0), fechaInicio, 7, null, bubbleGroups);
 				classes.add(newClass);
 				ClaseDAOImpl.getInstance().createClase(newClass);
 			});
