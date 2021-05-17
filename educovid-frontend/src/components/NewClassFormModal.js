@@ -148,7 +148,7 @@ function ClassCenteredModal(props) {
             </Form.Control.Feedback>
             <Form.Control.Feedback type="valid">Perfecto</Form.Control.Feedback>
           </Form.Group>
-          <Form.Group controlId="formFechaInicioConmutacion">
+          <Form.Group controlId="formTiempoConmutacion">
             <Form.Label>Dias para conmutar</Form.Label>
             <Form.Control
               required

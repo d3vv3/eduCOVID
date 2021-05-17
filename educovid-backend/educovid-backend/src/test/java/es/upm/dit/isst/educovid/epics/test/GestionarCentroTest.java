@@ -489,6 +489,12 @@ public class GestionarCentroTest {
     driver.findElement(By.id("formIndivClassName")).click();
 //    driver.findElement(By.id("formIndivClassName")).clear();
     driver.findElement(By.id("formIndivClassName")).sendKeys("14");
+    driver.findElement(By.id("formFechaInicioConmutacion")).click();
+    driver.findElement(By.id("formFechaInicioConmutacion")).clear();
+    driver.findElement(By.id("formFechaInicioConmutacion")).sendKeys("2020-03-05");
+    driver.findElement(By.id("formTiempoConmutacion")).click();
+    driver.findElement(By.id("formTiempoConmutacion")).clear();
+    driver.findElement(By.id("formTiempoConmutacion")).sendKeys("7");
     driver.findElement(By.cssSelector(".btn > div")).click();
     driver.findElement(By.cssSelector(".person-card:nth-child(3)")).click();
     driver.findElement(By.cssSelector(".nord-button:nth-child(1)")).click();
@@ -506,6 +512,12 @@ public class GestionarCentroTest {
     }
     driver.findElement(By.id("formIndivClassName")).click();
     driver.findElement(By.id("formIndivClassName")).sendKeys("18");
+    driver.findElement(By.id("formFechaInicioConmutacion")).click();
+    driver.findElement(By.id("formFechaInicioConmutacion")).clear();
+    driver.findElement(By.id("formFechaInicioConmutacion")).sendKeys("2020-03-07");
+    driver.findElement(By.id("formTiempoConmutacion")).click();
+    driver.findElement(By.id("formTiempoConmutacion")).clear();
+    driver.findElement(By.id("formTiempoConmutacion")).sendKeys("14");
     {
       WebElement dropdown = driver.findElement(By.id("classProfessors"));
       dropdown.findElement(By.xpath("//option[. = 'Peter ParkerPeter Parkera']")).click();
