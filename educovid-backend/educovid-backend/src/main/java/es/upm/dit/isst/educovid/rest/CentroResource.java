@@ -219,7 +219,7 @@ public class CentroResource {
 					"S", "T", "U", "V", "W", "X", "Y", "Z" };
 			String name = " GRUPO " + names[(int) Math.floor(Math.random() * names.length)]
 					+ names[(int) Math.floor(Math.random() * names.length)];
-			GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", null, new ArrayList<Alumno>());
+			GrupoBurbuja newBubbleGroup = new GrupoBurbuja(name, "no confinado", 1, new ArrayList<Alumno>());
 			GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(newBubbleGroup);
 			List<GrupoBurbuja> bubbleGroups = new ArrayList<>();
 			bubbleGroups.add(newBubbleGroup);
@@ -295,6 +295,7 @@ public class CentroResource {
 	@Path("/insert/group/{nombreCentro}/{classId}")
 	public Response insertGrupoEnClase(GrupoBurbuja newGrupo, @PathParam("nombreCentro") String nombreCentro,
 			@PathParam("classId") String classId) {
+		System.out.println("Recibido grupo: " + newGrupo.getNombre());
 		List<Alumno> newStudents = new ArrayList<>();
 		for (Alumno student : newGrupo.getAlumnos()) {
 			newStudents.add(AlumnoDAOImpl.getInstance().readAlumnobyId(student.getId().toString()));
@@ -303,6 +304,7 @@ public class CentroResource {
 		Clase clase = ClaseDAOImpl.getInstance().readClasebyId(classId);
 		List<GrupoBurbuja> gruposClase = GrupoBurbujaDAOImpl.getInstance().readAllGruposBurbujabyClase(clase);
 		Integer lastMaximumPriority = gruposClase.get(gruposClase.size() - 1).getPrioridad();
+		System.out.println("Last maximum priority: " + newGrupo.getNombre());
 		newGrupo.setPrioridad(lastMaximumPriority + 1);
 		GrupoBurbujaDAOImpl.getInstance().createGrupoBurbuja(newGrupo);
 		gruposClase.add(newGrupo);

@@ -111,7 +111,7 @@ function GroupCenteredModal(props) {
             <Form.Control
               required
               type="text"
-              placeholder="Introduzca el nombre de la clase"
+              placeholder="Introduzca el nombre del grupo"
               name="groupName"
               onChange={updateFormState}
               value={groupName}
