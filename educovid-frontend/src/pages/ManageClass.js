@@ -164,7 +164,7 @@ function ManageClass(props) {
     } catch (e) {
       console.log(e);
     } finally {
-      setTimeout(() => retrieveClasses(), 100);
+      setTimeout(() => retrieveClasses(), 200);
     }
   };
 

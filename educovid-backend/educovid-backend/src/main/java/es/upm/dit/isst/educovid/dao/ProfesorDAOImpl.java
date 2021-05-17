@@ -100,6 +100,7 @@ public class ProfesorDAOImpl implements ProfesorDAO {
 
 	@Override
 	public Profesor deleteProfesor(Profesor profesor) {
+		Session session = SessionFactoryService.get().openSession();
 		List<Clase> allClasses = ClaseDAOImpl.getInstance().readAllClases();
 		for (Clase c : allClasses) {
 			Set<Profesor> oldProfesores = c.getProfesores();
@@ -113,7 +114,6 @@ public class ProfesorDAOImpl implements ProfesorDAO {
 			c.setProfesores(newProfesores);
 			ClaseDAOImpl.getInstance().updateClase(c);
 		}
-		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
 		session.delete(profesor);
 		session.getTransaction().commit();

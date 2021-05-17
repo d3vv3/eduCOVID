@@ -190,8 +190,8 @@ function ManageStudent(props) {
   };
 
   const handleDelete = async () => {
-    let pendingDeletes = selected.map(student => {
-      return fetch(backUrl + `/alumno/${student.id}`, {
+    selected.forEach(async student => {
+      let res = await fetch(backUrl + `/alumno/${student.id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
@@ -199,12 +199,11 @@ function ManageStudent(props) {
         }
         // body: JSON.stringify(student)
       });
+      if (!res.ok) {
+        alert(`Hubo un fallo al crear el grupo`);
+      }
     });
-    let responses = await Promise.all(pendingDeletes);
-    responses.some(response =>
-      !response.ok ? alert(`Hubo un fallo al borrar un profesor`) : null
-    );
-    await updateAll();
+    setTimeout(() => updateAll(), 200);
   };
 
   const handleAction = async (action, confinedText, unconfinedText) => {

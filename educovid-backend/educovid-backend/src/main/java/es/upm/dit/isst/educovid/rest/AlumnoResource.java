@@ -101,15 +101,15 @@ public class AlumnoResource {
 		if (a == null)
 			return Response.notModified().build();
 		// Delete from groups
-		GrupoBurbuja oldGrupo = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyAlumnoId(a.getId());
-		List<Alumno> updatedAlumnos = new ArrayList<>();
-		for (Alumno s : oldGrupo.getAlumnos()) {
-			if (!s.getId().equals(a.getId())) {
-				updatedAlumnos.add(s);
-			}
-		}
-		oldGrupo.setAlumnos(updatedAlumnos);
-		GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(oldGrupo);
+//		GrupoBurbuja oldGrupo = GrupoBurbujaDAOImpl.getInstance().readGrupoBurbujabyAlumnoId(a.getId());
+//		List<Alumno> updatedAlumnos = new ArrayList<>();
+//		for (Alumno s : oldGrupo.getAlumnos()) {
+//			if (!s.getId().equals(a.getId())) {
+//				updatedAlumnos.add(s);
+//			}
+//		}
+//		oldGrupo.setAlumnos(updatedAlumnos);
+//		GrupoBurbujaDAOImpl.getInstance().updateGrupoBurbuja(oldGrupo);
 		AlumnoDAOImpl.getInstance().deleteAlumno(a);
 		return Response.ok(a, MediaType.APPLICATION_JSON).build();
 	}
