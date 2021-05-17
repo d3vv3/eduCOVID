@@ -227,10 +227,9 @@ function ClassCenteredModal(props) {
           disabled={
             invidClassName === "" ||
             classProfessors === "" ||
-            (existingClass?.gruposBurbuja.length > 1 &&
-              (fechaInicioConmutacion === "" ||
-                tiempoConmutacion === null ||
-                tiempoConmutacion === ""))
+            fechaInicioConmutacion === "" ||
+              tiempoConmutacion === null ||
+              tiempoConmutacion === ""
           }
         >
           {existingClass ? <div>Aplicar cambios </div> : <div>Añadir</div>}
