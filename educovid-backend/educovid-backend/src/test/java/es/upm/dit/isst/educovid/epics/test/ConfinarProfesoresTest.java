@@ -23,13 +23,13 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.net.MalformedURLException;
 import java.net.URL;
-public class ConfinarAlumnosTest {
+public class ConfinarProfesoresTest {
   private WebDriver driver;
   private Map<String, Object> vars;
   JavascriptExecutor js;
   @Before
   public void setUp() {
-		System.setProperty("webdriver.chrome.driver", "chromedriverMac");
+	  System.setProperty("webdriver.chrome.driver", "chromedriverMac");
 	    driver = new ChromeDriver();
 	    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	    js = (JavascriptExecutor) driver;
@@ -40,9 +40,9 @@ public class ConfinarAlumnosTest {
     driver.quit();
   }
   @Test
-  public void confinarAlumnos() {
+  public void confinarProfesores() {
     driver.get("http://localhost:3000/");
-    driver.manage().window().setSize(new Dimension(2560, 1415));
+    driver.manage().window().setSize(new Dimension(1680, 1025));
     driver.findElement(By.linkText("Accede")).click();
     driver.findElement(By.id("formRole")).click();
     {
@@ -51,23 +51,34 @@ public class ConfinarAlumnosTest {
     }
     driver.findElement(By.id("formCenter")).click();
     driver.findElement(By.id("formCenter")).sendKeys("Xavier\'s School for Gifted Youngsters");
+    driver.findElement(By.cssSelector(".form-group:nth-child(3)")).click();
     driver.findElement(By.id("formUsername")).click();
     driver.findElement(By.id("formUsername")).sendKeys("00000002C");
     driver.findElement(By.id("formBasicPassword")).click();
     driver.findElement(By.id("formBasicPassword")).sendKeys("00000002C");
+    driver.findElement(By.cssSelector(".buttons-container")).click();
     driver.findElement(By.cssSelector(".nord-button:nth-child(2)")).click();
-    driver.findElement(By.cssSelector(".card:nth-child(1) > .container-dashboard")).click();
-    driver.findElement(By.cssSelector(".person-card:nth-child(2)")).click();
-    driver.findElement(By.cssSelector(".person-card:nth-child(3)")).click();
-    driver.findElement(By.cssSelector(".person-card:nth-child(4)")).click();
-    driver.findElement(By.cssSelector(".padded:nth-child(1) > .nord-button:nth-child(1)")).click();
-    driver.findElement(By.id("formConfinedText")).click();
-    driver.findElement(By.id("formConfinedText")).sendKeys("Has sido confinado por contacto estrecho con personas de tu misma clase");
-    driver.findElement(By.cssSelector(".modal-footer > .btn:nth-child(2)")).click();
+    {
+      WebElement element = driver.findElement(By.cssSelector(".nord-button:nth-child(2)"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    driver.findElement(By.cssSelector(".card:nth-child(2) > .container-dashboard")).click();
     driver.findElement(By.cssSelector(".person-card:nth-child(1)")).click();
-    driver.findElement(By.cssSelector(".padded:nth-child(1) > .nord-button:nth-child(2)")).click();
-    driver.findElement(By.id("formUnconfinedText")).click();
+    driver.findElement(By.cssSelector(".padded:nth-child(1) > .nord-button:nth-child(1)")).click();
+    {
+      WebElement element = driver.findElement(By.cssSelector(".padded:nth-child(1) > .nord-button:nth-child(1)"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    {
+      WebElement element = driver.findElement(By.tagName("body"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element, 0, 0).perform();
+    }
     driver.findElement(By.cssSelector(".modal-footer > .btn:nth-child(2)")).click();
-    driver.findElement(By.cssSelector(".nord-button:nth-child(3)")).click();
+    driver.findElement(By.cssSelector(".person-card:nth-child(2)")).click();
+    driver.findElement(By.cssSelector(".padded:nth-child(1) > .nord-button:nth-child(2)")).click();
+    driver.findElement(By.cssSelector(".modal-footer > .btn:nth-child(2)")).click();
   }
 }
