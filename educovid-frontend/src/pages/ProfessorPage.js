@@ -81,12 +81,12 @@ function ProfessorPage(props) {
           {professorGroups.map((group, index) =>
             <Card>
               <Card.Header className={group.grupoPresencial.toLowerCase() === "true" ? "card-header-good" : "card-header-bad"}>
-                {group.nombre} - {group.grupoPresencial.toLowerCase() === "true" ? "Presencial" : "Online"}
+                {group.nombre} - {group.grupoPresencial.toLowerCase() === "false" ? "Docencia: Online" : "Docencia: Presencial"}
               </Card.Header>
               {group.grupoPresencial.toLowerCase() === "true" ? (
                 <Card.Body>
                   <blockquote className="blockquote mb-0">
-                    <p className={group.alumnosCnfinados === "true" ? "p-bad" : "p-good"}>
+                    <p className={group.alumnosConfinados === "true" ? "p-bad" : "p-good"}>
                       {group.alumnosConfinados === "true" ? "Hay alumnos confinados" : "No hay alumnos confinados"}
                     </p>
                   </blockquote>

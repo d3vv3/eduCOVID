@@ -65,6 +65,8 @@ public class GrupoBurbujaResource {
 				for (GrupoBurbuja grupo: clase.getGruposBurbuja()) {
 					boolean confinados = false;
 					boolean grupoPresencial = grupo.getNombre().equals(clase.getBurbujaPresencial().getNombre());
+					if(grupoPresencial && grupo.getEstadoSanitario().equals("confinado"))
+						grupoPresencial = false;
 					for (Alumno a: grupo.getAlumnos()) {
 						if (a.getEstadoSanitario().equals("confinado")) {
 							confinados = true;
