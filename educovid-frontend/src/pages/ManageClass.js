@@ -48,7 +48,8 @@ function ManageClass(props) {
       nombre: name,
       burbujaPresencial: null,
       fechaInicioConmutacion,
-      tiempoConmutacion: parseInt(tiempoConmutacion),
+      tiempoConmutacion:
+        tiempoConmutacion !== null ? parseInt(tiempoConmutacion) : null,
       profesores: null,
       gruposBurbuja: null
     };
@@ -112,7 +113,8 @@ function ManageClass(props) {
       nombre,
       burbujaPresencial,
       fechaInicioConmutacion,
-      tiempoConmutacion: parseInt(tiempoConmutacion),
+      tiempoConmutacion:
+        tiempoConmutacion !== null ? parseInt(tiempoConmutacion) : null,
       profesores,
       gruposBurbuja
     };
