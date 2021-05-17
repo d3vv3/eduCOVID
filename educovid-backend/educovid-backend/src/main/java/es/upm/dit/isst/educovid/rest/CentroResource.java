@@ -242,6 +242,8 @@ public class CentroResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/update/class/{nombreCentro}")
 	public Response updateClaseEnCentro(Clase updatedClass, @PathParam("nombreCentro") String nombreCentro) {
+		System.out.println("FechaInicioConmutacion " + updatedClass.getFechaInicioConmutacion());
+		System.out.println("TiempoConmutacion " + updatedClass.getTiempoConmutacion());
 		Set<Profesor> profesores = new HashSet<Profesor>();
 		for (Profesor p : updatedClass.getProfesores()) {
 			Profesor profe = ProfesorDAOImpl.getInstance().readProfesorbyId(p.getId().toString());
@@ -250,6 +252,8 @@ public class CentroResource {
 		Clase clase = ClaseDAOImpl.getInstance().readClasebyId(updatedClass.getId().toString());
 		clase.setProfesores(profesores);
 		clase.setNombre(updatedClass.getNombre());
+		clase.setTiempoConmutacion(updatedClass.getTiempoConmutacion());
+		clase.setFechaInicioConmutacion(updatedClass.getFechaInicioConmutacion());
 		ClaseDAOImpl.getInstance().updateClase(clase);
 		return Response.ok().build();
 	}

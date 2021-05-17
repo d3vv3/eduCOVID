@@ -14,6 +14,12 @@ function ClassCenteredModal(props) {
     existingClass?.nombre || ""
   );
   const [id, setId] = useState(existingClass?.id || "");
+  const [tiempoConmutacion, setTiempoConmutacion] = useState(
+    existingClass?.tiempoConmutacion || null
+  );
+  const [fechaInicioConmutacion, setFechaInicioConmutacion] = useState(
+    existingClass?.fechaInicioConmutacion || ""
+  );
   const [classProfessors, setClassProfessors] = useState([]);
   const [allProfessors, setAllProfessors] = useState([]);
   const [errors, setErrors] = useState({});
@@ -64,6 +70,16 @@ function ClassCenteredModal(props) {
         setFeedbacks({});
         setErrors({});
         setIndivClassName(value);
+        break;
+      case "tiempoConmutacion":
+        setFeedbacks({});
+        setErrors({});
+        setTiempoConmutacion(value);
+        break;
+      case "fechaInicioConmutacion":
+        setFeedbacks({});
+        setErrors({});
+        setFechaInicioConmutacion(value);
         break;
       case "classProfessors":
         setFeedbacks({
@@ -116,6 +132,38 @@ function ClassCenteredModal(props) {
             </Form.Control.Feedback>
             <Form.Control.Feedback type="valid">Perfecto</Form.Control.Feedback>
           </Form.Group>
+          <Form.Group controlId="formFechaInicioConmutacion">
+            <Form.Label>Fecha inicio de conmutación</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              placeholder="Introduzca la fecha desde la que inicia el calculo: 2021-03-18"
+              name="fechaInicioConmutacion"
+              onChange={updateFormState}
+              value={fechaInicioConmutacion}
+              isInvalid={!!errors.fechaInicioConmutacion}
+            />
+            <Form.Control.Feedback type="invalid">
+              Fecha de inicio de conmutación inválida
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">Perfecto</Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="formFechaInicioConmutacion">
+            <Form.Label>Dias para conmutar</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              placeholder="Introduzca el numero de dias para ejecutar la rotación"
+              name="tiempoConmutacion"
+              onChange={updateFormState}
+              value={tiempoConmutacion}
+              isInvalid={!!errors.tiempoConmutacion}
+            />
+            <Form.Control.Feedback type="invalid">
+              Tiempo de conmutación inválido
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">Perfecto</Form.Control.Feedback>
+          </Form.Group>
           <Form.Group controlId="classProfessors" className="classes">
             <Form.Label>Profesores de la clase</Form.Label>
             <Form.Control
@@ -149,14 +197,19 @@ function ClassCenteredModal(props) {
         <Button
           onClick={() => {
             if (!existingClass) {
-              handleInsert(invidClassName, classProfessors);
+              handleInsert({
+                name: invidClassName,
+                classProfessors,
+                fechaInicioConmutacion,
+                tiempoConmutacion
+              });
             } else {
               handleEdit({
                 id,
                 nombre: invidClassName,
                 burbujaPresencial: existingClass?.burbujaPresencial,
-                fechaInicioConmutacion: existingClass?.fechaInicioConmutacion,
-                tiempoConmutacion: existingClass?.tiempoConmutacion,
+                fechaInicioConmutacion: fechaInicioConmutacion,
+                tiempoConmutacion: tiempoConmutacion,
                 profesores: allProfessors
                   .map(p => {
                     if (classProfessors.includes(p.id.toString())) {
@@ -171,7 +224,12 @@ function ClassCenteredModal(props) {
             }
             props.onHide();
           }}
-          disabled={invidClassName === "" || classProfessors === ""}
+          disabled={
+            invidClassName === "" ||
+            classProfessors === "" ||
+            (existingClass?.gruposBurbuja.length > 1 &&
+              (fechaInicioConmutacion === "" || tiempoConmutacion === null))
+          }
         >
           {existingClass ? <div>Aplicar cambios </div> : <div>Añadir</div>}
         </Button>

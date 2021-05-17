@@ -38,12 +38,17 @@ function ManageClass(props) {
     setClasses(responseData);
   };
 
-  const onInsertClass = async (name, classProfessors) => {
+  const onInsertClass = async ({
+    name,
+    classProfessors,
+    fechaInicioConmutacion,
+    tiempoConmutacion
+  }) => {
     const newClass = {
       nombre: name,
       burbujaPresencial: null,
-      fechaInicioConmutacion: null,
-      tiempoConmutacion: null,
+      fechaInicioConmutacion,
+      tiempoConmutacion: parseInt(tiempoConmutacion),
       profesores: null,
       gruposBurbuja: null
     };
@@ -107,7 +112,7 @@ function ManageClass(props) {
       nombre,
       burbujaPresencial,
       fechaInicioConmutacion,
-      tiempoConmutacion,
+      tiempoConmutacion: parseInt(tiempoConmutacion),
       profesores,
       gruposBurbuja
     };

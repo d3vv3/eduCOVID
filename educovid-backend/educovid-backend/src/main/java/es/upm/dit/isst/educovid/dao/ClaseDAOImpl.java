@@ -60,7 +60,8 @@ public class ClaseDAOImpl implements ClaseDAO {
 		List<Clase> clasesCentro = this.readAllClases(centro);
 		Clase clase = null;
 		for (Clase c : clasesCentro) {
-			if (c.getNombre().equals(name)) clase = c;
+			if (c.getNombre().equals(name))
+				clase = c;
 		}
 		return clase;
 	}
@@ -76,20 +77,20 @@ public class ClaseDAOImpl implements ClaseDAO {
 	}
 
 	@Override
-	public Clase deleteClase(Clase clase) {
-
-		/*
-		 * List<GrupoBurbuja> grupos = clase.getGruposBurbuja(); List<GrupoBurbuja>
-		 * empty = null; clase.setGruposBurbuja(empty); updateClase(clase); for
-		 * (GrupoBurbuja g : grupos) {
-		 * GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(g); }
-		 */
+    public Clase deleteClase(Clase clase) {
 		Session session = SessionFactoryService.get().openSession();
+		List<GrupoBurbuja> grupos = clase.getGruposBurbuja();
+		List<GrupoBurbuja> empty = null;
+		clase.setGruposBurbuja(empty);
+		updateClase(clase);
+		for (GrupoBurbuja g : grupos) {
+			GrupoBurbujaDAOImpl.getInstance().deleteGrupoBurbuja(g);
+		}
 		session.beginTransaction();
-		session.delete(clase);
-		session.getTransaction().commit();
-		session.close();
-		return clase;
+        session.delete(clase);
+        session.getTransaction().commit();
+        session.close();
+        return clase;
 	}
 
 	@Override
@@ -102,7 +103,7 @@ public class ClaseDAOImpl implements ClaseDAO {
 		session.close();
 		return clases;
 	}
-	
+
 	@Override
 	public List<Clase> readAllClases(String nombreCentro) {
 		return CentroEducativoDAOImpl.getInstance().readCentroEducativobyName(nombreCentro).getClases();
