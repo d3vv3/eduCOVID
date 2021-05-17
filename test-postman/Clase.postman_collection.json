@@ -1,0 +1,101 @@
+{
+	"info": {
+		"_postman_id": "984f628c-f2df-4239-bc77-4bdc9259237d",
+		"name": "Clase",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Read all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/clase/all",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"clase",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read classes by profesor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/clase/profesor/25",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"clase",
+						"profesor",
+						"25"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read class by student",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/clase/alumno/3",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"clase",
+						"alumno",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/clase/20",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"clase",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/clase/32",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"clase",
+						"32"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

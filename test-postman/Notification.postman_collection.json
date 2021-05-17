@@ -1,0 +1,87 @@
+{
+	"info": {
+		"_postman_id": "98866a8d-1c1a-4a01-bbca-6eaac3a7b6f6",
+		"name": "Notification",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Student notification",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"confineMessage\": \"Has sido confinado\",\n    \"unconfineMessage\": \"Has sido desconfinado\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/notification/subscription/students/3",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"notification",
+						"subscription",
+						"students",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Professor notification",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"confineMessage\": \"Has sido confinado\",\n    \"unconfineMessage\": \"Has sido desconfinado\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/notification/subscription/professors/25",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"notification",
+						"subscription",
+						"professors",
+						"25"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Group notification",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/notification/subscription/bubbleGroups/19",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"notification",
+						"subscription",
+						"bubbleGroups",
+						"19"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

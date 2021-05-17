@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "253dc84c-69ae-442a-82e6-25214532377b",
+		"name": "Confine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Confine students",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"id\": 14,\n        \"nombre\": \"Manuel Guarinos López\",\n        \"hash\": \"0295cf7a641a91c7b2c76ec14e5a1dc0453935ac3a62e2dc919a7989b0c79bc6bd6d1f6486990b5757846a92ddf012583686c43ec14aa744c3a4cbcda3f1d8de\",\n        \"salt\": \"4ff3edac96ad3f5dd8d1309009b16186\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"numeroMatricula\": \"mtLLLL\",\n        \"estadoSanitario\": \"confinado\"\n    },\n    {\n        \"id\": 15,\n        \"nombre\": \"Javier Gómez Romero\",\n        \"hash\": \"ae5297db38cc66edb82f8f4bde9b3a306760b0fd05f84f670889c0ac95ce20e2b9971e4b3cd9b2d13f31f9ace05b6fe2e9efb608f0ab20eff510c789f021f8e9\",\n        \"salt\": \"f5d50749134c76983345ff4458628c1f\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"numeroMatricula\": \"mtMMMM\",\n        \"estadoSanitario\": \"confinado\"\n    },\n    {\n        \"id\": 16,\n        \"nombre\": \"Borja Rodriguez Soto\",\n        \"hash\": \"707557d8a446bd09bb7a84ba06bae7b18c549bc29442bb315860282588dda240c36c64665a0c608c5dff68843abda99484c2a68d915f9f3445b26225f1a7b2a8\",\n        \"salt\": \"3139d62e66cf83b9cdf67668d2c9b96e\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"numeroMatricula\": \"mtNNNN\",\n        \"estadoSanitario\": \"confinado\"\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/manage/confine/students",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"manage",
+						"confine",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unconfine students",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"id\": 14,\n        \"nombre\": \"Manuel Guarinos López\",\n        \"hash\": \"0295cf7a641a91c7b2c76ec14e5a1dc0453935ac3a62e2dc919a7989b0c79bc6bd6d1f6486990b5757846a92ddf012583686c43ec14aa744c3a4cbcda3f1d8de\",\n        \"salt\": \"4ff3edac96ad3f5dd8d1309009b16186\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"numeroMatricula\": \"mtLLLL\",\n        \"estadoSanitario\": \"confinado\"\n    },\n    {\n        \"id\": 15,\n        \"nombre\": \"Javier Gómez Romero\",\n        \"hash\": \"ae5297db38cc66edb82f8f4bde9b3a306760b0fd05f84f670889c0ac95ce20e2b9971e4b3cd9b2d13f31f9ace05b6fe2e9efb608f0ab20eff510c789f021f8e9\",\n        \"salt\": \"f5d50749134c76983345ff4458628c1f\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"numeroMatricula\": \"mtMMMM\",\n        \"estadoSanitario\": \"confinado\"\n    },\n    {\n        \"id\": 16,\n        \"nombre\": \"Borja Rodriguez Soto\",\n        \"hash\": \"707557d8a446bd09bb7a84ba06bae7b18c549bc29442bb315860282588dda240c36c64665a0c608c5dff68843abda99484c2a68d915f9f3445b26225f1a7b2a8\",\n        \"salt\": \"3139d62e66cf83b9cdf67668d2c9b96e\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"numeroMatricula\": \"mtNNNN\",\n        \"estadoSanitario\": \"confinado\"\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/manage/unconfine/students",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"manage",
+						"unconfine",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confine groups",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"id\": 19,\n        \"nombre\": \"GRUPO AG\",\n        \"estadoSanitario\": \"no confinado\",\n        \"prioridad\": null,\n        \"alumnos\": [\n            {\n                \"id\": 14,\n                \"nombre\": \"Manuel Guarinos López\",\n                \"hash\": \"0295cf7a641a91c7b2c76ec14e5a1dc0453935ac3a62e2dc919a7989b0c79bc6bd6d1f6486990b5757846a92ddf012583686c43ec14aa744c3a4cbcda3f1d8de\",\n                \"salt\": \"4ff3edac96ad3f5dd8d1309009b16186\",\n                \"subscriptionEndpoint\": null,\n                \"p256dh\": null,\n                \"auth\": null,\n                \"numeroMatricula\": \"mtLLLL\",\n                \"estadoSanitario\": \"confinado\"\n            },\n            {\n                \"id\": 15,\n                \"nombre\": \"Javier Gómez Romero\",\n                \"hash\": \"ae5297db38cc66edb82f8f4bde9b3a306760b0fd05f84f670889c0ac95ce20e2b9971e4b3cd9b2d13f31f9ace05b6fe2e9efb608f0ab20eff510c789f021f8e9\",\n                \"salt\": \"f5d50749134c76983345ff4458628c1f\",\n                \"subscriptionEndpoint\": null,\n                \"p256dh\": null,\n                \"auth\": null,\n                \"numeroMatricula\": \"mtMMMM\",\n                \"estadoSanitario\": \"confinado\"\n            },\n            {\n                \"id\": 16,\n                \"nombre\": \"Borja Rodriguez Soto\",\n                \"hash\": \"707557d8a446bd09bb7a84ba06bae7b18c549bc29442bb315860282588dda240c36c64665a0c608c5dff68843abda99484c2a68d915f9f3445b26225f1a7b2a8\",\n                \"salt\": \"3139d62e66cf83b9cdf67668d2c9b96e\",\n                \"subscriptionEndpoint\": null,\n                \"p256dh\": null,\n                \"auth\": null,\n                \"numeroMatricula\": \"mtNNNN\",\n                \"estadoSanitario\": \"confinado\"\n            },\n            {\n                \"id\": 17,\n                \"nombre\": \"Alvaro Conde Lozano\",\n                \"hash\": \"1154ee0eaf1efc450618083d52daea281dcf51760bbe701061c97c6ab38fd0f3e4cdf226b5dc5583b4dae02e3437450edf0065ba423bc2aa72b25e0d42c638d8\",\n                \"salt\": \"bc66a44d7c27d041802cc54c58274d58\",\n                \"subscriptionEndpoint\": null,\n                \"p256dh\": null,\n                \"auth\": null,\n                \"numeroMatricula\": \"mtOOOO\",\n                \"estadoSanitario\": \"no confinado\"\n            }\n        ]\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/manage/confine/bubbleGroups",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"manage",
+						"confine",
+						"bubbleGroups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unconfine groups",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"id\": 19,\n        \"nombre\": \"GRUPO AG\",\n        \"estadoSanitario\": \"no confinado\",\n        \"prioridad\": null,\n        \"alumnos\": [\n            {\n                \"id\": 14,\n                \"nombre\": \"Manuel Guarinos López\",\n                \"hash\": \"0295cf7a641a91c7b2c76ec14e5a1dc0453935ac3a62e2dc919a7989b0c79bc6bd6d1f6486990b5757846a92ddf012583686c43ec14aa744c3a4cbcda3f1d8de\",\n                \"salt\": \"4ff3edac96ad3f5dd8d1309009b16186\",\n                \"subscriptionEndpoint\": null,\n                \"p256dh\": null,\n                \"auth\": null,\n                \"numeroMatricula\": \"mtLLLL\",\n                \"estadoSanitario\": \"confinado\"\n            },\n            {\n                \"id\": 15,\n                \"nombre\": \"Javier Gómez Romero\",\n                \"hash\": \"ae5297db38cc66edb82f8f4bde9b3a306760b0fd05f84f670889c0ac95ce20e2b9971e4b3cd9b2d13f31f9ace05b6fe2e9efb608f0ab20eff510c789f021f8e9\",\n                \"salt\": \"f5d50749134c76983345ff4458628c1f\",\n                \"subscriptionEndpoint\": null,\n                \"p256dh\": null,\n                \"auth\": null,\n                \"numeroMatricula\": \"mtMMMM\",\n                \"estadoSanitario\": \"confinado\"\n            },\n            {\n                \"id\": 16,\n                \"nombre\": \"Borja Rodriguez Soto\",\n                \"hash\": \"707557d8a446bd09bb7a84ba06bae7b18c549bc29442bb315860282588dda240c36c64665a0c608c5dff68843abda99484c2a68d915f9f3445b26225f1a7b2a8\",\n                \"salt\": \"3139d62e66cf83b9cdf67668d2c9b96e\",\n                \"subscriptionEndpoint\": null,\n                \"p256dh\": null,\n                \"auth\": null,\n                \"numeroMatricula\": \"mtNNNN\",\n                \"estadoSanitario\": \"confinado\"\n            },\n            {\n                \"id\": 17,\n                \"nombre\": \"Alvaro Conde Lozano\",\n                \"hash\": \"1154ee0eaf1efc450618083d52daea281dcf51760bbe701061c97c6ab38fd0f3e4cdf226b5dc5583b4dae02e3437450edf0065ba423bc2aa72b25e0d42c638d8\",\n                \"salt\": \"bc66a44d7c27d041802cc54c58274d58\",\n                \"subscriptionEndpoint\": null,\n                \"p256dh\": null,\n                \"auth\": null,\n                \"numeroMatricula\": \"mtOOOO\",\n                \"estadoSanitario\": \"no confinado\"\n            }\n        ]\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/manage/unconfine/bubbleGroups",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"manage",
+						"unconfine",
+						"bubbleGroups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confine professors",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"id\": 25,\n        \"nombre\": \"Yod Samuel Martín García\",\n        \"hash\": \"ec827e2cfe31aec1479c312ba2e0804981cfd7415bc5d7f19b37bead001bef932c5d1c11b2e5405de33b4aba8fcc10ea3b7fa60305d23ac11abdd1f6f72c57b2\",\n        \"salt\": \"45b6da697b73fb81566f2191d4b420d9\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"nifNie\": \"00000000A\",\n        \"estadoSanitario\": \"no confinado\"\n    },\n    {\n        \"id\": 26,\n        \"nombre\": \"Peter Parker\",\n        \"hash\": \"df7c066562116f69bc2ac6704e200e2a39b8c6ed5f98d36ef34f50c74ad4fdc3547fc49ebfd1e3077325321f076d3b9a52ca7b8a923aaea7904d729941bcf92b\",\n        \"salt\": \"0094c42d80abbc6ef01b4f89e4f73786\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"nifNie\": \"22222222A\",\n        \"estadoSanitario\": \"no confinado\"\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/manage/confine/professors",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"manage",
+						"confine",
+						"professors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unconfine professors",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"id\": 25,\n        \"nombre\": \"Yod Samuel Martín García\",\n        \"hash\": \"ec827e2cfe31aec1479c312ba2e0804981cfd7415bc5d7f19b37bead001bef932c5d1c11b2e5405de33b4aba8fcc10ea3b7fa60305d23ac11abdd1f6f72c57b2\",\n        \"salt\": \"45b6da697b73fb81566f2191d4b420d9\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"nifNie\": \"00000000A\",\n        \"estadoSanitario\": \"no confinado\"\n    },\n    {\n        \"id\": 26,\n        \"nombre\": \"Peter Parker\",\n        \"hash\": \"df7c066562116f69bc2ac6704e200e2a39b8c6ed5f98d36ef34f50c74ad4fdc3547fc49ebfd1e3077325321f076d3b9a52ca7b8a923aaea7904d729941bcf92b\",\n        \"salt\": \"0094c42d80abbc6ef01b4f89e4f73786\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"nifNie\": \"22222222A\",\n        \"estadoSanitario\": \"no confinado\"\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/manage/unconfine/professors",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"manage",
+						"unconfine",
+						"professors"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

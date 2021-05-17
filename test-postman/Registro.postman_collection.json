@@ -1,0 +1,104 @@
+{
+	"info": {
+		"_postman_id": "91fcf584-f99c-489c-940a-bab667a6104e",
+		"name": "Registro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register responsible",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Javier Rodriguez Gallardo\",\n    \"center\": \"Centro de pruebas\",\n    \"nifNie\": \"98765432A\",\n    \"password\": \"ContraseñaPrueb4\",\n    \"terms\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/register/responsible",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"register",
+						"responsible"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register students",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/csv",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "Clase,Nombre,Numero de matricula\n3ºB, Jaime Conde Segovia, mtAAAAA\n3ºB, Javier Abejaro Capilla, mtBBBB\n3ºB, Álvaro Martín Cortinas, mtCCCC\n3ºB, Javier Rodriguez Gallardo, mtDDDD\n3ºB, Sergio Almendro Cerdá, mtEEEE\n5ºD, Silvia del Río, mtFFFF\n5ºD, Celia Fontá Romero, mtGGGG\n5ºD, Iván Martín Martín, mtHHHH\n5ºD, Jaime Calleja del Castillo, mtIIII\n5ºD, Pedro Custodio Martín del Prado, mtJJJJ\n5ºD, María Villa Monedero, mtKKKK\n1ºA, Manuel Guarinos López, mtLLLL\n1ºA, Javier Gómez Romero, mtMMMM\n1ºA, Borja Rodriguez Soto, mtNNNN\n1ºA, Alvaro Conde Lozano, mtOOOO\n1ºA, Macarena Conde Segovia, mtPPPP"
+				},
+				"url": {
+					"raw": "{{backUrl}}/register/students/{{nombreCentro}}",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"register",
+						"students",
+						"{{nombreCentro}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register professors",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/csv",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "Clase,Nombre,NIF/NIE\n3ºB, Yod Samuel Martín García, 00000000A\n3ºB, Peter Parker, 22222222A\n5ºD, Juan Carlos Yelmo García, 11111111A\n5ºD, Manuel Sierra, 33333333A\n5ºD, Peter Parker, 22222222A\n1ºA, Peter Parker, 22222222A\n1ºA, Juan Carlos Yelmo García, 11111111A\n"
+				},
+				"url": {
+					"raw": "{{backUrl}}/register/professors/{{nombreCentro}}",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"register",
+						"professors",
+						"{{nombreCentro}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

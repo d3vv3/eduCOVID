@@ -1,0 +1,84 @@
+{
+	"info": {
+		"_postman_id": "a936c39d-bd99-4cae-9e53-f4f61a50815f",
+		"name": "Grupo Burbuja",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Read all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/grupo/all",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"grupo",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read groups by profesor and center",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/grupo/25/{{nombreCentro}}",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"grupo",
+						"25",
+						"{{nombreCentro}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read group by student",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/grupo/alumno/3",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"grupo",
+						"alumno",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read groups by class",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/grupo/clase/20",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"grupo",
+						"clase",
+						"20"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

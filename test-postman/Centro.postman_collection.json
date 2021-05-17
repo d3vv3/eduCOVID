@@ -1,0 +1,312 @@
+{
+	"info": {
+		"_postman_id": "0399c035-d617-4aea-85b9-1a929410dfd8",
+		"name": "Centro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Read all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/centro",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insert student in a group",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"nombre\": \"Prueba alumno nuevo\",\n        \"hash\": \"\",\n        \"salt\": \"\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"numeroMatricula\": \"S07547\",\n        \"estadoSanitario\": \"confinado\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/centro/insert/alumno/{{nombreCentro}}/{{nombreClase}}/{{nombreGrupo}}",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro",
+						"insert",
+						"alumno",
+						"{{nombreCentro}}",
+						"{{nombreClase}}",
+						"{{nombreGrupo}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update student in a group",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": \"29\",\n        \"nombre\": \"Prueba alumno nuevo actualizado\",\n        \"hash\": \"\",\n        \"salt\": \"\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"numeroMatricula\": \"S07547\",\n        \"estadoSanitario\": \"confinado\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/centro/update/alumno/{{nombreCentro}}/{{nombreClase}}/{{nombreGrupo}}",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro",
+						"update",
+						"alumno",
+						"{{nombreCentro}}",
+						"{{nombreClase}}",
+						"{{nombreGrupo}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insert professor in a center",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"nombre\": \"Prueba profesor nuevo\",\n        \"hash\": \"\",\n        \"salt\": \"\",\n        \"subscriptionEndpoint\": null,\n        \"p256dh\": null,\n        \"auth\": null,\n        \"nifNie\": \"12345678A\",\n        \"estadoSanitario\": \"confinado\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/centro/insert/professor/{{nombreCentro}}/{{nombreClase}}",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro",
+						"insert",
+						"professor",
+						"{{nombreCentro}}",
+						"{{nombreClase}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update class of a professor in a center",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n        \"1ºA\", \"3ºB\", \"5ºD\"\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/centro/update/professor/{{nombreCentro}}/{{nifNie}}",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro",
+						"update",
+						"professor",
+						"{{nombreCentro}}",
+						"{{nifNie}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insert class in a center",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Prueba clase nueva\",\n    \"burbujaPresencial\": null,\n    \"fechaInicioConmutacion\": null,\n    \"tiempoConmutacion\": null,\n    \"profesores\": null,\n    \"gruposBurbuja\": null\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/centro/insert/class/{{nombreCentro}}",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro",
+						"insert",
+						"class",
+						"{{nombreCentro}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update class in a center",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 32,\n    \"nombre\": \"Prueba clase nueva actualizada\",\n    \"burbujaPresencial\": {\n        \"id\": 31,\n        \"nombre\": \" GRUPO TP\",\n        \"estadoSanitario\": \"no confinado\",\n        \"prioridad\": null,\n        \"alumnos\": []\n    },\n    \"fechaInicioConmutacion\": null,\n    \"tiempoConmutacion\": null,\n    \"profesores\": [],\n    \"gruposBurbuja\": [\n        {\n            \"id\": 31,\n            \"nombre\": \" GRUPO TP\",\n            \"estadoSanitario\": \"no confinado\",\n            \"prioridad\": null,\n            \"alumnos\": []\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/centro/update/class/{{nombreCentro}}",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro",
+						"update",
+						"class",
+						"{{nombreCentro}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insert professor in a class",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Prueba clase nueva actualizada\",\n    \"burbujaPresencial\": {\n        \"id\": 31,\n        \"nombre\": \" GRUPO TP\",\n        \"estadoSanitario\": \"no confinado\",\n        \"prioridad\": null,\n        \"alumnos\": []\n    },\n    \"fechaInicioConmutacion\": null,\n    \"tiempoConmutacion\": null,\n    \"profesores\": [],\n    \"gruposBurbuja\": [\n        {\n            \"id\": 31,\n            \"nombre\": \" GRUPO TP\",\n            \"estadoSanitario\": \"no confinado\",\n            \"prioridad\": null,\n            \"alumnos\": []\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{backUrl}}/centro/insert/class/{{nombreCentro}}/30",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro",
+						"insert",
+						"class",
+						"{{nombreCentro}}",
+						"30"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read students by center",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/centro/{{nombreCentro}}/students",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro",
+						"{{nombreCentro}}",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read professors by center",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/centro/{{nombreCentro}}/professors",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro",
+						"{{nombreCentro}}",
+						"professors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read classes by center",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/centro/{{nombreCentro}}/classes",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro",
+						"{{nombreCentro}}",
+						"classes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read bubble groups by center",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/centro/{{nombreCentro}}/bubblegroups",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"centro",
+						"{{nombreCentro}}",
+						"bubblegroups"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

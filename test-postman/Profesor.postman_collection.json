@@ -1,0 +1,65 @@
+{
+	"info": {
+		"_postman_id": "1b40aa28-bae8-4a4b-90b4-9408a533c451",
+		"name": "Profesor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Read by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/professor/25",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"professor",
+						"25"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Real all by clase",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/professor/professors/{{nombreCentro}}/{{nombreClase}}",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"professor",
+						"professors",
+						"{{nombreCentro}}",
+						"{{nombreClase}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{backUrl}}/professor/28",
+					"host": [
+						"{{backUrl}}"
+					],
+					"path": [
+						"professor",
+						"28"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
